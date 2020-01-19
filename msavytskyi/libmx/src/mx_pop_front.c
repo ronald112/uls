@@ -5,7 +5,7 @@ void mx_pop_front(t_list **head) {
         t_list *temp = *head;
 
         temp = temp->next;
-        if (malloc_size((*head)->data))
+        if (malloc_usable_size((*head)->data))
             free((*head)->data);
         free(*head);
         *head = temp;

@@ -35,19 +35,19 @@ char *mx_default(char *directory, int amount) {
 // 	return 0;
 // }
 
-int main(int argc, char *argv[]) {
-	char *data = NULL;
+// int main(int argc, char *argv[]) {
+// 	char *data = NULL;
 
-	if (argc == 1)
-		data = mx_default(".", 0);
-	else if (argc == 2)
-		data = mx_default(argv[1], 0);
-	else {
-		for (int i = 1; argv[i]; i++) {
-			data = mx_strjoin(data, mx_default(argv[i], argc - 1));
-			data = mx_strjoin(data, "\n");
-		}
-	}
-	printf("%s\n", data);
-	return 0;
-}
+// 	if (argc == 1)
+// 		data = mx_default(".", 0);
+// 	else if (argc == 2)
+// 		data = mx_default(argv[1], 0);
+// 	else {
+// 		for (int i = 1; argv[i]; i++) {
+// 			data = mx_strjoin(data, mx_default(argv[i], argc - 1));
+// 			data = mx_strjoin(data, "\n");
+// 		}
+// 	}
+// 	printf("%s\n", data);
+// 	return 0;
+// }

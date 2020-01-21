@@ -9,6 +9,7 @@ t_dir_data *mx_get_data_list(t_main *info, int i, char *link) {//-----------
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
 		list->next = NULL;
+		info->am_data[i]++;
 	}
 	while ((temp = readdir(directoy))) {
 		list->next = (t_dir_data*)malloc(sizeof(t_dir_data));
@@ -16,6 +17,7 @@ t_dir_data *mx_get_data_list(t_main *info, int i, char *link) {//-----------
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
 		list->next = NULL;
+		info->am_data[i]++;
 	}
 	closedir(directoy);
 	return &(info->dir[i]);
@@ -34,7 +36,7 @@ static int get_max_length(t_dir_data *dir) {
 	return max;
 }
 
-int mx_count_line_for_print(t_main *info) {
+void mx_count_line_for_print(t_main *info) {
 	struct winsize w;
 	int max_length;
 	int max_col;
@@ -42,15 +44,14 @@ int mx_count_line_for_print(t_main *info) {
 	ioctl(0, TIOCGWINSZ, &w);
 	for (int i = 0; i < info->am_dir; ++i) { 						// проделываем для каждой дир, указан. в аргументах
 		info->lines_for_print[i] = 0; 								// обнуляем количество линий для дир
-		max_length = get_max_length(&(info->dir[i]));				// находим макимально возможную длину названия файла в дир
+		max_length = get_max_length(&(info->dir_data[i]));				// находим макимально возможную длину названия файла в дир
 		max_col = (w.ws_col/(8 - (max_length % 8) + max_length));	// высчитываем количество колонок
 		printf("%d\n", max_col);
 		info->lines_for_print[i] = info->am_data[i] / max_col;			// высчитвыаем количество линий
-		if(info->am_data[i] % max_col != 0)							// доп проверка на линии
+		if(info->lines_for_print == 0 || info->am_data[i] % max_col != 0)							// доп проверка на линии
 			info->lines_for_print[i]++;
 		printf("%d\n", info->lines_for_print[i]);
 	}
-
 }
 
 //=============================================================================
@@ -68,21 +69,65 @@ void mx_print_default(t_dir_data *dir, int kol) {
 	mx_printchar('\n');
 }
 
-void mx_init_info(t_main *info) // инициализация инфо
+//=============================================================================
+void mx_init_info(t_main *info, int argc) { // инициализация инфо
+	info->am_dir = argc == 1 ? 1 : argc - 1;
+	info->am_data = (int*)malloc(sizeof(int) * info->am_dir);
+	for (int i = 0; i < info->am_dir; ++i)
+		info->am_data[i] = 0;
+	info->lines_for_print = (int*)malloc(sizeof(int) * info->am_dir);
+	info->dir_data = (t_dir_data*)malloc(sizeof(t_dir_data) * info->am_dir);
+	info->dir = (t_dir_data*)malloc(sizeof(t_dir_data) * info->am_dir);
+}
+
+void mx_swap(t_dir_data *a, t_dir_data *b) { 
+	struct dirent *tmp_data = a->data;
+	char *tmp_name = a->name;
+
+	a->data = b->data;
+	b->data = tmp_data;
+	a->name = b->name;
+	b->name = tmp_name;
+} 
+
+void mx_sort_dir_list(t_dir_data *start) { 
+	int swapped = 1;
+	t_dir_data *ptr1;
+	t_dir_data *lptr = NULL;
+
+	if (start == NULL)
+		return;
+	while (swapped) { 
+		swapped = 0;
+		ptr1 = start;
+		while (ptr1->next != lptr) { 
+			if (mx_strcmp(ptr1->name, ptr1->next->name) > 0) {
+				mx_swap(ptr1, ptr1->next);
+				swapped = 1;
+			}
+			ptr1 = ptr1->next;
+		}
+		lptr = ptr1;
+	}
+}
+//=============================================================================
 
 int main(int argc, char *argv[]) {
 	t_main *info = (t_main*)malloc(sizeof(t_main));
 
-	info->am_dir = argc == 1 ? 1 : argc - 1;//----------info->am_dir-----------
-	info->dir = (t_dir_data*)malloc(sizeof(t_dir_data) * info->am_dir);//------
+	mx_init_info(info, argc);
 	for (int i = 0; i < info->am_dir; i++) {//----------info->am_dir-----------
 		if (argc > 1)
 			mx_get_data_list(info, i, argv[i + 1]);//-------info->dir-----
 		else if (argc == 1)
 			mx_get_data_list(info, i, ".");//--------info->dir------------
+		mx_sort_dir_list(&(info->dir[i]));
+		info->dir_data[i].data = info->dir[i].next->next->data;
+		info->dir_data[i].name = info->dir[i].next->next->name;
+		info->dir_data[i].next = info->dir[i].next->next->next;
 	}
 	mx_count_line_for_print(info);//*******************************************
-	mx_print_default(info->dir, info->am_dir);//-----------info----------------
+	mx_print_default(info->dir_data, info->am_dir);//-----------info----------------
 	system("leaks -q uls");
 	// system("ls");
 	return 0;

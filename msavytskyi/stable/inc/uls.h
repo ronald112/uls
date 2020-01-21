@@ -11,4 +11,8 @@ typedef struct s_dir_data {
 	struct s_dir_data *next;
 } t_dir_data;
 
+typedef struct s_main {
+	t_dir_data *dir;
+} t_main;
+
 #endif

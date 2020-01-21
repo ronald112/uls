@@ -6,8 +6,8 @@ int mx_count_words(const char *str, char c) {
     for (; str[i] != '\0'; i++) {
         if (str[i] != c) {
             for (; str[i] != c && str[i] != '\0'; i++);
-            counter++;            
-        }        
+            counter++;
+        }
     }
     return counter;
 }

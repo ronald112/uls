@@ -1,2 +1,2 @@
-# ls
- ls command for unix shell
+# uls
+ uls command for unix shell

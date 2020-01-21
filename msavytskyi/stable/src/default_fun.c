@@ -21,7 +21,16 @@ t_dir_data *mx_get_data_list(t_dir_data *dir, char *link) {
 	return dir;
 }
 
-// int mx_count_line_for_print(t_dir_data *)
+//=============================================================================
+
+int mx_count_line_for_print(t_main *info) {
+	struct winsize w;
+
+	ioctl(0, TIOCGWINSZ, &w);
+	printf("%d\n", w.ws_col);
+}
+
+//=============================================================================
 
 void mx_print_default(t_dir_data *dir, int kol) {
 	t_dir_data *list = dir;
@@ -47,6 +56,7 @@ int main(int argc, char *argv[]) {
 		else if (argc == 1)
 			mx_get_data_list(&(info->dir[i]), ".");
 	}
+	mx_count_line_for_print(info);
 	mx_print_default(info->dir, am_dir);
 	system("leaks -q uls");
 	// system("ls");

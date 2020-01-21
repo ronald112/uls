@@ -14,6 +14,9 @@ typedef struct s_dir_data {
 
 typedef struct s_main {
 	t_dir_data *dir;
+	int am_dir;
+	int *am_data;
+	int *lines_for_print;
 } t_main;
 
 #endif

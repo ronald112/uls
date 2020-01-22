@@ -1,15 +1,41 @@
 #include "uls.h"
 
+DIR *mx_opendir_info(t_main *info, char *link) {//-----------
+    DIR *dir;
+
+    if ((dir = opendir(link)) == NULL) {
+        char *temp = mx_strjoin(info->uls_name, link);
+
+        errno = ENOENT;
+        perror(temp);
+        exit(1);
+    }
+    else {
+        return dir;
+    }
+}
+
+// check if valid close
+void mx_closedir_info(t_main *info, DIR *dir, char *link) {
+    if (closedir(dir) < 0) {
+        char *temp = mx_strjoin(info->uls_name, link);
+
+        errno = EBADF;
+        perror(temp);
+        exit(1);
+    }
+}
+
 t_dir_data *mx_get_data_list(t_main *info, int i, char *link) {//-----------
-	DIR *directoy = opendir(link);
-	t_dir_data *list = &(info->dir[i]);
+	DIR *directoy = mx_opendir_info(info, link);
+	t_dir_data *list = info->cat[i].dir;
 	struct dirent *temp = NULL;
 
 	if ((temp = readdir(directoy))) {
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
 		list->next = NULL;
-		info->am_data[i]++;
+		info->cat[i].am_data++;
 	}
 	while ((temp = readdir(directoy))) {
 		list->next = (t_dir_data*)malloc(sizeof(t_dir_data));
@@ -17,10 +43,10 @@ t_dir_data *mx_get_data_list(t_main *info, int i, char *link) {//-----------
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
 		list->next = NULL;
-		info->am_data[i]++;
+		info->cat[i].am_data++;
 	}
-	closedir(directoy);
-	return &(info->dir[i]);
+	mx_closedir_info(info, directoy, link);
+	return info->cat[i].dir;
 }
 
 //=============================================================================
@@ -43,23 +69,23 @@ void mx_count_line_for_print(t_main *info) {
 
 	ioctl(0, TIOCGWINSZ, &w);
 	for (int i = 0; i < info->am_dir; ++i) { 						// проделываем для каждой дир, указан. в аргументах
-		info->lines_for_print[i] = 0; 								// обнуляем количество линий для дир
-		max_length = get_max_length(&(info->dir_data[i]));				// находим макимально возможную длину названия файла в дир
+		info->cat[i].lines_for_print = 0; 								// обнуляем количество линий для дир
+		max_length = get_max_length(info->cat[i].dir_data);				// находим макимально возможную длину названия файла в дир
 		max_col = (w.ws_col/(8 - (max_length % 8) + max_length));	// высчитываем количество колонок
 		printf("%d\n", max_col);
-		info->lines_for_print[i] = info->am_data[i] / max_col;			// высчитвыаем количество линий
-		if(info->lines_for_print == 0 || info->am_data[i] % max_col != 0)							// доп проверка на линии
-			info->lines_for_print[i]++;
-		printf("%d\n", info->lines_for_print[i]);
+		info->cat[i].lines_for_print = info->cat[i].am_dir_data / max_col;			// высчитвыаем количество линий
+		if(info->cat[i].am_dir_data % max_col != 0)							// доп проверка на линии
+			info->cat[i].lines_for_print++;
+		printf("%d\n", info->cat[i].lines_for_print);
 	}
 }
 
 //=============================================================================
 
-void mx_print_default(t_dir_data *dir, int kol) {
-	t_dir_data *list = dir;
+void mx_print_default(t_catalog *cat, int kol) {
+	t_dir_data *list = cat->dir_data;
 
-	for (int i = 0; i < kol; i++, list = &dir[i]) {
+	for (int i = 0; i < kol; i++, list = cat[i].dir_data) {
 		while (list) {
 			mx_printstr(list->name);
 			mx_printstr("\t");
@@ -70,14 +96,16 @@ void mx_print_default(t_dir_data *dir, int kol) {
 }
 
 //=============================================================================
-void mx_init_info(t_main *info, int argc) { // инициализация инфо
+void mx_init_info(t_main *info, int argc) { 						// инициализация инфо
 	info->am_dir = argc == 1 ? 1 : argc - 1;
-	info->am_data = (int*)malloc(sizeof(int) * info->am_dir);
-	for (int i = 0; i < info->am_dir; ++i)
-		info->am_data[i] = 0;
-	info->lines_for_print = (int*)malloc(sizeof(int) * info->am_dir);
-	info->dir_data = (t_dir_data*)malloc(sizeof(t_dir_data) * info->am_dir);
-	info->dir = (t_dir_data*)malloc(sizeof(t_dir_data) * info->am_dir);
+	info->cat = (t_catalog*)malloc(sizeof(t_catalog) * info->am_dir); // инициализация массива каталогов
+	for (int i = 0; i < info->am_dir; ++i) {
+		info->cat[i].am_data = 0;
+		info->cat[i].am_dir_data = 0;
+		info->cat[i].dir = (t_dir_data*)malloc(sizeof(t_dir_data));
+		info->cat[i].dir_data = (t_dir_data*)malloc(sizeof(t_dir_data));
+	}
+	info->uls_name = strdup("uls: ");
 }
 
 void mx_swap(t_dir_data *a, t_dir_data *b) { 
@@ -116,19 +144,22 @@ int main(int argc, char *argv[]) {
 	t_main *info = (t_main*)malloc(sizeof(t_main));
 
 	mx_init_info(info, argc);
-	for (int i = 0; i < info->am_dir; i++) {//----------info->am_dir-----------
+	for (int i = 0; i < info->am_dir; i++) {
 		if (argc > 1)
-			mx_get_data_list(info, i, argv[i + 1]);//-------info->dir-----
+			mx_get_data_list(info, i, argv[i + 1]);
 		else if (argc == 1)
-			mx_get_data_list(info, i, ".");//--------info->dir------------
-		mx_sort_dir_list(&(info->dir[i]));
-		info->dir_data[i].data = info->dir[i].next->next->data;
-		info->dir_data[i].name = info->dir[i].next->next->name;
-		info->dir_data[i].next = info->dir[i].next->next->next;
+			mx_get_data_list(info, i, ".");
+		mx_sort_dir_list(info->cat[i].dir);
+		if (info->cat[i].dir->next->next) {
+			info->cat[i].dir_data->data = info->cat[i].dir->next->next->data;
+			info->cat[i].dir_data->name = info->cat[i].dir->next->next->name;
+			info->cat[i].dir_data->next = info->cat[i].dir->next->next->next;
+			info->cat[i].am_dir_data = info->cat[i].am_data;
+		}
 	}
 	mx_count_line_for_print(info);//*******************************************
-	mx_print_default(info->dir_data, info->am_dir);//-----------info----------------
-	system("leaks -q uls");
+	mx_print_default(info->cat, info->am_dir);//-----------info----------------
+	// system("leaks -q uls");
 	// system("ls");
 	return 0;
 }

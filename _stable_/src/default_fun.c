@@ -6,8 +6,12 @@ DIR *mx_opendir_info(t_main *info, char *link) {//-----------
     if ((dir = opendir(link)) == NULL) {
         char *temp = mx_strjoin(info->uls_name, link);
 
-        // errno = ENOENT;
         perror(temp);
+        mx_strdel(&temp);
+        free(info->cat->dir);
+        info->cat->dir = NULL;
+        free(info->cat->dir_data);
+        info->cat->dir_data = NULL;
         return dir;
     }
     else {
@@ -20,13 +24,12 @@ void mx_closedir_info(t_main *info, DIR *dir, char *link) {
     if (dir && closedir(dir) < 0) {
         char *temp = mx_strjoin(info->uls_name, link);
 
-        errno = EBADF;
         perror(temp);
         exit(1);
     }
 }
 
-t_dir_data *mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
+void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
     DIR *directoy = mx_opendir_info(info, link);
     t_dir_data *list = cat->dir;
     struct dirent *temp = NULL;
@@ -46,7 +49,6 @@ t_dir_data *mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//------
         cat->am_data++;
     }
     mx_closedir_info(info, directoy, link);
-    return cat->dir;
 }
 
 //=============================================================================
@@ -68,10 +70,10 @@ void mx_count_line_for_print(t_main *info) {
     int max_cols;
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    for (t_catalog *head = info->cat; head; head = head->c_next) {									// проделываем для каждой дир, указан. в аргументах
+    for (t_catalog *head = info->cat; head; head = head->c_next) {		// проделываем для каждой дир, указан. в аргументах
         head->lines_for_print = 0; 										// обнуляем количество линий для дир
         max_length = get_max_length(head->dir_data);
-        printf("max_length %d\n", max_length);												// находим макимально возможную длину названия файла в дир
+        printf("max_length %d\n", max_length);					        // находим макимально возможную длину названия файла в дир
         max_cols = (w.ws_col/(8 - (max_length % 8) + max_length));				// высчитываем количество колонок
         printf("max_cols %d\n", max_cols);
         head->lines_for_print = head->am_dir_data / max_cols;		// высчитвыаем количество линий
@@ -171,17 +173,19 @@ int main(int argc, char *argv[]) {
             mx_get_data_list(info, head, argv[i + 1]);
         else if (argc == 1)
             mx_get_data_list(info, head, ".");
-        mx_sort_dir_list(head->dir);
-        if (head->dir->next->next) {
-            head->dir_data->data = head->dir->next->next->data;
-            head->dir_data->name = head->dir->next->next->name;
-            head->dir_data->next = head->dir->next->next->next;
-            head->am_dir_data = head->am_data;
+        if (head->dir) {
+                mx_sort_dir_list(head->dir);
+            if (head->dir->next->next) {
+                head->dir_data->data = head->dir->next->next->data;
+                head->dir_data->name = head->dir->next->next->name;
+                head->dir_data->next = head->dir->next->next->next;
+                head->am_dir_data = head->am_data;
+            }
         }
     }
     mx_count_line_for_print(info);//*******************************************
     mx_print_default(info->cat);//-----------info----------------
-    // system("leaks -q uls");
+    system("leaks -q uls");
     // system("ls");
     return 0;
 }

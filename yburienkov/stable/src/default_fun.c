@@ -6,9 +6,9 @@ DIR *mx_opendir_info(t_main *info, char *link) {//-----------
     if ((dir = opendir(link)) == NULL) {
         char *temp = mx_strjoin(info->uls_name, link);
 
-        errno = ENOENT;
+        // errno = ENOENT;
         perror(temp);
-        exit(1);
+        return dir;
     }
     else {
         return dir;
@@ -17,7 +17,7 @@ DIR *mx_opendir_info(t_main *info, char *link) {//-----------
 
 // check if valid close
 void mx_closedir_info(t_main *info, DIR *dir, char *link) {
-    if (closedir(dir) < 0) {
+    if (dir && closedir(dir) < 0) {
         char *temp = mx_strjoin(info->uls_name, link);
 
         errno = EBADF;
@@ -31,14 +31,14 @@ t_dir_data *mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//------
     t_dir_data *list = cat->dir;
     struct dirent *temp = NULL;
 
-    if ((temp = readdir(directoy))) {
+    if (directoy && (temp = readdir(directoy))) {
         list->data = temp;
         list->name = mx_strdup(temp->d_name);
         list->next = NULL;
         cat->am_data++;
     }
-    while ((temp = readdir(directoy))) {
-        list->next = (t_dir_data*)malloc(sizeof(t_dir_data));
+    while (directoy && (temp = readdir(directoy))) {
+        list->next = (t_dir_data *)malloc(sizeof(t_dir_data));
         list = list->next;
         list->data = temp;
         list->name = mx_strdup(temp->d_name);
@@ -71,14 +71,14 @@ void mx_count_line_for_print(t_main *info) {
     for (t_catalog *head = info->cat; head; head = head->c_next) {									// проделываем для каждой дир, указан. в аргументах
         head->lines_for_print = 0; 										// обнуляем количество линий для дир
         max_length = get_max_length(head->dir_data);
-        printf("%d\n", max_length);												// находим макимально возможную длину названия файла в дир
+        printf("max_length %d\n", max_length);												// находим макимально возможную длину названия файла в дир
         max_cols = (w.ws_col/(8 - (max_length % 8) + max_length));				// высчитываем количество колонок
-        printf("%d\n", max_cols);
+        printf("max_cols %d\n", max_cols);
         head->lines_for_print = head->am_dir_data / max_cols;		// высчитвыаем количество линий
-        printf("lines %d\n", head->lines_for_print);
+        printf("lines_for_print1 %d\n", head->lines_for_print);
         if(head->lines_for_print == 0 || (head->am_dir_data % max_cols) != 0)							// доп проверка на линии
             head->lines_for_print++;
-        printf("%d\n", head->lines_for_print);
+        printf("lines_for_print2 %d\n", head->lines_for_print);
     }
 }
 

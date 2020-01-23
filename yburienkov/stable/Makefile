@@ -19,8 +19,7 @@ OBJ = $(addsuffix .o, $(FILES))
 
 OBJO = $(addprefix obj/, $(OBJ))
 
-CFLGS = -std=c11 -Wall -Wpedantic -Wextra
-#-Werror
+CFLGS = -std=c11 -Wall -Wpedantic# -Wextra -Werror
 
 all: install clean
 

@@ -13,9 +13,11 @@ typedef struct s_dir_data {
 } t_dir_data;
 
 typedef struct s_catalog {
+	// bool is_work;
+	char *c_name;			// имя каталога
 	t_dir_data *dir;		// все файлы в дир (1)
 	t_dir_data *dir_data;	// файлы без . и .. (2)
-	int am_dir_data;		// количество (2)
+	int am_files;		// количество (2)
 	int am_data;			// количество (1)
 	int lines_for_print;	// линии для принтинга
 	struct s_catalog *c_next;

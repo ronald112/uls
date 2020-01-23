@@ -1,13 +1,13 @@
 clear
-for i in {1..4}; do
+for i in {1..10}; do
 	touch ../test/file$i
 done
 make all
-./uls ../test/
+./uls ../test/*
 echo
 echo "****"
 echo
-ls ../test/
-for i in {1..4}; do
+ls ../test/*
+for i in {1..10}; do
 	rm -rf ../test/file$i
 done

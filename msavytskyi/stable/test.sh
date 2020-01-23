@@ -1,5 +1,5 @@
 clear
-for i in {1..10}; do
+for i in {1..4}; do
 	touch ../test/file$i
 done
 make all
@@ -8,6 +8,6 @@ echo
 echo "****"
 echo
 ls ../test/
-for i in {1..10}; do
-	rm ../test/file$i
+for i in {1..4}; do
+	rm -rf ../test/file$i
 done

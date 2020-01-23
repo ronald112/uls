@@ -18,6 +18,7 @@ typedef struct s_catalog {
 	int am_dir_data;		// количество (2)
 	int am_data;			// количество (1)
 	int lines_for_print;	// линии для принтинга
+	struct s_catalog *c_next;
 } t_catalog;
 
 typedef struct s_main {		//** структура, которая хранит массивом все каталоги, взятые из аргумента

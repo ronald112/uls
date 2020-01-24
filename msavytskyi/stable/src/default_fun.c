@@ -289,31 +289,44 @@ void mx_sort_dir_list(t_dir_data *start) {
 }
 //=============================================================================
 
-static void print_tab(t_catalog *cat) {
-	int am_tab = cat->max_length / 8;
+static void print_tab(t_catalog *cat, t_dir_data *data) {
+	int tab = cat->max_length / 8 + 1;
+	int extra = mx_strlen(data->name) / 8;
+	// printf("|%s   teb %d   extra %d %p|", data->name, tab, extra, (void*)data->next);
 
-	for (int i = 0; i < am_tab; ++i)
+	for (int i = 0; i < (tab - extra) && data->next && data->next->next; ++i)
 		mx_printchar('\t');
+}
+
+void mx_print_cat(t_catalog *cat) {
+	t_dir_data *tmp = cat->dir_data;
+	t_dir_data *temp = NULL;
+
+	for (int i = 0; i < cat->lines_for_print && cat->dir_data; i++, cat->dir_data = cat->dir_data->next) {
+		tmp = cat->dir_data;
+		while(tmp) {
+			mx_printstr(tmp->name);
+			temp = tmp;
+			for (int j = 0; j < cat->lines_for_print && tmp; j++)
+				tmp = tmp->next;
+			if(tmp)
+				print_tab(cat, temp);
+		}
+		mx_printchar('\n');
+	}
 }
 
 void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
-	t_dir_data *tmp = NULL;
 
-	for (int counter = 0; head; head = head->c_next, counter = 0) {
-		if(info->am_dir != 1) {
+	for (; head; head = head->c_next) {
+		if (info->am_dir != 1) {
 			mx_printstr(head->c_name);
 			mx_printstr(":\n");
 		}
-		for (int i = 1; i <= head->lines_for_print; ++i, tmp = head->dir_data) {
-			for (int count = 1; tmp; tmp = tmp->next, count++) {
-				if (counter % i == 0) {
-					mx_printstr(tmp->name);
-					print_tab(head);
-				}
-			}
+		mx_print_cat(head);
+		if (info->am_dir != 1 && head->c_next)
 			mx_printchar('\n');
-		}
 	}
 }
 
@@ -343,8 +356,9 @@ int main(int argc, char *argv[]) {
 	// printf("%s %s %p %d\n", info->cat->c_name, info->cat->c_next->c_name, (void*)info->cat->c_next->c_next, info->cat->am_files);
 	mx_count_line_for_print(info);//*******************************************
 	// printf("===============\n");
-	// mx_print(info);
-	mx_print_default(info->cat);//-----------info----------------
+	mx_print(info);
+	// mx_print_cat(info->cat);//-----------info----------------
+	// mx_print_default(info->cat);
 	// system("leaks -q uls");
 	// system("ls");
 	return 0;

@@ -294,7 +294,7 @@ static void print_tab(t_catalog *cat, t_dir_data *data) {
 	int extra = mx_strlen(data->name) / 8;
 	// printf("|%s   teb %d   extra %d %p|", data->name, tab, extra, (void*)data->next);
 
-	for (int i = 0; i < (tab - extra) && data->next && data->next->next; ++i)
+	for (int i = 0; i < (tab - extra); ++i)
 		mx_printchar('\t');
 }
 

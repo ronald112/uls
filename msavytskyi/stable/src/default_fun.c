@@ -147,14 +147,20 @@ static int get_max_length(t_dir_data *dir) {
 void mx_count_line_for_print(t_main *info) {
 	struct winsize w;
 	int max_cols;
+	int amount;
+	t_dir_data *files;
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	for (t_catalog *head = info->cat; head; head = head->c_next) {									// проделываем для каждой дир, указан. в аргументах
-		head->lines_for_print = 0; 										// обнуляем количество линий для дир
-		head->max_length = get_max_length(head->dir_data);										// находим макимально возможную длину названия файла в дир
+	for (t_catalog *head = info->cat; head; head = head->c_next) {				// проделываем для каждой дир, указан. в аргументах
+		
+		files = info->flag.is_a ? head->dir : head->dir_data;
+		amount = info->flag.is_a ? head->am_data : head->am_files;
+
+		head->lines_for_print = 0; 												// обнуляем количество линий для дир
+		head->max_length = get_max_length(files);										// находим макимально возможную длину названия файла в дир
 		max_cols = (w.ws_col/(8 - (head->max_length % 8) + head->max_length));				// высчитываем количество колонок
 		head->lines_for_print = head->am_files / max_cols;		// высчитвыаем количество линий
-		if(head->lines_for_print == 0 || (head->am_files % max_cols) != 0)							// доп проверка на линии
+		if(head->lines_for_print == 0 || (amount % max_cols) != 0)							// доп проверка на линии
 			head->lines_for_print++;
 	}
 }
@@ -298,12 +304,13 @@ static void print_tab(t_catalog *cat, t_dir_data *data) {
 		mx_printchar('\t');
 }
 
-void mx_print_cat(t_catalog *cat) {
-	t_dir_data *tmp = cat->dir_data;
+void mx_print_cat(t_catalog *cat, bool flag_a) {
+	t_dir_data *dir = flag_a ? cat->dir : cat->dir_data;
+	t_dir_data *tmp = dir;
 	t_dir_data *temp = NULL;
 
-	for (int i = 0; i < cat->lines_for_print && cat->dir_data; i++, cat->dir_data = cat->dir_data->next) {
-		tmp = cat->dir_data;
+	for (int i = 0; i < cat->lines_for_print && dir; i++, dir = dir->next) {
+		tmp = dir;
 		while(tmp) {
 			mx_printstr(tmp->name);
 			temp = tmp;
@@ -316,23 +323,49 @@ void mx_print_cat(t_catalog *cat) {
 	}
 }
 
+void mx_print_1(t_catalog *cat, bool a) {
+	for (t_dir_data *dir = a ? cat->dir : cat->dir_data; dir; dir = dir->next){
+		mx_printstr(dir->name);
+		mx_printchar('\n');
+	}
+}
+
 void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
 
-	for (; head; head = head->c_next) {
-		if (info->am_dir != 1) {
-			mx_printstr(head->c_name);
-			mx_printstr(":\n");
+	if (info->flag.is_1)
+		for (; head; head = head->c_next) {
+			if (info->am_dir != 1) {
+				mx_printstr(head->c_name);
+				mx_printstr(":\n");
+			}
+			mx_print_1(head, info->flag.is_a);
+			if (info->am_dir != 1 && head->c_next)
+				mx_printchar('\n');
 		}
-		mx_print_cat(head);
-		if (info->am_dir != 1 && head->c_next)
-			mx_printchar('\n');
-	}
+
+	else
+		for (; head; head = head->c_next) {
+			if (info->am_dir != 1) {
+				mx_printstr(head->c_name);
+				mx_printstr(":\n");
+			}
+			mx_print_cat(head, info->flag.is_a);
+			if (info->am_dir != 1 && head->c_next)
+				mx_printchar('\n');
+		}
 }
 
 int main(int argc, char *argv[]) {
 	t_main *info = mx_init_info(argc, argv);
 	t_catalog *head = info->cat;
+
+	//*****************
+		info->flag.is_a = true;
+		info->flag.is_l = false;
+		info->flag.is_C = false;
+		info->flag.is_1 = true;
+	//*****************
 
 	for (int i = 1; head; i++, head = head->c_next) {
 		if (argc > 1/* && mx_strcmp(head->c_name, "!!!") != 0*/)

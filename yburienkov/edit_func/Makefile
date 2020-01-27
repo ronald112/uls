@@ -9,7 +9,8 @@ HEADTMP = ./uls.h \
 			./libmx.h \
 			./libmx/libmx.h
 
-FILES = mx_parse_flags default_fun testLS mx_set_flags_false
+FILES = mx_parse_flags default_fun testLS mx_set_flags_false \
+		mx_create_list_of_catalog mx_init_info
 
 SRC = $(addsuffix .c, $(FILES))
 

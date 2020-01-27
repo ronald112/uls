@@ -24,17 +24,20 @@ static void chk_line_for_flags(char *argv, t_main *info) {
     }    
 }
 
-void mx_main_parse_fnc(int argc, char ***argv, t_main *info) {
+t_catalog *mx_main_parse_fnc(int argc, char **argv, t_main *info) {
+    info->am_dir = argc == 1 ? 1 : argc - 1;
+    argv++;
     if (argc < 2)
         mx_set_flags_false(info->flag);
     else {
-        while (**argv) {
-            if (**argv[0] != '-')
+        while (*argv) {
+            if (*argv[0] != '-')
                 break;
-            chk_line_for_flags(**argv, info);
-            printf("debug func %s\n", **argv);
-            *argv += 1;
-            
+            chk_line_for_flags(*argv, info);
+            argv++;
+            info->am_dir--;
         }
     }
+    mx_init_info(argv, info);
+    return info->cat;
 }

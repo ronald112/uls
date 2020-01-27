@@ -41,4 +41,8 @@ typedef struct s_main {     //** структура, которая хранит
     t_flag flag;
 } t_main;
 
+
+void mx_main_parse_fnc(int argc, char ***argv, t_main *info);
+void mx_set_flags_false(t_flag flags);
+
 #endif

@@ -199,7 +199,7 @@ void mx_print_default(t_catalog *cat) {
 }
 
 //=============================================================================
-t_main *mx_init_info(int argc, char **argv) { // инициализация инфо
+t_main *mx_init_info(int argc) { // инициализация инфо
 	t_main *info = (t_main*)malloc(sizeof(t_main));
 	t_catalog *head = NULL;
 
@@ -209,7 +209,7 @@ t_main *mx_init_info(int argc, char **argv) { // инициализация ин
 	for (int i = 1; head; head = head->c_next, i++) {
 		head->am_data = 0;
 		head->am_files = 0;
-		head->c_name = mx_strdup(argv[i]);
+		// head->c_name = mx_strdup(argv[i]);
 		head->dir = (t_dir_data*)malloc(sizeof(t_dir_data));
 		// head->dir_data = (t_dir_data*)malloc(sizeof(t_dir_data));
 	}
@@ -357,25 +357,29 @@ void mx_print(t_main *info) {
 }
 
 int main(int argc, char *argv[]) {
-	t_main *info = mx_init_info(argc, argv);
+	t_main *info = mx_init_info(argc);
 	t_catalog *head = info->cat;
 
 	//*****************	
 	argv++;
-	mx_main_parse_fnc(argc, argv, info);
+	mx_main_parse_fnc(argc, &argv, info);
 	if (info->flag.is_1 == true)
 			printf("debug 1\n");
 	if (info->flag.is_C == true)
 			printf("debug C\n");
-	if (info->flag.is_1 == true)
+	if (info->flag.is_l == true)
 			printf("debug l\n");
+	if (info->flag.is_a == true)
+            printf("debug a\n");
+	printf("debug main chr1 %s\n", *argv);
 
-	for (t_catalog *head_temp = info->cat; head_temp; 
-			head_temp = head_temp->c_next) {			
+	for (t_catalog *head_temp = head; head_temp; 
+			head_temp = head_temp->c_next, argv++) {
 			head_temp->c_name = mx_strdup(*argv);
-			argv++;
+			
 	}
 
+	printf("debug main chr %s\n", head->c_name);
 	/*
 	for (t_catalog *head_temp = info->cat; head_temp; 
 			head_temp = head_temp->c_next) {
@@ -388,10 +392,10 @@ int main(int argc, char *argv[]) {
 	info->flag.is_C = false;
 	info->flag.is_1 = false;
  */
-		info->flag.is_a = true;
-		info->flag.is_l = false;
-		info->flag.is_C = true;
-		info->flag.is_1 = false;
+		// info->flag.is_a = true;
+		// info->flag.is_l = false;
+		// info->flag.is_C = true;
+		// info->flag.is_1 = false;
 		info->flag.is_tofile = !isatty(1);
 	//*****************
 

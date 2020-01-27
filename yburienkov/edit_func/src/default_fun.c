@@ -361,6 +361,8 @@ int main(int argc, char *argv[]) {
 	t_catalog *head = info->cat;
 
 	//*****************
+	argv++;
+	mx_main_parse_fnc(argc, argv, info);
 		info->flag.is_a = true;
 		info->flag.is_l = false;
 		info->flag.is_C = false;

@@ -6,8 +6,7 @@
 #include <sys/ioctl.h>
 #include "libmx.h"
 
-void mx_set_flags_false(t_flag *flags);
-void mx_main_parse_fnc(int argc, char **argv, t_main *info);
+
 
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
@@ -40,5 +39,8 @@ typedef struct s_main {     //** структура, которая хранит
     t_catalog *cat;         // массив каталогов (директорик из аргумента)
     t_flag flag;
 } t_main;
+
+void mx_set_flags_false(t_flag flags);
+void mx_main_parse_fnc(int argc, char **argv, t_main *info);
 
 #endif

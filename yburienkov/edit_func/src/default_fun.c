@@ -363,10 +363,6 @@ int main(int argc, char *argv[]) {
 	//*****************
 	argv++;
 	mx_main_parse_fnc(argc, argv, info);
-		info->flag.is_a = true;
-		info->flag.is_l = false;
-		info->flag.is_C = false;
-		info->flag.is_1 = true;
 	//*****************
 
 	for (int i = 1; head; i++, head = head->c_next) {

@@ -6,6 +6,8 @@
 #include <sys/ioctl.h>
 #include "libmx.h"
 
+#define MX_FILE_WS 81
+
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
     char *name;             // имя файла или папки
@@ -29,6 +31,7 @@ typedef struct s_flag {
 	bool is_l;
 	bool is_C;
 	bool is_1;
+    bool is_tofile;
 } t_flag;
 
 typedef struct s_main {     //** структура, которая хранит массивом все каталоги, взятые из аргумента

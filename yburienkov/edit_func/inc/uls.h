@@ -4,7 +4,6 @@
 #include <dirent.h>
 #include <errno.h>
 #include <sys/ioctl.h>
-#include <sys/stat.h>
 #include "libmx.h"
 
 typedef struct s_dir_data {
@@ -25,10 +24,18 @@ typedef struct s_catalog {
     struct s_catalog *c_next;
 } t_catalog;
 
+typedef struct s_flag {
+	bool is_a;
+	bool is_l;
+	bool is_C;
+	bool is_1;
+} t_flag;
+
 typedef struct s_main {     //** структура, которая хранит массивом все каталоги, взятые из аргумента
     int am_dir;             // количество каталогов из аргумента
     char *uls_name;         // add char that keeps "uls: "
     t_catalog *cat;         // массив каталогов (директорик из аргумента)
+    t_flag flag;
 } t_main;
 
 #endif

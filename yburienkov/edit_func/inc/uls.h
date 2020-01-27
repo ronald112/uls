@@ -6,6 +6,9 @@
 #include <sys/ioctl.h>
 #include "libmx.h"
 
+void mx_set_flags_false(t_flag *flags);
+void mx_main_parse_fnc(int argc, char **argv, t_main *info);
+
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
     char *name;             // имя файла или папки

@@ -9,7 +9,7 @@ HEADTMP = ./uls.h \
 			./libmx.h \
 			./libmx/libmx.h
 
-FILES = *
+FILES = mx_main_parse_fnc default_fun testLS mx_set_flags_false\
 
 SRC = $(addsuffix .c, $(FILES))
 
@@ -19,7 +19,7 @@ OBJ = $(addsuffix .o, $(FILES))
 
 OBJO = $(addprefix obj/, $(OBJ))
 
-CFLGS = -std=c11 -Wall -Wpedantic# -Wextra -Werror# -g -fsanitize=address
+CFLGS = -std=c11 -Wall -Wpedantic -Wextra -Werror# -g -fsanitize=address
 
 all: install clean
 

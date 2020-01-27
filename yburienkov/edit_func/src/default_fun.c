@@ -360,7 +360,34 @@ int main(int argc, char *argv[]) {
 	t_main *info = mx_init_info(argc, argv);
 	t_catalog *head = info->cat;
 
-	//*****************
+	//*****************	
+	argv++;
+	mx_main_parse_fnc(argc, argv, info);
+	if (info->flag.is_1 == true)
+			printf("debug 1\n");
+	if (info->flag.is_C == true)
+			printf("debug C\n");
+	if (info->flag.is_1 == true)
+			printf("debug l\n");
+
+	for (t_catalog *head_temp = info->cat; head_temp; 
+			head_temp = head_temp->c_next) {			
+			head_temp->c_name = mx_strdup(*argv);
+			argv++;
+	}
+
+	/*
+	for (t_catalog *head_temp = info->cat; head_temp; 
+			head_temp = head_temp->c_next) {
+			printf("debug main1 %s\n", head->c_name);
+	}
+	*/
+/*
+	info->flag.is_a = false;
+	info->flag.is_l = false;
+	info->flag.is_C = false;
+	info->flag.is_1 = false;
+ */
 		info->flag.is_a = true;
 		info->flag.is_l = false;
 		info->flag.is_C = true;

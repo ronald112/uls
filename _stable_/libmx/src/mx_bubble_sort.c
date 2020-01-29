@@ -1,30 +1,30 @@
 #include "libmx.h"
-// int mx_strcmp(const char *s1, const char *s2) {
-// 	int i = 0;
 
-// 	for (; s1[i] == s2[i]; i++) {
-// 		if ( s1[i] == '\0') {
-// 			return 0;
-// 		}
-// 	}
-// 	return s1[i] - s2[i];
-// }
+static int calculation(char **arr, int size, int swaps, bool was_swapped) {
+    int len1 = size - 1;
+    int len2 = 0;
 
-int mx_bubble_sort(char **arr, int size) {
-    int swaps = 0;
-    int was_swapped = 1;
-
-    for (int i = 0, len1 = size - 1; i < len1 && was_swapped != 0; i++) {
+    for (int i = 0; i < len1 && was_swapped != 0; i++) {
         was_swapped = 0;
-        for (int j = 1, len2 = size - i; j < len2; j++) {
-            if (mx_strcmp(arr[j-1], arr[j]) > 0) {
-                char *temp = arr[j-1];
-                arr[j-1] = arr[j];
+        len2 = size - i;
+        for (int j = 1; j < len2; j++) {
+            if (mx_strcmp(arr[j - 1], arr[j]) > 0) {
+                char *temp = arr[j - 1];
+
+                arr[j - 1] = arr[j];
                 arr[j] = temp;
                 swaps++;
                 was_swapped = 1;
             }
         }
     }
+    return swaps;
+}
+
+int mx_bubble_sort(char **arr, int size) {
+    int was_swapped = 1;
+    int swaps = 0;
+    swaps = calculation(arr, size, swaps, was_swapped);
+
     return swaps;
 }

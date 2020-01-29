@@ -1,5 +1,4 @@
 #include "libmx.h"
-
 int mx_get_char_index(const char *str, char c) {
     int index = -2;
 

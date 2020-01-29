@@ -1,4 +1,5 @@
 #include "libmx.h"
+
 bool mx_isspace(char c) {
   if ((c == '\n') || (c == '\v') || (c == '\f')) {
     return 1;

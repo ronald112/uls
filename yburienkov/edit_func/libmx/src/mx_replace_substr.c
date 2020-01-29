@@ -1,7 +1,7 @@
 #include "libmx.h"
 
 static char *calculation(const char *str,
-const char *sub, char *replace, int new_size) {
+const char *sub, const char *replace, int new_size) {
     char *result = mx_strnew(new_size + 1);
     int j = 0;
     int k = 0;

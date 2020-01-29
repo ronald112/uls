@@ -1,6 +1,6 @@
 #include "libmx.h"
 
-static int calculation(char **arr, int size, int swaps, was_swapped) {
+static int calculation(char **arr, int size, int swaps, bool was_swapped) {
     int len1 = size - 1;
     int len2 = 0;
 

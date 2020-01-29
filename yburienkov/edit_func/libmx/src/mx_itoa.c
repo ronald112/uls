@@ -9,7 +9,7 @@ static char *chk_if_zero() {
 
 static void chk_max_int(bool *if_negative, bool *flag, int *number) {
     *if_negative = 1;
-    if (number == -2147483648) {
+    if (*number == -2147483648) {
         *number += 1;
         *flag = 1;
     }
@@ -41,11 +41,12 @@ bool if_negative, bool flag) {
 char *mx_itoa(int number) {
     bool flag = 0;
     bool if_negative = 0;
+    char *result = NULL;
 
     if (number < 0)
-        chk_max_int(if_negative, flag, number);
+        chk_max_int(&if_negative, &flag, &number);
     else if (number == 0)
-        return chk_if_zero();
+        result = chk_if_zero();
     else {
         int copy = number;
         int counter = 0;
@@ -54,6 +55,7 @@ char *mx_itoa(int number) {
             counter++;
             copy /= 10;
         }
-        return calculation();
+        result = calculation(number, counter, if_negative, flag);
     }
+    return result;
 }

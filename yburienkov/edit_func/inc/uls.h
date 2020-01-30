@@ -11,6 +11,7 @@
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
     char *name;             // имя файла или папки
+    char *path;             // path to the file/dir
     struct s_dir_data *next;// следующий файл/папка
 } t_dir_data;
 
@@ -45,5 +46,7 @@ t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
 void mx_set_flags_false(t_flag flags);
 t_catalog *mx_create_list_of_catalog(int amount);
 void mx_init_info(char **argv, t_main *info);
+void mx_print_lflag(t_catalog *catalog, t_flag flags);
+char *mx_get_full_path(char *name, char *path);
 
 #endif

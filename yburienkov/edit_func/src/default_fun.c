@@ -117,6 +117,7 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 	if (directoy && (temp = readdir(directoy))) {
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
+		list->path = mx_get_full_path(link, list->name);
 		list->next = NULL;
 		cat->am_data++;
 	}
@@ -125,6 +126,7 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 		list = list->next;
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
+		list->path = mx_get_full_path(link, list->name);
 		list->next = NULL;
 		cat->am_data++;
 	}
@@ -242,6 +244,10 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 	b->data = tmp_data;
 	a->name = b->name;
 	b->name = tmp_name;
+
+	tmp_name = a->path;
+	a->path = b->path;
+	b->path = tmp_name;
 }
 
 void mx_sort_dir_list(t_dir_data *start) { 
@@ -313,7 +319,10 @@ void mx_print(t_main *info) {
 			mx_printstr(head->c_name);
 			mx_printstr(":\n");
 		}
-		if(!info->flag.is_tofile) {
+		if (info->flag.is_l == true) {
+			mx_print_lflag(head, info->flag);
+		}
+		else if (!info->flag.is_tofile) {
 			info->flag.is_1 ? mx_print_1(head, info->flag.is_a)
 			: mx_print_cat(head, info->flag.is_a);
 		}

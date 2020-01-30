@@ -367,7 +367,7 @@ int main(int argc, char *argv[]) {
 	mx_print(info);
 	// mx_print_cat(info->cat);//-----------info----------------
 	// mx_print_default(info->cat);
-	// system("leaks -q uls");
+	system("leaks -q uls");
 	// system("ls");
 	return 0;
 }

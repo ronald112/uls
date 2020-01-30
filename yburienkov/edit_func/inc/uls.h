@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
 #include "libmx.h"
 
 #define MX_FILE_WS 81

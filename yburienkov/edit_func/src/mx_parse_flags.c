@@ -24,10 +24,10 @@ static void chk_line_for_flags(char *argv, t_main *info) {
     }    
 }
 
-t_catalog *mx_main_parse_fnc(int argc, char **argv, t_main *info) {
-    info->am_dir = argc == 1 ? 1 : argc - 1;
+t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info) {
+    info->am_dir = *argc == 1 ? 1 : argc - 1;
     argv++;
-    if (argc < 2)
+    if (*argc < 2)
         mx_set_flags_false(info->flag);
     else {
         while (*argv) {
@@ -36,6 +36,7 @@ t_catalog *mx_main_parse_fnc(int argc, char **argv, t_main *info) {
             chk_line_for_flags(*argv, info);
             argv++;
             info->am_dir--;
+            *argc--;
         }
     }
     mx_init_info(argv, info);

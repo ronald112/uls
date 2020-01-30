@@ -328,7 +328,7 @@ void mx_print(t_main *info) {
 int main(int argc, char *argv[]) {
 	t_main *info = (t_main*)malloc(sizeof(t_main));
 	//*****************
-	t_catalog *head = mx_main_parse_fnc(argc, argv, info);
+	t_catalog *head = mx_main_parse_fnc(&argc, argv, info);
 	//*****************
 		info->flag.is_tofile = !isatty(1);
 	//*****************

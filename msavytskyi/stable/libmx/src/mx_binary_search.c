@@ -6,6 +6,7 @@ int mx_binary_search(char **arr, int size, const char *s, int *count) {
 
     while (first <= last) {
         int mid = (first + last) / 2;
+
         (*count)++;
         if (mx_strcmp(s, arr[mid]) == 0) {
             return mid;

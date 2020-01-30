@@ -41,4 +41,9 @@ typedef struct s_main {     //** структура, которая хранит
     t_flag flag;
 } t_main;
 
+t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
+void mx_set_flags_false(t_flag flags);
+t_catalog *mx_create_list_of_catalog(int amount);
+void mx_init_info(char **argv, t_main *info);
+
 #endif

@@ -7,6 +7,7 @@ void mx_init_info(char **argv, t_main *info) {
 	head = mx_create_list_of_catalog(info->am_dir);
 	info->cat = head; // инициализация листа каталогов
 	for (; head; head = head->c_next, argv++) {
+		head->is_dir = true;
 		head->am_data = 0;
 		head->am_files = 0;
 		head->c_name = mx_strdup(*argv);

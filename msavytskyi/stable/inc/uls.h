@@ -15,7 +15,7 @@ typedef struct s_dir_data {
 } t_dir_data;
 
 typedef struct s_catalog {
-    // bool is_work;
+    bool is_dir;
     char *c_name;           // имя каталога
     t_dir_data *dir;        // все файлы в дир (1)
     t_dir_data *dir_data;   // файлы без . и .. (2)

@@ -1,7 +1,7 @@
 #include "uls.h"
 
 static char *get_permissions(mode_t mode) {    
-    char *result = mx_strnew(10);
+    char *result = mx_strnew(12);
 
     result[0] = (mode & S_IFDIR) ? 'd' : '-';    
     result[1] = (mode & S_IRUSR) ? 'r' : '-';
@@ -13,13 +13,13 @@ static char *get_permissions(mode_t mode) {
     result[7] = (mode & S_IROTH) ? 'r' : '-';
     result[8] = (mode & S_IWOTH) ? 'w' : '-';
     result[9] = (mode & S_IXOTH) ? 'x' : '-';
+    result[10] = ' ';
+    result[11] = ' ';
     return result;
 }
 
 static char *get_info(t_dir_data *dir) {
-    struct stat buff;
-    stat(dir->path, &buff);
-    char *result = get_permissions(buff.st_mode);
+    char *result = get_permissions(dir->buff_stat->st_mode);
 
     
     

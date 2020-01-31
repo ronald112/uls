@@ -127,6 +127,9 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
 		list->path = mx_get_full_path(link, list->name);
+		list->buff_stat = (struct stat *)malloc(sizeof(struct stat));
+		lstat(list->path, list->buff_stat);
+		list->size_of_block = list->buff_stat->st_blocks;
 		list->next = NULL;
 		cat->am_data++;
 	}
@@ -239,6 +242,8 @@ void mx_sort_cat_list(t_catalog *start) {
 void mx_swap_dir(t_dir_data *a, t_dir_data *b) { 
 	struct dirent *tmp_data = a->data;
 	char *tmp_name = a->name;
+	struct stat *tmp_buff = a->buff_stat;
+	blkcnt_t tmp_cnt = a->size_of_block;
 
 	a->data = b->data;
 	b->data = tmp_data;
@@ -248,6 +253,12 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 	tmp_name = a->path;
 	a->path = b->path;
 	b->path = tmp_name;
+
+	a->buff_stat = b->buff_stat;
+	b->buff_stat = tmp_buff;
+
+	a->size_of_block = b->size_of_block;
+	b->size_of_block = tmp_cnt;
 }
 
 void mx_sort_dir_list(t_dir_data *start) { 

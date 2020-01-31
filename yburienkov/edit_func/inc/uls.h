@@ -13,6 +13,8 @@ typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
     char *name;             // имя файла или папки
     char *path;             // path to the file/dir
+    struct stat *buff_stat; // stat buff
+    blkcnt_t size_of_block; // size of file/dir
     struct s_dir_data *next;// следующий файл/папка
 } t_dir_data;
 

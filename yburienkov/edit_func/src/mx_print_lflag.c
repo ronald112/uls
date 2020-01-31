@@ -1,29 +1,45 @@
 #include "uls.h"
 
-static char *get_permissions(mode_t mode) {    
-    char *result = mx_strnew(12);
+static char *get_permissions(mode_t mode) {
+    char *result = NULL;
 
-    result[0] = (mode & S_IFDIR) ? 'd' : '-';    
-    result[1] = (mode & S_IRUSR) ? 'r' : '-';
-    result[2] = (mode & S_IWUSR) ? 'w' : '-';
-    result[3] = (mode & S_IXUSR) ? 'x' : '-';
-    result[4] = (mode & S_IRGRP) ? 'r' : '-';
-    result[5] = (mode & S_IWGRP) ? 'w' : '-';
-    result[6] = (mode & S_IXGRP) ? 'x' : '-';
-    result[7] = (mode & S_IROTH) ? 'r' : '-';
-    result[8] = (mode & S_IWOTH) ? 'w' : '-';
-    result[9] = (mode & S_IXOTH) ? 'x' : '-';
-    result[10] = ' ';
-    result[11] = ' ';
+    result = mx_addstr(result, (mode & S_IFDIR) ? "d" : "-");
+    result = mx_addstr(result, (mode & S_IRUSR) ? "r" : "-");
+    result = mx_addstr(result, (mode & S_IWUSR) ? "w" : "-");
+    result = mx_addstr(result, (mode & S_IXUSR) ? "x" : "-");
+    result = mx_addstr(result, (mode & S_IRGRP) ? "r" : "-");
+    result = mx_addstr(result, (mode & S_IWGRP) ? "w" : "-");
+    result = mx_addstr(result, (mode & S_IXGRP) ? "x" : "-");
+    result = mx_addstr(result, (mode & S_IROTH) ? "r" : "-");
+    result = mx_addstr(result, (mode & S_IWOTH) ? "w" : "-");
+    result = mx_addstr(result, (mode & S_IXOTH) ? "x" : "-");
+    return result;
+}
+
+static char *chk_xatr(char *path) {
+    ssize_t xattr = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+    acl_t acl = acl_get_file(path, ACL_TYPE_EXTENDED);
+    char *result = NULL;
+
+    if (xattr < 0)
+        xattr = 0;
+    else if (xattr > 0)
+        result = mx_addstr(result, "@");
+    else if (acl != NULL)
+        result = mx_addstr(result, "+");
+    else
+        result = mx_addstr(result, " ");
+    acl_free(acl);
+    acl = NULL;
     return result;
 }
 
 static char *get_info(t_dir_data *dir) {
-
     char *result = get_permissions(dir->buff_stat->st_mode);
+    char *xatr_res = chk_xatr(dir->path);
     
-    
-    
+    result = mx_addstr(result, xatr_res);
+    mx_strdel(&xatr_res);
     return result;
 }
 

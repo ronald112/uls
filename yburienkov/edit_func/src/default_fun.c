@@ -118,9 +118,8 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
 		list->path = mx_get_full_path(link, list->name);
-		list->buff_stat = (struct stat *)malloc(sizeof(struct stat));
-		lstat(list->path, list->buff_stat);
-		cat->size_of_block += list->buff_stat->st_blocks;
+		if (info->flag.is_l == true)
+			mx_ladd_to_tdir(list, cat);
 		list->next = NULL;
 		cat->am_data++;
 	}
@@ -130,9 +129,8 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 		list->data = temp;
 		list->name = mx_strdup(temp->d_name);
 		list->path = mx_get_full_path(link, list->name);
-		list->buff_stat = (struct stat *)malloc(sizeof(struct stat));
-		lstat(list->path, list->buff_stat);
-		cat->size_of_block += list->buff_stat->st_blocks;
+		if (info->flag.is_l == true)
+			mx_ladd_to_tdir(list, cat);
 		list->next = NULL;
 		cat->am_data++;
 	}
@@ -196,30 +194,30 @@ void mx_print_default(t_catalog *cat) {
 //=============================================================================
 //================= Sort Part ======================
 
-void mx_swap_cat(t_catalog *a, t_catalog *b) { 
+void mx_swap_cat(t_catalog *a, t_catalog *b, t_flag flag) { 
 	t_dir_data *tmp_data = a->dir;
 	char *tmp_name = a->c_name;
-	int tmp = a->am_files;
 
 	a->dir = b->dir;
 	b->dir = tmp_data;
-
 	tmp_data = a->dir_data;
 	a->dir_data = b->dir_data;
 	b->dir_data = tmp_data;
-
 	a->c_name = b->c_name;
 	b->c_name = tmp_name;
 
-	a->am_files = b->am_files;
-	b->am_files = tmp;
+	if (flag.is_l == true) {
+		int tmp = a->am_files;
 
-	tmp = a->am_data;
-	a->am_data = b->am_data;
-	b->am_data = tmp;
+		a->am_files = b->am_files;
+		b->am_files = tmp;
+		tmp = a->am_data;
+		a->am_data = b->am_data;
+		b->am_data = tmp;
+	}
 }
 
-void mx_sort_cat_list(t_catalog *start) { 
+void mx_sort_cat_list(t_catalog *start, t_flag flag) { 
 	int swapped = 1;
 	t_catalog *ptr1;
 	t_catalog *lptr = NULL;
@@ -231,7 +229,7 @@ void mx_sort_cat_list(t_catalog *start) {
 		ptr1 = start;
 		while (ptr1->c_next != lptr) { 
 			if (mx_strcmp(ptr1->c_name, ptr1->c_next->c_name) > 0) {
-				mx_swap_cat(ptr1, ptr1->c_next);
+				mx_swap_cat(ptr1, ptr1->c_next, flag);
 				swapped = 1;
 			}
 			ptr1 = ptr1->c_next;
@@ -370,7 +368,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	// printf("**********************\n");
-	mx_sort_cat_list(info->cat);
+	mx_sort_cat_list(info->cat, info->flag);
 	// printf("**********************\n");
 	// printf("%s %s %p %d\n", info->cat->c_name, info->cat->c_next->c_name, (void*)info->cat->c_next->c_next, info->cat->am_files);
 	mx_count_line_for_print(info);//*******************************************

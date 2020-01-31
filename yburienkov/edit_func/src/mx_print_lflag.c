@@ -19,8 +19,9 @@ static char *get_permissions(mode_t mode) {
 }
 
 static char *get_info(t_dir_data *dir) {
-    char *result = get_permissions(dir->buff_stat->st_mode);
 
+    char *result = get_permissions(dir->buff_stat->st_mode);
+    
     
     
     return result;
@@ -29,6 +30,9 @@ static char *get_info(t_dir_data *dir) {
 void mx_print_lflag(t_catalog *catalog, t_flag flags) {
     char *temp = NULL;
 
+    mx_printstr("total ");
+    mx_printint(catalog->size_of_block);
+    mx_printstr("\n");
     for (t_dir_data *dir = catalog->dir ? catalog->dir : catalog->dir_data;
     dir; dir = dir->next) {
         if (flags.is_a == false && dir->name[0] != '.') {

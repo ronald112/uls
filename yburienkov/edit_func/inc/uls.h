@@ -14,12 +14,12 @@ typedef struct s_dir_data {
     char *name;             // имя файла или папки
     char *path;             // path to the file/dir
     struct stat *buff_stat; // stat buff
-    blkcnt_t size_of_block; // size of file/dir
     struct s_dir_data *next;// следующий файл/папка
 } t_dir_data;
 
 typedef struct s_catalog {
     // bool is_work;
+    blkcnt_t size_of_block; // size of file/dir
     char *c_name;           // имя каталога
     t_dir_data *dir;        // все файлы в дир (1)
     t_dir_data *dir_data;   // файлы без . и .. (2)

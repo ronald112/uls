@@ -8,6 +8,9 @@
 #include <sys/acl.h>
 #include <sys/xattr.h>
 #include <sys/stat.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h> 
 #include "libmx.h"
 
 #define MX_FILE_WS 81
@@ -22,13 +25,15 @@ typedef struct s_dir_data {
 
 typedef struct s_catalog {
     // bool is_work;
-    blkcnt_t size_of_block; // size of file/dir
-    char *c_name;           // имя каталога
-    t_dir_data *dir;        // все файлы в дир (1)
-    t_dir_data *dir_data;   // файлы без . и .. (2)
-    int am_files;           // количество (2)
-    int am_data;            // количество (1)
-    int lines_for_print;    // линии для принтинга
+    blkcnt_t size_of_block;   // size of file/dir
+    long long max_size_ofdir;
+    long long max_size_oflink;
+    char *c_name;             // имя каталога
+    t_dir_data *dir;          // все файлы в дир (1)
+    t_dir_data *dir_data;     // файлы без . и .. (2)
+    int am_files;             // количество (2)
+    int am_data;              // количество (1)
+    int lines_for_print;      // линии для принтинга
     int max_length;
     struct s_catalog *c_next;
 } t_catalog;
@@ -54,6 +59,13 @@ t_catalog *mx_create_list_of_catalog(int amount);
 void mx_init_info(char **argv, t_main *info);
 void mx_print_lflag(t_catalog *catalog, t_flag flags);
 char *mx_get_full_path(char *name, char *path);
-void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat);
+void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
+char *mx_get_permissions(mode_t mode);
+void mx_add_xatr(char *path, char **result);
+void mx_add_links(nlink_t link, t_catalog *cat, char **result);
+void mx_add_grp(uid_t uid, char **result);
+void mx_add_pwd(gid_t gid, char **result);
+void mx_add_filesize(off_t size, t_catalog *cat, char **result);
+void mx_add_lastchange_time(time_t time, char **result);
 
 #endif

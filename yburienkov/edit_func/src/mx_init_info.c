@@ -8,6 +8,9 @@ void mx_init_info(char **argv, t_main *info) {
 	for (; head; head = head->c_next, argv++) {
 		head->am_data = 0;
 		head->am_files = 0;
+		head->size_of_block = 0;
+		head->max_size_oflink = 0;
+		head->max_size_ofdir = 0;
 		head->c_name = mx_strdup(*argv);
 		head->dir = (t_dir_data*)malloc(sizeof(t_dir_data));
 		// head->dir_data = (t_dir_data*)malloc(sizeof(t_dir_data));

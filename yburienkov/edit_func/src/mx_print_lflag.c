@@ -1,64 +1,46 @@
 #include "uls.h"
 
-static char *get_permissions(mode_t mode) {
-    char *result = NULL;
+static char *get_info(t_dir_data *dir, t_catalog *cat) {
+    char *result = mx_get_permissions(dir->buff_stat->st_mode);
 
-    result = mx_addstr(result, (mode & S_IFDIR) ? "d" : "-");
-    result = mx_addstr(result, (mode & S_IRUSR) ? "r" : "-");
-    result = mx_addstr(result, (mode & S_IWUSR) ? "w" : "-");
-    result = mx_addstr(result, (mode & S_IXUSR) ? "x" : "-");
-    result = mx_addstr(result, (mode & S_IRGRP) ? "r" : "-");
-    result = mx_addstr(result, (mode & S_IWGRP) ? "w" : "-");
-    result = mx_addstr(result, (mode & S_IXGRP) ? "x" : "-");
-    result = mx_addstr(result, (mode & S_IROTH) ? "r" : "-");
-    result = mx_addstr(result, (mode & S_IWOTH) ? "w" : "-");
-    result = mx_addstr(result, (mode & S_IXOTH) ? "x" : "-");
+    mx_add_xatr(dir->path, &result);
+    mx_add_links(dir->buff_stat->st_nlink, cat, &result);
+    mx_add_grp(dir->buff_stat->st_uid, &result);
+    mx_add_pwd(dir->buff_stat->st_gid, &result);
+    mx_add_filesize(dir->buff_stat->st_size, cat, &result);
+    mx_add_lastchange_time(dir->buff_stat->st_mtimespec.tv_sec, &result);
+    result = mx_addstr(result, dir->name);
+    // mx_add_hardlink(dir->path, &result);
     return result;
 }
 
-static char *chk_xatr(char *path) {
-    ssize_t xattr = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
-    acl_t acl = acl_get_file(path, ACL_TYPE_EXTENDED);
-    char *result = NULL;
+static void print_totalsize(t_catalog *cat) {
+    long long tmp_ds = cat->max_size_ofdir;
+    long long tmp_ls = cat->max_size_oflink;
 
-    if (xattr < 0)
-        xattr = 0;
-    else if (xattr > 0)
-        result = mx_addstr(result, "@");
-    else if (acl != NULL)
-        result = mx_addstr(result, "+");
-    else
-        result = mx_addstr(result, " ");
-    acl_free(acl);
-    acl = NULL;
-    return result;
-}
-
-static char *get_info(t_dir_data *dir) {
-    char *result = get_permissions(dir->buff_stat->st_mode);
-    char *xatr_res = chk_xatr(dir->path);
-    
-    result = mx_addstr(result, xatr_res);
-    mx_strdel(&xatr_res);
-    return result;
+    mx_printstr("total ");
+    mx_printull(cat->size_of_block);
+    mx_printstr("\n");
+    for (cat->max_size_ofdir = 0; tmp_ds != 0;
+    tmp_ds /= 10, cat->max_size_ofdir++);
+    for (cat->max_size_oflink = 0; tmp_ls != 0;
+    tmp_ls /= 10, cat->max_size_oflink++);
 }
 
 void mx_print_lflag(t_catalog *catalog, t_flag flags) {
     char *temp = NULL;
 
-    mx_printstr("total ");
-    mx_printull(catalog->size_of_block);
-    mx_printstr("\n");
+    print_totalsize(catalog);
     for (t_dir_data *dir = catalog->dir ? catalog->dir : catalog->dir_data;
     dir; dir = dir->next) {
         if (flags.is_a == false && dir->name[0] != '.') {
-            temp = get_info(dir);
+            temp = get_info(dir, catalog);
             mx_printstr(temp);
             mx_strdel(&temp);
             mx_printstr("\n");
         }
         else if (flags.is_a == true) {
-            temp = get_info(dir);
+            temp = get_info(dir, catalog);
             mx_printstr(temp);
             mx_strdel(&temp);
             mx_printstr("\n");

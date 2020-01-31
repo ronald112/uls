@@ -62,9 +62,11 @@ void mx_make_extra_catalog(t_main *info, char *link) {
 	for(t_catalog *head = info->cat; head; head = head->c_next) {
 		// printf("%p->%s  %p\n", (void*)head, head->c_name, (void*)head->c_next);
 		if(mx_strcmp("!!!", head->c_name) == 0) {
-			// printf("***********%s\n", link);
-			push_back(&head->dir_data, link);
+			printf("***********%s\n", link);
+			printf("%p   %p\n", (void*)head, (void*)head->dir_data);
+			// push_back(&head->dir_data, link);
 			push_back(&head->dir, link);
+			head->dir_data = head->dir;
 			// printf("-----------------\n");
 		}
 		else if(head->c_next == NULL) {
@@ -72,10 +74,11 @@ void mx_make_extra_catalog(t_main *info, char *link) {
 			head->c_next = (t_catalog *)malloc(sizeof(t_catalog));
 			head->c_next->c_next = NULL;
 			head->c_next->is_dir = true;
+			head->c_next->dir = NULL;
+			head->c_next->dir_data = NULL;
 			head->c_next->c_name = mx_strdup("!!!");
 		}
 	}
-
 }
 
 void mx_del_node(t_main *info) {
@@ -87,10 +90,13 @@ void mx_del_node(t_main *info) {
 		prev = info->cat;
 		list = prev->c_next;
 	}
-	for (; list; prev = prev->c_next, list = prev->c_next) {
+	for (; prev && prev->c_next; list = prev->c_next) {
 			printf("÷÷ |- %s %d\n", list->c_name, list->is_dir);
-		if (!list->is_dir)
+		if (!list->is_dir) {
 			prev->c_next = list->c_next;
+		}
+		else
+			prev = prev->c_next;
 	}
 }
 
@@ -110,7 +116,7 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 		cat->dir = NULL;
 		cat->dir_data = NULL;
 		if (errno == ENOTDIR) {
-			char *name = cat->c_name;  //!!!!!!!!!!!!!!!!!!!!!!
+			// char *name = cat->c_name;  //!!!!!!!!!!!!!!!!!!!!!!
 			cat->is_dir = false;
 					// // printf("*/*/*/*/*/*/*%s\n", name);
 					// if((void *)info->cat == (void *)cat) {
@@ -127,9 +133,11 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 					// 		cat = NULL;
 					// }
 			// info->am_dir--;
-			mx_make_extra_catalog(info, link);
-			mx_strdel(&name);
-			printf("/*/*%s %d*\\*\\\n", cat->c_name, cat->is_dir);
+			printf("\t\t\t\t1)%s\n", cat->c_name);
+			mx_make_extra_catalog(info, cat->c_name);
+			printf("\t\t\t\t2)%s\n\n", cat->c_name);
+			// mx_strdel(&cat->c_name);
+			// printf("/*/*%s %d*\\*\\\n", cat->c_name, cat->is_dir);
 		}
 		return dir;
 	}
@@ -355,7 +363,7 @@ void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
 
 	for (; head; head = head->c_next) {
-		if (info->am_dir != 1) {
+		if (info->am_dir != 1 && mx_strcmp(head->c_name, "!!!") != 0) {
 			mx_printstr(head->c_name);
 			mx_printstr(":\n");
 		}
@@ -400,16 +408,20 @@ int main(int argc, char *argv[]) {
 	mx_sort_cat_list(info->cat);
 	mx_del_node(info);
 
-	printf("/*%d %s*\\\n", info->cat->c_next->c_next->is_dir, info->cat->c_next->c_next->c_name);
+	// printf("/*%d %s*\\\n", info->cat->c_next->c_next->is_dir, info->cat->c_next->c_next->c_name);
+	
 	// printf("**********************\n");
 	// printf("%s %s %p %d\n", info->cat->c_name, info->cat->c_next->c_name, (void*)info->cat->c_next->c_next, info->cat->am_files);
 	mx_count_line_for_print(info);//*******************************************
 	// printf("===============\n");
 	// printf("%d\n", info->am_dir);
 	mx_print(info);
+
 	// mx_print_cat(info->cat);//-----------info----------------
 	// mx_print_default(info->cat);
-	system("leaks -q uls");
+	
+	// system("leaks -q uls");
+	
 	// system("ls");
 	return 0;
 }

@@ -31,7 +31,7 @@ void mx_print_lflag(t_catalog *catalog, t_flag flags) {
     char *temp = NULL;
 
     mx_printstr("total ");
-    mx_printint(catalog->size_of_block);
+    mx_printull(catalog->size_of_block);
     mx_printstr("\n");
     for (t_dir_data *dir = catalog->dir ? catalog->dir : catalog->dir_data;
     dir; dir = dir->next) {

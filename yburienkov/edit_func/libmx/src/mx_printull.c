@@ -1,6 +1,6 @@
 #include "libmx.h"
 
-static void max_int_case(int *n, long long int *rev) {
+static void max_int_case(long long *n, long long *rev) {
     if(*n < 0) {
         mx_printchar('-');
         *n = -(*n);
@@ -11,7 +11,7 @@ static void max_int_case(int *n, long long int *rev) {
     }
 }
 
-static void print_int(long long int rev, int reserv) {
+static void print_ull(long long rev, long long reserv) {
     while (rev != 0) {
         mx_printchar(rev % 10 + 48);
         rev /= 10;
@@ -22,24 +22,24 @@ static void print_int(long long int rev, int reserv) {
     }
 }
 
-static void calculation(int *n, long long int *rev) {
+static void calculation(long long *n, long long *rev) {
     if (*n == 0) {
         mx_printchar('0');
         return;
     }
-    if (*n != -2147483648) {
+    if (*n != -9223372036854775807) {
         max_int_case(n, rev);
     }
     else {
-        *rev = 8463847412;
+        *rev = 7085774586302733229;
         mx_printchar('-');
     }
 }
 
-void mx_printint(int n) {
-    int reserv = n;
-    long long int rev = 0;
+void mx_printull(long long n) {
+    long long rev = 0;
+    long long reserv = n;
 
     calculation(&n, &rev);
-    print_int(rev, reserv);
+    print_ull(rev, reserv);
 }

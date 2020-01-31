@@ -2,6 +2,7 @@
 
 int mx_atoi(const char *str) {
     int result = 0;
+
     while ((mx_isdigit(*str) != 1)) {
         str++;
     }

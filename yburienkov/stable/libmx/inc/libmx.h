@@ -44,7 +44,6 @@ int mx_tolower(int c);
 // File
 int mx_open(const char *arr);
 char *mx_read_mod(const int status);
-char *mx_read_mod_readline(size_t buf_size, char delim, const int fd, int *size);
 // List
 void mx_print_list(t_list **n);
 void mx_clear_list(t_list **list);
@@ -89,7 +88,6 @@ char *mx_del_extra_spaces(const char *str);
 char **mx_strsplit(const char *s, char c);
 char *mx_strjoin(const char *s1, const char *s2);
 char *mx_file_to_str(const char *filename);
-int mx_read_line(char **lineptr, size_t buf_size, char delim, const int fd);
 char *mx_replace_substr(const char *str, const char *sub, const char *replace);
 
 // Memory pack

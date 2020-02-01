@@ -46,6 +46,7 @@ typedef struct s_flag {
     bool is_tofile;
 } t_flag;
 
+
 typedef struct s_main {     //** структура, которая хранит массивом все каталоги, взятые из аргумента
     int am_dir;             // количество каталогов из аргумента
     char *uls_name;         // add char that keeps "uls: "

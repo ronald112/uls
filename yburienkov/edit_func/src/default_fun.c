@@ -252,7 +252,7 @@ void mx_print_default(t_catalog *cat) {
 //=============================================================================
 //================= Sort Part ======================
 
-void mx_swap_cat(t_catalog *a, t_catalog *b, t_flag flag) { 
+void mx_swap_cat(t_catalog *a, t_catalog *b, t_flag flag) {
 	t_dir_data *tmp_data = a->dir;
 	char *tmp_name = a->c_name;
 	int tmp = a->am_files;
@@ -260,32 +260,33 @@ void mx_swap_cat(t_catalog *a, t_catalog *b, t_flag flag) {
 
 	a->dir = b->dir;
 	b->dir = tmp_data;
-
 	tmp_data = a->dir_data;
 	a->dir_data = b->dir_data;
 	b->dir_data = tmp_data;
-
 	a->c_name = b->c_name;
 	b->c_name = tmp_name;
-
-	// a->am_files = b->am_files;
-	// b->am_files = tmp;
-
-	// tmp = a->am_data;
-	// a->am_data = b->am_data;
-	// b->am_data = tmp;
-
+	a->am_files = b->am_files;
+	b->am_files = tmp;
+	tmp = a->am_data;
+	a->am_data = b->am_data;
+	b->am_data = tmp;
 	a->is_dir = b->is_dir;
 	b->is_dir = tmp_is;
 
 	if (flag.is_l == true) {
-		int tmp = a->am_files;
+		long long tmp = a->size_of_block;
+		int temp = a->max_size_ofnamedir;
 
-		a->am_files = b->am_files;
-		b->am_files = tmp;
-		tmp = a->am_data;
-		a->am_data = b->am_data;
-		b->am_data = tmp;
+		a->size_of_block = b->size_of_block;
+		b->size_of_block = tmp;
+		tmp = a->max_size_ofdir;
+		a->max_size_ofdir = b->max_size_ofdir;
+		b->max_size_ofdir = tmp;
+		tmp = a->max_size_oflink;
+		a->max_size_oflink = b->max_size_oflink;
+		b->max_size_oflink = tmp;
+		a->max_size_ofnamedir = b->max_size_ofnamedir;
+		b->max_size_ofnamedir = temp;
 	}
 }
 
@@ -310,12 +311,11 @@ void mx_sort_cat_list(t_catalog *start, t_flag flag) {
 	}
 }
 
-
-
-void mx_swap_dir(t_dir_data *a, t_dir_data *b) { 
+void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 	struct dirent *tmp_data = a->data;
 	char *tmp_name = a->name;
 	struct stat *tmp_buff = a->buff_stat;
+	int tmp_size_pwd = a->min_size_ofnamedir;
 
 	a->data = b->data;
 	b->data = tmp_data;
@@ -328,19 +328,21 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 
 	a->buff_stat = b->buff_stat;
 	b->buff_stat = tmp_buff;
+	a->min_size_ofnamedir = b->min_size_ofnamedir;
+	b->min_size_ofnamedir = tmp_size_pwd;
 }
 
-void mx_sort_dir_list(t_dir_data *start) { 
+void mx_sort_dir_list(t_dir_data *start) {
 	int swapped = 1;
 	t_dir_data *ptr1;
 	t_dir_data *lptr = NULL;
 
 	if (start == NULL)
 		return;
-	while (swapped) { 
+	while (swapped) {
 		swapped = 0;
 		ptr1 = start;
-		while (ptr1->next != lptr) { 
+		while (ptr1->next != lptr) {
 			if (mx_strcmp(ptr1->name, ptr1->next->name) > 0) {
 				mx_swap_dir(ptr1, ptr1->next);
 				swapped = 1;
@@ -448,7 +450,7 @@ int main(int argc, char *argv[]) {
 				head->dir_data = head->dir->next->next;
 				head->am_files = head->am_data - 2;
 			}
-			// mx_get_dir_data_from_dir(head);
+			mx_get_dir_data_from_dir(head);
 		}
 	}
 	// printf("**********************\n");

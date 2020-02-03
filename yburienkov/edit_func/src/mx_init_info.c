@@ -1,7 +1,7 @@
 #include "uls.h"
 
 // инициализация инфо
-void mx_init_info(char **argv, t_main *info) { 
+void mx_init_info(char **argv, t_main *info) {
     t_catalog *head = NULL;
 
 	head = mx_create_list_of_catalog(info->am_dir);
@@ -13,9 +13,9 @@ void mx_init_info(char **argv, t_main *info) {
 		head->size_of_block = 0;
 		head->max_size_oflink = 0;
 		head->max_size_ofdir = 0;
+		head->max_size_ofnamedir = 0;
 		head->c_name = mx_strdup(*argv);
 		head->dir = (t_dir_data*)malloc(sizeof(t_dir_data));
-		// head->dir_data = (t_dir_data*)malloc(sizeof(t_dir_data));
 	}
 	info->uls_name = mx_strdup("uls: ");
 }

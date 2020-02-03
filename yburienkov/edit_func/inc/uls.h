@@ -10,13 +10,14 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
-#include <time.h> 
+#include <time.h>
 #include "libmx.h"
 
 #define MX_FILE_WS 81
 
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
+    int min_size_ofnamedir;
     char *name;             // имя файла или папки
     char *path;             // path to the file/dir
     struct stat *buff_stat; // stat buff
@@ -25,6 +26,7 @@ typedef struct s_dir_data {
 
 typedef struct s_catalog {
     blkcnt_t size_of_block;   // size of file/dir
+    int max_size_ofnamedir;
     long long max_size_ofdir;
     long long max_size_oflink;
     bool is_dir;
@@ -61,11 +63,13 @@ void mx_print_lflag(t_catalog *catalog, t_flag flags);
 char *mx_get_full_path(char *name, char *path);
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
 char *mx_get_permissions(mode_t mode);
+
 void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
-void mx_add_grp(uid_t uid, char **result);
-void mx_add_pwd(gid_t gid, char **result);
+void mx_add_pwd(uid_t uid, char **result);
+void mx_add_grp(gid_t gid, char **result);
 void mx_add_filesize(off_t size, t_catalog *cat, char **result);
 void mx_add_lastchange_time(time_t time, char **result);
+void mx_add_hardlink(char *path, char **result);
 
 #endif

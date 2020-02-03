@@ -253,41 +253,10 @@ void mx_print_default(t_catalog *cat) {
 //================= Sort Part ======================
 
 void mx_swap_cat(t_catalog *a, t_catalog *b, t_flag flag) {
-	t_dir_data *tmp_data = a->dir;
-	char *tmp_name = a->c_name;
-	int tmp = a->am_files;
-	bool tmp_is = a->is_dir;
+	t_catalog *temp = a;
 
-	a->dir = b->dir;
-	b->dir = tmp_data;
-	tmp_data = a->dir_data;
-	a->dir_data = b->dir_data;
-	b->dir_data = tmp_data;
-	a->c_name = b->c_name;
-	b->c_name = tmp_name;
-	a->am_files = b->am_files;
-	b->am_files = tmp;
-	tmp = a->am_data;
-	a->am_data = b->am_data;
-	b->am_data = tmp;
-	a->is_dir = b->is_dir;
-	b->is_dir = tmp_is;
-
-	if (flag.is_l == true) {
-		long long tmp = a->size_of_block;
-		int temp = a->max_size_ofnamedir;
-
-		a->size_of_block = b->size_of_block;
-		b->size_of_block = tmp;
-		tmp = a->max_size_ofdir;
-		a->max_size_ofdir = b->max_size_ofdir;
-		b->max_size_ofdir = tmp;
-		tmp = a->max_size_oflink;
-		a->max_size_oflink = b->max_size_oflink;
-		b->max_size_oflink = tmp;
-		a->max_size_ofnamedir = b->max_size_ofnamedir;
-		b->max_size_ofnamedir = temp;
-	}
+	a = b;
+	b = temp;
 }
 
 void mx_sort_cat_list(t_catalog *start, t_flag flag) { 
@@ -312,6 +281,11 @@ void mx_sort_cat_list(t_catalog *start, t_flag flag) {
 }
 
 void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
+	// t_dir_data *temp = a;
+
+	// a = b;
+	// b = temp;
+
 	struct dirent *tmp_data = a->data;
 	char *tmp_name = a->name;
 	struct stat *tmp_buff = a->buff_stat;

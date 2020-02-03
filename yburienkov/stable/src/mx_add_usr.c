@@ -5,7 +5,7 @@ void mx_add_grp(uid_t uid, char **result) {
 
     if ((pwd = getpwuid(uid)) != NULL)
         *result = mx_addstr(*result, pwd->pw_name);
-    *result = mx_addstr(*result, "  ");
+    *result = mx_addstr(*result, " ");
     //else
         //printf(" %-8d", id);
 }

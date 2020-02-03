@@ -19,5 +19,5 @@ void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag) {
     lstat(list->path, list->buff_stat);
     cat->size_of_block += list->buff_stat->st_blocks;
     set_max_size(list, cat, flag);
-    printf("%s %llu %llu\n", list->path, cat->max_size_ofdir, cat->max_size_oflink);
+
 }

@@ -34,7 +34,7 @@ t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info) {
                 break;
             chk_line_for_flags(*argv, info);
             argv++;
-            *argc -= 1;
+            (*argc)--;
         }
     }
     info->am_dir = *argc == 1 ? 1 : *argc - 1;

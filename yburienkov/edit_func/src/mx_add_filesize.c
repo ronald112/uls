@@ -10,8 +10,6 @@ void mx_add_filesize(off_t size, t_catalog *cat, char **result) {
     for (; cnt != 0; cnt--)
         *result = mx_addstr(*result, " ");
     *result = mx_addstr(*result, num);
-    // *result = mx_addstr(*result, " ");
-
     mx_strdel(&num);
     mx_strdel(&temp);
 }

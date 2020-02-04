@@ -174,6 +174,7 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 
 	if (directoy && (temp = readdir(directoy))) {
 		list->data = temp;
+
 		list->name = mx_strdup(temp->d_name);
 		list->path = mx_get_full_path(link, list->name);
 		if (info->flag.is_l == true)
@@ -252,17 +253,24 @@ void mx_print_default(t_catalog *cat) {
 //=============================================================================
 //================= Sort Part ======================
 
-void mx_swap_cat(t_catalog *a, t_catalog *b) {
-	t_catalog *temp = a;
+void mx_swap_cat(t_catalog *prevx, t_catalog *a, t_catalog *b) {
+	t_catalog *temp = b->c_next;
 
-	a = b;
-	b = temp;
+	if (a == NULL || b == NULL)
+			return;
+	if (prevx != NULL) {
+		prevx->c_next = b;
+	}
+
+	b->c_next = a->c_next;
+	a->c_next = temp;
 }
 
 void mx_sort_cat_list(t_catalog *start) { 
 	int swapped = 1;
 	t_catalog *ptr1;
 	t_catalog *lptr = NULL;
+	t_catalog *prevx = NULL;
 
 	if (start == NULL)
 		return;
@@ -271,45 +279,34 @@ void mx_sort_cat_list(t_catalog *start) {
 		ptr1 = start;
 		while (ptr1->c_next != lptr) { 
 			if (mx_strcmp(ptr1->c_name, ptr1->c_next->c_name) > 0) {
-				mx_swap_cat(ptr1, ptr1->c_next);
+				mx_swap_cat(prevx, ptr1, ptr1->c_next);
 				swapped = 1;
 			}
+			prevx = ptr1;
 			ptr1 = ptr1->c_next;
 		}
 		lptr = ptr1;
 	}
 }
 
-void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
-	// t_dir_data *temp = a;
+void mx_swap_dir(t_dir_data *prevx, t_dir_data *a, t_dir_data *b) {
+	t_dir_data *temp = a;
 
-	// a = b;
-	// b = temp;
+	if (a == NULL || b == NULL)
+			return;
+	if (prevx != NULL) {
+		prevx->next = b;
+	}
 
-	struct dirent *tmp_data = a->data;
-	char *tmp_name = a->name;
-	struct stat *tmp_buff = a->buff_stat;
-	int tmp_size_pwd = a->min_lnght_namedir;
-
-	a->data = b->data;
-	b->data = tmp_data;
-	a->name = b->name;
-	b->name = tmp_name;
-
-	tmp_name = a->path;
-	a->path = b->path;
-	b->path = tmp_name;
-
-	a->buff_stat = b->buff_stat;
-	b->buff_stat = tmp_buff;
-	a->min_lnght_namedir = b->min_lnght_namedir;
-	b->min_lnght_namedir = tmp_size_pwd;
+	b->next = a->next;
+	a->next = temp;
 }
 
 void mx_sort_dir_list(t_dir_data *start) {
 	int swapped = 1;
 	t_dir_data *ptr1;
 	t_dir_data *lptr = NULL;
+	t_dir_data *prevx = NULL;
 
 	if (start == NULL)
 		return;
@@ -318,9 +315,10 @@ void mx_sort_dir_list(t_dir_data *start) {
 		ptr1 = start;
 		while (ptr1->next != lptr) {
 			if (mx_strcmp(ptr1->name, ptr1->next->name) > 0) {
-				mx_swap_dir(ptr1, ptr1->next);
+				mx_swap_dir(prevx, ptr1, ptr1->next);
 				swapped = 1;
 			}
+			prevx = ptr1;
 			ptr1 = ptr1->next;
 		}
 		lptr = ptr1;
@@ -404,7 +402,7 @@ void mx_get_dir_data_from_dir(t_catalog *head) {
 int main(int argc, char *argv[]) {
 	t_main *info = (t_main*)malloc(sizeof(t_main));
 	//*****************
-	t_catalog *head = mx_main_parse_fnc(&argc, argv, info);
+	t_catalog *head = mx_main_parse_fnc(&argc, &argv, info);
 	//*****************
 	info->flag.is_tofile = !isatty(1);
 	//*****************

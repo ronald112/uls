@@ -13,7 +13,8 @@ void mx_init_info(char **argv, t_main *info) {
 		head->size_of_block = 0;
 		head->max_size_oflink = 0;
 		head->max_size_ofdir = 0;
-		head->max_size_ofnamedir = 0;
+		head->max_lnght_namedir = 0;
+		head->max_lnght_grpdir = 0;
 		head->c_name = mx_strdup(*argv);
 		head->dir = (t_dir_data*)malloc(sizeof(t_dir_data));
 	}

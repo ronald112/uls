@@ -252,14 +252,14 @@ void mx_print_default(t_catalog *cat) {
 //=============================================================================
 //================= Sort Part ======================
 
-void mx_swap_cat(t_catalog *a, t_catalog *b, t_flag flag) {
+void mx_swap_cat(t_catalog *a, t_catalog *b) {
 	t_catalog *temp = a;
 
 	a = b;
 	b = temp;
 }
 
-void mx_sort_cat_list(t_catalog *start, t_flag flag) { 
+void mx_sort_cat_list(t_catalog *start) { 
 	int swapped = 1;
 	t_catalog *ptr1;
 	t_catalog *lptr = NULL;
@@ -271,7 +271,7 @@ void mx_sort_cat_list(t_catalog *start, t_flag flag) {
 		ptr1 = start;
 		while (ptr1->c_next != lptr) { 
 			if (mx_strcmp(ptr1->c_name, ptr1->c_next->c_name) > 0) {
-				mx_swap_cat(ptr1, ptr1->c_next, flag);
+				mx_swap_cat(ptr1, ptr1->c_next);
 				swapped = 1;
 			}
 			ptr1 = ptr1->c_next;
@@ -289,7 +289,7 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 	struct dirent *tmp_data = a->data;
 	char *tmp_name = a->name;
 	struct stat *tmp_buff = a->buff_stat;
-	int tmp_size_pwd = a->min_size_ofnamedir;
+	int tmp_size_pwd = a->min_lnght_namedir;
 
 	a->data = b->data;
 	b->data = tmp_data;
@@ -302,8 +302,8 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 
 	a->buff_stat = b->buff_stat;
 	b->buff_stat = tmp_buff;
-	a->min_size_ofnamedir = b->min_size_ofnamedir;
-	b->min_size_ofnamedir = tmp_size_pwd;
+	a->min_lnght_namedir = b->min_lnght_namedir;
+	b->min_lnght_namedir = tmp_size_pwd;
 }
 
 void mx_sort_dir_list(t_dir_data *start) {
@@ -428,7 +428,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	// printf("**********************\n");
-	mx_sort_cat_list(info->cat, info->flag);
+	mx_sort_cat_list(info->cat);
 	mx_del_node(info);
 
 	// printf("/*%d %s*\\\n", info->cat->c_next->c_next->is_dir, info->cat->c_next->c_next->c_name);

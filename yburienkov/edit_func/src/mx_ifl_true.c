@@ -6,17 +6,17 @@ static void chk_max_size(long long *ds, long long *ls, nlink_t nls, off_t ods) {
 }
 
 static void chk_max_size_name(t_catalog *cat, t_dir_data *list) {
-    struct passwd *pwd = NULL;
+    struct passwd *pwd = getpwuid(list->buff_stat->st_uid);
+    struct group *grp = getgrgid(list->buff_stat->st_gid);
 
     chk_max_size(&cat->max_size_ofdir, &cat->max_size_oflink,
     list->buff_stat->st_nlink, list->buff_stat->st_size);
-    pwd = getpwuid(list->buff_stat->st_uid);
-    list->min_size_ofnamedir = mx_strlen(pwd->pw_name);
-    printf("debug %s\n", pwd->pw_name);
-    if (cat->max_size_ofnamedir < mx_strlen(pwd->pw_name)) {
-
-        cat->max_size_ofnamedir = list->min_size_ofnamedir;
-    }
+    list->min_lnght_namedir = mx_strlen(pwd->pw_name);
+    list->min_lnght_grpdir = mx_strlen(grp->gr_name);
+    if (cat->max_lnght_namedir < list->min_lnght_namedir)
+        cat->max_lnght_namedir = list->min_lnght_namedir;
+    if (cat->max_lnght_grpdir < list->min_lnght_grpdir)
+        cat->max_lnght_grpdir = list->min_lnght_grpdir;
 }
 
 static void set_max_size(t_dir_data *list, t_catalog *cat, t_flag flag) {

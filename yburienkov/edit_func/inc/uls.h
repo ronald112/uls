@@ -17,7 +17,8 @@
 
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
-    int min_size_ofnamedir;
+    int min_lnght_namedir;
+    int min_lnght_grpdir;
     char *name;             // имя файла или папки
     char *path;             // path to the file/dir
     struct stat *buff_stat; // stat buff
@@ -26,7 +27,8 @@ typedef struct s_dir_data {
 
 typedef struct s_catalog {
     blkcnt_t size_of_block;   // size of file/dir
-    int max_size_ofnamedir;
+    int max_lnght_namedir;
+    int max_lnght_grpdir;
     long long max_size_ofdir;
     long long max_size_oflink;
     bool is_dir;
@@ -66,8 +68,8 @@ char *mx_get_permissions(mode_t mode);
 
 void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
-void mx_add_pwd(uid_t uid, char **result);
-void mx_add_grp(gid_t gid, char **result);
+void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result);
+void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result);
 void mx_add_filesize(off_t size, t_catalog *cat, char **result);
 void mx_add_lastchange_time(time_t time, char **result);
 void mx_add_hardlink(char *path, char **result);

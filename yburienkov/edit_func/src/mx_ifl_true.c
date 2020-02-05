@@ -9,10 +9,17 @@ static void chk_max_size_name(t_catalog *cat, t_dir_data *list) {
     struct passwd *pwd = getpwuid(list->buff_stat->st_uid);
     struct group *grp = getgrgid(list->buff_stat->st_gid);
 
+    if (grp != NULL)
+        list->min_lnght_grpdir = mx_strlen(grp->gr_name);
+    else {
+        char *temp = mx_itoa(cat->dir->buff_stat->st_gid);
+
+        list->min_lnght_grpdir = mx_strlen(temp);
+        mx_strdel(&temp);
+    }
     chk_max_size(&cat->max_size_ofdir, &cat->max_size_oflink,
     list->buff_stat->st_nlink, list->buff_stat->st_size);
     list->min_lnght_namedir = mx_strlen(pwd->pw_name);
-    list->min_lnght_grpdir = mx_strlen(grp->gr_name);
     if (cat->max_lnght_namedir < list->min_lnght_namedir)
         cat->max_lnght_namedir = list->min_lnght_namedir;
     if (cat->max_lnght_grpdir < list->min_lnght_grpdir)

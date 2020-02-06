@@ -2,7 +2,7 @@
 
 void mx_add_lastchange_time(const time_t time, char **result) {
     char *tmp_chr_time = ctime(&time);
-    char *chr_time = mx_strnew(12);
+    char *chr_time = mx_strnew(13);
     int j = 0;
 
     for (int i = 3; j <= 12; i++, j++)

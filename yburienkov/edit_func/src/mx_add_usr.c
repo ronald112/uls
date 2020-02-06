@@ -12,7 +12,7 @@ void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result) {
 
 void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result) {
     struct group *grp = NULL;
-    int nmb_delim = cat->max_lnght_grpdir - dir->min_lnght_grpdir;
+    //int nmb_delim = cat->max_lnght_grpdir - dir->min_lnght_grpdir;
 
     if ((grp = getgrgid(dir->buff_stat->st_gid)) != NULL)
         *result = mx_addstr(*result, grp->gr_name);

@@ -27,6 +27,7 @@ int mx_list_size(t_list *list);
 t_list *mx_sort_list(t_list *lst, bool (*cmp)(void *, void *));
 void mx_printull(long long n);
 char *mx_addstr(char *str, char *arr);
+char *mx_addchr(char *str, char arr);
 char *mx_ltoa(long long number);
 
 // More fnc

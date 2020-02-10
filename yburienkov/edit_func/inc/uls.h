@@ -70,7 +70,7 @@ void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
 void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result);
 void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result);
-void mx_add_filesize(off_t size, t_catalog *cat, char **result);
+void mx_add_filesize(off_t size, char **result);
 void mx_add_lastchange_time(time_t time, char **result);
 void mx_add_hardlink(char *path, char **result);
 

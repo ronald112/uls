@@ -1,7 +1,7 @@
 #include "libmx.h"
 
-static char *calculation(const char *str,
-const char *sub, const char *replace, int new_size) {
+static char *calculation(const char *str, const char *sub, const char *replace,
+                        int new_size) {
     char *result = mx_strnew(new_size + 1);
     int j = 0;
     int k = 0;
@@ -24,8 +24,8 @@ const char *sub, const char *replace, int new_size) {
     return result;
 }
 
-char *mx_replace_substr(const char *str,
-const char *sub, const char *replace) {
+char *mx_replace_substr(const char *str, const char *sub,
+                        const char *replace) {
     if (str == NULL || sub == NULL || replace == NULL)
         return NULL;
     else {

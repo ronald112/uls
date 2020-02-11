@@ -12,7 +12,7 @@ static void chk_max_size_name(t_catalog *cat, t_dir_data *list) {
     if (grp != NULL)
         list->min_lnght_grpdir = mx_strlen(grp->gr_name);
     else {
-        char *temp = mx_itoa(cat->dir->buff_stat->st_gid);
+        char *temp = mx_itoa(list->buff_stat->st_gid);
 
         list->min_lnght_grpdir = mx_strlen(temp);
         mx_strdel(&temp);

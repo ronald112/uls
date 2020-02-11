@@ -7,7 +7,7 @@ static char *get_info(t_dir_data *dir, t_catalog *cat) {
     mx_add_links(dir->buff_stat->st_nlink, cat, &result);
     mx_add_pwd(dir, cat, &result);
     mx_add_grp(dir, cat, &result);
-    mx_add_filesize(dir->buff_stat->st_size, &result);
+    mx_add_filesize(dir->buff_stat->st_size, cat, &result);
     mx_add_lastchange_time(dir->buff_stat->st_mtimespec.tv_sec, &result);
     result = mx_addstr(result, dir->name);
     mx_add_hardlink(dir->path, &result);

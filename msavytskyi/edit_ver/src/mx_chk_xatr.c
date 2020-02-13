@@ -5,7 +5,7 @@ void mx_add_xatr(char *path, char **result) {
     acl_t acl = acl_get_file(path, ACL_TYPE_EXTENDED);
 
     if (xattr < 0)
-        xattr = 0;
+        *result = mx_addstr(*result, "+");
     else if (xattr > 0)
         *result = mx_addstr(*result, "@");
     else if (acl != NULL)

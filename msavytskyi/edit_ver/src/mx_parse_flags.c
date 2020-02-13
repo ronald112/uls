@@ -21,7 +21,7 @@ static void chk_line_for_flags(char *argv, t_main *info) {
         chk_l1C_flags(argv[i], info);
         if (argv[i] == 'a')
             info->flag.is_a = true;
-    }    
+    }
 }
 
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info) {

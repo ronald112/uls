@@ -10,13 +10,16 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
-#include <time.h> 
+#include <time.h>
 #include "libmx.h"
 
 #define MX_FILE_WS 81
+#define MX_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
 
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
+    int min_lnght_namedir;
+    int min_lnght_grpdir;
     char *name;             // имя файла или папки
     char *path;             // path to the file/dir
     struct stat *buff_stat; // stat buff
@@ -25,6 +28,8 @@ typedef struct s_dir_data {
 
 typedef struct s_catalog {
     blkcnt_t size_of_block;   // size of file/dir
+    int max_lnght_namedir;
+    int max_lnght_grpdir;
     long long max_size_ofdir;
     long long max_size_oflink;
     bool is_dir;
@@ -61,11 +66,21 @@ void mx_print_lflag(t_catalog *catalog, t_flag flags);
 char *mx_get_full_path(char *name, char *path);
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
 char *mx_get_permissions(mode_t mode);
+void mx_r_flag(t_main *info, t_catalog *cat, char *link);
+void put_data(struct dirent *temp, t_main *info, t_dir_data *list,
+                     t_catalog *cat, char *link);
+DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link);
+void mx_closedir_info(t_main *info, DIR *dir, char *link);
+void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b);
+void mx_sort_cat_list(t_catalog *start, t_flag flag);
+void mx_print_1(t_catalog *cat, bool a);
+
 void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
-void mx_add_grp(uid_t uid, char **result);
-void mx_add_pwd(gid_t gid, char **result);
+void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result);
+void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result);
 void mx_add_filesize(off_t size, t_catalog *cat, char **result);
 void mx_add_lastchange_time(time_t time, char **result);
+void mx_add_hardlink(char *path, char **result);
 
 #endif

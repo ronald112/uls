@@ -24,7 +24,7 @@ RAW = printchar print_unicode printstr print_strarr printint pow sqrt \
 	\
 	open read_mod \
 	\
-	clear_list print_list swap_node printull add_del_str ltoa
+	clear_list print_list swap_node printull add_del_str ltoa addchr
 
 
 

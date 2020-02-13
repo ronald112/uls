@@ -27,6 +27,7 @@ int mx_list_size(t_list *list);
 t_list *mx_sort_list(t_list *lst, bool (*cmp)(void *, void *));
 void mx_printull(long long n);
 char *mx_addstr(char *str, char *arr);
+char *mx_addchr(char *str, char arr);
 char *mx_ltoa(long long number);
 
 // More fnc
@@ -96,11 +97,13 @@ char *mx_replace_substr(const char *str, const char *sub, const char *replace);
 // Memory pack
 void *mx_memset(void *b, int c, size_t len);
 void *mx_memcpy(void *restrict dst, const void *restrict src, size_t n);
-void *mx_memccpy(void *restrict dst, const void *restrict src, int c, size_t n);
+void *mx_memccpy(void *restrict dst, const void *restrict src,
+                int c, size_t n);
 int mx_memcmp(const void *s1, const void *s2, size_t n);
 void *mx_memchr(const void *s, int c, size_t n);
 void *mx_memrchr(const void *s, int c, size_t n);
-void *mx_memmem(const void *big, size_t big_len, const void *little, size_t little_len);
+void *mx_memmem(const void *big, size_t big_len, const void *little,
+                size_t little_len);
 void *mx_memmove(void *dst, const void *src, size_t len);
 void *mx_realloc(void *ptr, size_t size);
 

@@ -58,13 +58,15 @@ typedef struct s_main {     //** структура, которая хранит
 } t_main;
 
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
-void mx_set_flags_false(t_flag flags);
+void mx_set_flags_false(t_main *info);
 t_catalog *mx_create_list_of_catalog(int amount);
 void mx_init_info(char **argv, t_main *info);
 void mx_print_lflag(t_catalog *catalog, t_flag flags);
 char *mx_get_full_path(char *name, char *path);
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
 char *mx_get_permissions(mode_t mode);
+
+void mx_print_totalsize(t_catalog *cat);
 
 void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);

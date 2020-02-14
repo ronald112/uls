@@ -3,8 +3,11 @@
 void mx_add_xatr(char *path, char **result) {
     ssize_t xattr = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
     acl_t acl = acl_get_file(path, ACL_TYPE_EXTENDED);
+    char *temp = act_to_text(acl, xattr);
 
-    if (xattr < 0)
+    printf("[debug %s]\n", temp);
+
+    if (xattr == 0)
         *result = mx_addstr(*result, "+");
     else if (xattr > 0)
         *result = mx_addstr(*result, "@");

@@ -3,7 +3,12 @@
 char *mx_get_permissions(mode_t mode) {
     char *result = NULL;
 
-    result = mx_addstr(result, (mode & S_IFDIR) ? "d" : "-");
+    if (mode & S_IFDIR)
+        mx_addstr(result, "d");
+    else if (mode & S_IFLNK)
+        mx_addstr(result, "l");
+    else
+        mx_addstr(result, "-");
     result = mx_addstr(result, (mode & S_IRUSR) ? "r" : "-");
     result = mx_addstr(result, (mode & S_IWUSR) ? "w" : "-");
     result = mx_addstr(result, (mode & S_IXUSR) ? "x" : "-");

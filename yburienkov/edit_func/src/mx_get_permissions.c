@@ -1,14 +1,16 @@
 #include "uls.h"
 
-char *mx_get_permissions(mode_t mode) {
+char *mx_get_permissions(mode_t mode, char *path) {
     char *result = NULL;
+    char buff[256] = "\0";
 
+    readlink(path, buff, 256);
     if (mode & S_IFDIR)
-        mx_addstr(result, "d");
-    else if (mode & S_IFLNK)
-        mx_addstr(result, "l");
+        result = mx_addstr(result, "d");
+    else if ((mode & S_IFLNK) && mx_strlen(buff))
+        result = mx_addstr(result, "l");
     else
-        mx_addstr(result, "-");
+        result = mx_addstr(result, "-");
     result = mx_addstr(result, (mode & S_IRUSR) ? "r" : "-");
     result = mx_addstr(result, (mode & S_IWUSR) ? "w" : "-");
     result = mx_addstr(result, (mode & S_IXUSR) ? "x" : "-");
@@ -17,6 +19,11 @@ char *mx_get_permissions(mode_t mode) {
     result = mx_addstr(result, (mode & S_IXGRP) ? "x" : "-");
     result = mx_addstr(result, (mode & S_IROTH) ? "r" : "-");
     result = mx_addstr(result, (mode & S_IWOTH) ? "w" : "-");
-    result = mx_addstr(result, (mode & S_IXOTH) ? "x" : "-");
+    if (mode & S_ISVTX)
+        result = mx_addstr(result, "t");
+    else if (mode & S_IXOTH)
+        result = mx_addstr(result, "x");
+    else
+        result = mx_addstr(result, "-");
     return result;
 }

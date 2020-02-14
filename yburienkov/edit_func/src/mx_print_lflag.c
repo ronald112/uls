@@ -1,7 +1,7 @@
 #include "uls.h"
 
 static char *get_info(t_dir_data *dir, t_catalog *cat) {
-    char *result = mx_get_permissions(dir->buff_stat->st_mode);
+    char *result = mx_get_permissions(dir->buff_stat->st_mode, dir->path);
 
     mx_add_xatr(dir->path, &result);
     mx_add_links(dir->buff_stat->st_nlink, cat, &result);

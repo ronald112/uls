@@ -11,7 +11,7 @@ void add_ch_symb_link(char **result, char *path, mode_t mode) {
     else
         *result = mx_addstr(*result, "-");
 }
-
+ 
 char *mx_get_permissions(mode_t mode, char *path) {
     char *result = NULL;
     

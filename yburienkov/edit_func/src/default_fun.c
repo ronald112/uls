@@ -410,7 +410,9 @@ void mx_print(t_main *info) {
 			mx_printstr(":\n");
 		}
 		if (info->flag.is_l == true) {
-			mx_print_totalsize(head);
+			if (head->size_of_block == 0 && info->flag.is_a == false
+			&& head->am_data - head->am_files != 0)
+				mx_print_totalsize(head);
 			mx_print_lflag(head, info->flag);
 		}
 		else if (!info->flag.is_tofile) {

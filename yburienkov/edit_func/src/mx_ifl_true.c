@@ -33,9 +33,17 @@ static void set_max_size(t_dir_data *list, t_catalog *cat, t_flag flag) {
         chk_max_size_name(cat, list);
 }
 
+static void add_sizedir_to_sizeblock(t_dir_data *list, t_catalog *cat,
+                                     t_flag flag) {
+    if (flag.is_a == false && list->name[0] != '.')
+        cat->size_of_block += list->buff_stat->st_blocks;
+    else if (flag.is_a == true)
+        cat->size_of_block += list->buff_stat->st_blocks;
+}
+
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag) {
     list->buff_stat = (struct stat *)malloc(sizeof(struct stat));
     lstat(list->path, list->buff_stat);
-    cat->size_of_block += list->buff_stat->st_blocks;
+    add_sizedir_to_sizeblock(list, cat, flag);
     set_max_size(list, cat, flag);
 }

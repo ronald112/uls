@@ -16,7 +16,13 @@ static char *get_info(t_dir_data *dir, t_catalog *cat) {
 
 void mx_print_lflag(t_catalog *cat, t_flag flags) {
     char *temp = NULL;
+    long long tmp_ds = cat->max_size_ofdir;
+    long long tmp_ls = cat->max_size_oflink;
 
+    for (cat->max_size_ofdir = 0; tmp_ds != 0;
+    tmp_ds /= 10, cat->max_size_ofdir++);
+    for (cat->max_size_oflink = 0; tmp_ls != 0;
+    tmp_ls /= 10, cat->max_size_oflink++);
     for (t_dir_data *dir = cat->dir; dir; dir = dir->next) {
         if (flags.is_a == false && dir->name[0] != '.') {
             temp = get_info(dir, cat);

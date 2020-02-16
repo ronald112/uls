@@ -1,6 +1,6 @@
 clear
-./uls -l ~/* > test2
-ls -l ~/* > test
+./uls -l ~ > test2
+ls -l ~ > test
 diff test test2
 # for i in {1..12}; do
 # 	touch ../test/file$i

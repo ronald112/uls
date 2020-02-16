@@ -397,10 +397,6 @@ void mx_print_1(t_catalog *cat, bool a) {
 	}
 }
 
-void mx_print_to_file() {
-
-}
-
 void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
 
@@ -410,8 +406,9 @@ void mx_print(t_main *info) {
 			mx_printstr(":\n");
 		}
 		if (info->flag.is_l == true) {
-			if (head->size_of_block == 0 && info->flag.is_a == false
-			&& head->am_data - head->am_files != 0)
+			if (info->flag.is_a == false && head->am_files != 0)
+				mx_print_totalsize(head);
+			else if (info->flag.is_a == true && head->am_data != 0)
 				mx_print_totalsize(head);
 			mx_print_lflag(head, info->flag);
 		}

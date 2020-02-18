@@ -170,7 +170,7 @@ void put_data(struct dirent *temp, t_main *info, t_dir_data *list,
 	list->data = temp;
 	list->name = mx_strdup(list->data->d_name);
 	list->path = mx_get_full_path(link, list->name);
-	if (info->flag.is_l == true)
+	// if (info->flag.is_l == true)
 		mx_ladd_to_tdir(list, cat, info->flag);
 	list->next = NULL;
 	cat->am_data++;

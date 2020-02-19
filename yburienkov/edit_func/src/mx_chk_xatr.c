@@ -6,16 +6,10 @@ void mx_add_xatr(char *path, char **result) {
     char *temp = acl_to_text(acl, &xattr);
 
     // printf("[debug %s %zd]\n", temp, xattr);
-    if (xattr == 0 && acl == NULL)
-        *result = mx_addstr(*result, " ");
-    else if (acl != NULL) {
-        if (xattr > 0)
-            *result = mx_addstr(*result, "+");
-        else
-            *result = mx_addstr(*result, "@");
-    }
-    else if (acl == NULL && xattr != 0)
+    if (xattr > 0)
         *result = mx_addstr(*result, "@");
+    else if (acl)
+        *result = mx_addstr(*result, "+");
     else 
         *result = mx_addstr(*result, " ");
     mx_strdel(&temp);

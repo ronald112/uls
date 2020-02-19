@@ -8,6 +8,14 @@ static void add_ch_symb_link(char **result, char *path, mode_t mode) {
         *result = mx_addstr(*result, "d");
     else if ((mode & S_IFLNK) && mx_strlen(buff))
         *result = mx_addstr(*result, "l");
+    else if (mode & S_IFCHR)
+        *result = mx_addstr(*result, "c");
+    else if (mode & S_IFBLK)
+        *result = mx_addstr(*result, "b");
+    //else if (mode & S_IFSOCK)
+    //    *result = mx_addstr(*result, "s");
+    else if (mode & S_IFIFO)
+        *result = mx_addstr(*result, "p");
     else
         *result = mx_addstr(*result, "-");
 }

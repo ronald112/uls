@@ -270,6 +270,9 @@ void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b) {
 	b->am_data = tmp;
 	a->is_dir = b->is_dir;
 	b->is_dir = tmp_is;
+	tmp = a->lng_max_minor;
+	a->lng_max_minor = b->lng_max_minor;
+	b->lng_max_minor = a->lng_max_minor;
 
 	if (flag.is_l == true) {
 		long long tmp = a->size_of_block;

@@ -1,6 +1,6 @@
 clear
-ls libmx/ > test
-./uls libmx/ > test2
+ls -l ~/../../dev > test
+./uls -l ~/../../dev  > test2
 diff test test2
 # for i in {1..12}; do
 # 	touch ../test/file$i

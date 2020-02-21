@@ -1,23 +1,33 @@
 #include "uls.h"
 
-static void add_ch_symb_link(char **result, char *path, mode_t mode) {
-    char buff[256] = "\0";
+static void add_ch_symb_link(char **result, mode_t mode) {
 
-    readlink(path, buff, 256);
-    if (mode & S_IFDIR)
-        *result = mx_addstr(*result, "d");
-    else if ((mode & S_IFLNK) && mx_strlen(buff))
-        *result = mx_addstr(*result, "l");
-    else if (mode & S_IFCHR)
-        *result = mx_addstr(*result, "c");
-    else if (mode & S_IFBLK)
-        *result = mx_addstr(*result, "b");
-    //else if (mode & S_IFSOCK)
-    //    *result = mx_addstr(*result, "s");
-    else if (mode & S_IFIFO)
+    switch (mode & S_IFMT)
+    {
+    case S_IFIFO:
         *result = mx_addstr(*result, "p");
-    else
-        *result = mx_addstr(*result, "-");
+        break;
+    
+    default:
+        break;
+    }
+    // char buff[256] = "\0";
+
+    // readlink(path, buff, 256);
+    // if (mode & S_IFDIR)
+    //     *result = mx_addstr(*result, "d");
+    // else if ((mode & S_IFLNK) && mx_strlen(buff))
+    //     *result = mx_addstr(*result, "l");
+    // else if (mode & S_IFCHR)
+    //     *result = mx_addstr(*result, "c");
+    // else if (mode & S_IFBLK)
+    //     *result = mx_addstr(*result, "b");
+    // //else if (mode & S_IFSOCK)
+    // //    *result = mx_addstr(*result, "s");
+    // else if (mode & S_IFIFO)
+    //     *result = mx_addstr(*result, "p");
+    // else
+    //     *result = mx_addstr(*result, "-");
 }
 
 static void add_last_bit_char(char **result, mode_t mode) {
@@ -40,7 +50,7 @@ static void add_last_bit_char(char **result, mode_t mode) {
 char *mx_get_permissions(mode_t mode, char *path) {
     char *result = NULL;
     
-    add_ch_symb_link(&result, path, mode);
+    add_ch_symb_link(&result, mode);
     result = mx_addstr(result, (mode & S_IRUSR) ? "r" : "-");
     result = mx_addstr(result, (mode & S_IWUSR) ? "w" : "-");
     result = mx_addstr(result, (mode & S_IXUSR) ? "x" : "-");

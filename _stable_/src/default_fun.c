@@ -89,19 +89,27 @@ void mx_make_extra_catalog(t_main *info, char *link) {
 	}
 }
 
+void mx_free_dir_data(t_catalog **cat) {
+	mx_strdel(&(*cat)->c_name);
+}
+
 void mx_del_node(t_main *info) {
 	t_catalog *prev = info->cat;
 	t_catalog *list = info->cat->c_next ? info->cat->c_next : NULL;
 
 	if (!info->cat->is_dir) {
+		mx_free_dir_data(&info->cat);
 		info->cat = info->cat->c_next;
+		free(prev);
 		prev = info->cat;
 		list = prev->c_next;
 	}
 	for (; prev && prev->c_next; list = prev->c_next) {
 			// printf("÷÷ |- %s %d\n", list->c_name, list->is_dir);
 		if (!list->is_dir) {
+			mx_free_dir_data(&list);
 			prev->c_next = list->c_next;
+			free(list);
 		}
 		else
 			prev = prev->c_next;

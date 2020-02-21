@@ -23,7 +23,6 @@ static void push_back(char *link, t_flag flag, t_catalog *cat) {
 	}
 	else {
 		cur = *list;
-
 		for (; cur->next != NULL; cur = cur->next);
 		cur->next = create_node(link, flag, cat);
 	}
@@ -54,8 +53,6 @@ static void push_back(char *link, t_flag flag, t_catalog *cat) {
 
 void mx_free_dir_data(t_catalog **cat) {
 	mx_strdel(&(*cat)->c_name);
-	free(*cat);
-	*cat = NULL;
 }
 
 void mx_make_extra_catalog(t_main *info, char *link) {
@@ -91,6 +88,7 @@ void mx_del_node(t_main *info) {
 	if (!info->cat->is_dir) {
 		mx_free_dir_data(&info->cat);
 		info->cat = info->cat->c_next;
+		free(prev);
 		prev = info->cat;
 		list = prev->c_next;
 	}
@@ -99,6 +97,7 @@ void mx_del_node(t_main *info) {
 		if (!list->is_dir) {
 			mx_free_dir_data(&list);
 			prev->c_next = list->c_next;
+			free(list);
 		}
 		else
 			prev = prev->c_next;

@@ -5,6 +5,7 @@ static void set_start_val(t_catalog *head) {
 	head->max_size_ofdir = 0;
 	head->max_size_oflink = 0;
 	head->lng_max_minor = 0;
+	head->lng_max_major = 0;
 	head->max_length = 0;
 	head->max_lnght_namedir = 0;
 	head->max_lnght_grpdir = 0;

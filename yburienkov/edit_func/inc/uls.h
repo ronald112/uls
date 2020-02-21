@@ -84,5 +84,6 @@ void mx_add_hardlink(char *path, char **result);
 void mx_add_minor_major(char **result, dev_t dev, int max_digits);
 int mx_get_nmb_digits(int nmb);
 char *mx_get_hex_view(int nmb);
+void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
 
 #endif

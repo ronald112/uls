@@ -21,3 +21,17 @@ char *mx_get_hex_view(int nmb) {
     mx_strdel(&nmb_char);
     return result;
 }
+
+void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list) {
+    if (cat->lng_max_minor
+    < mx_get_nmb_digits(MX_MINOR(list->buff_stat->st_rdev))
+    && MX_MINOR(list->buff_stat->st_rdev) < 255) {
+        cat->lng_max_minor =
+        mx_get_nmb_digits(MX_MINOR(list->buff_stat->st_rdev));
+    }
+    if (cat->lng_max_major 
+    < mx_get_nmb_digits(MX_MAJOR(list->buff_stat->st_dev))) {
+        cat->lng_max_major =
+        mx_get_nmb_digits(MX_MAJOR(list->buff_stat->st_rdev));
+    }
+}

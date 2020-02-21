@@ -1,13 +1,16 @@
 #include "uls.h"
 
 static char *get_info(t_dir_data *dir, t_catalog *cat) {
-    char *result = mx_get_permissions(dir->buff_stat->st_mode, dir->path);
+    char *result = mx_get_permissions(dir->buff_stat->st_mode);
 
     mx_add_xatr(dir->path, &result);
     mx_add_links(dir->buff_stat->st_nlink, cat, &result);
     mx_add_pwd(dir, cat, &result);
     mx_add_grp(dir, cat, &result);
-    mx_add_filesize(dir->buff_stat->st_size, cat, &result);
+    if (result[0] == 'c' || result[0] == 'b')
+        mx_add_minor_major(&result, dir->buff_stat->st_rdev, cat->lng_max_minor);
+    else
+        mx_add_filesize(dir->buff_stat->st_size, cat, &result);
     mx_add_lastchange_time(dir->buff_stat->st_mtimespec.tv_sec, &result);
     result = mx_addstr(result, dir->name);
     mx_add_hardlink(dir->path, &result);

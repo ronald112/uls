@@ -1,9 +1,13 @@
 total 0
-drwx------+  3 ronald1121  staff    96 Jan 22 06:48 Desktop
-drwx------+  5 ronald1121  staff   160 Feb 15 10:05 Documents
-drwx------+  6 ronald1121  staff   192 Feb 16 02:19 Downloads
-drwx------+ 58 ronald1121  staff  1856 Feb 16 02:21 Library
-drwx------+  4 ronald1121  staff   128 Feb 15 09:57 Movies
-drwx------+  3 ronald1121  staff    96 Jan 22 06:48 Music
-drwx------+  4 ronald1121  staff   128 Feb 15 10:03 Pictures
-drwxr-xr-x+  4 ronald1121  staff   128 Jan 22 06:48 Public
+crw-------  1 root        wheel     19, 1  Feb 19 03:33 afsc_type5
+crw-------  1 root        wheel     10, 0  Feb 19 03:33 auditpipe
+crw-r--r--  1 root        wheel     9, 3  Feb 19 03:33 auditsessions
+crw-------  1 root        wheel     20, 0  Feb 19 03:33 autofs
+crw-------  1 root        wheel     32, 0  Feb 19 03:33 autofs_control
+crw-rw-rw-  1 root        wheel     31, 71  Feb 19 03:33 autofs_homedirmounter
+crw-rw-rw-  1 root        wheel     22, 71  Feb 19 03:33 autofs_notrigger
+crw-rw-rw-  1 root        wheel     21, 52b  Feb 19 03:33 autofs_nowait
+crw-------  1 root        wheel     23, 0  Feb 19 03:33 bpf0
+crw-------  1 root        wheel     23, 1  Feb 19 03:33 bpf1
+crw-------  1 root        wheel     23, 2  Feb 19 03:33 bpf2
+crw-------  1 root        wheel     23, 3  Feb 19 03:33 bpf3

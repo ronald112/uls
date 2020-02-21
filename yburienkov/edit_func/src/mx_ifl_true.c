@@ -27,10 +27,14 @@ static void chk_max_size_name(t_catalog *cat, t_dir_data *list) {
 }
 
 static void set_max_size(t_dir_data *list, t_catalog *cat, t_flag flag) {
-    if (flag.is_a == false && list->name[0] != '.')
+    if (flag.is_a == false && list->name[0] != '.') {
         chk_max_size_name(cat, list);
-    else if (flag.is_a == true)
+        mx_add_indens_minor_major(cat, list);
+    }
+    else if (flag.is_a == true) {
         chk_max_size_name(cat, list);
+        mx_add_indens_minor_major(cat, list);
+    }
 }
 
 static void add_sizedir_to_sizeblock(t_dir_data *list, t_catalog *cat,

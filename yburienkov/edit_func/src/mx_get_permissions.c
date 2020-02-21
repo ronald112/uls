@@ -1,15 +1,24 @@
 #include "uls.h"
 
-static void add_ch_symb_link(char **result, char *path, mode_t mode) {
-    char buff[256] = "\0";
-
-    readlink(path, buff, 256);
-    if (mode & S_IFDIR)
-        *result = mx_addstr(*result, "d");
-    else if ((mode & S_IFLNK) && mx_strlen(buff))
-        *result = mx_addstr(*result, "l");
-    else
-        *result = mx_addstr(*result, "-");
+static char *add_ch_symb_link(mode_t mode) {
+    switch (mode & S_IFMT) {
+    case S_IFIFO:
+        return "p";
+    case S_IFCHR:
+        return "c";
+    case S_IFDIR:
+        return "d";
+    case S_IFBLK:
+        return "b";
+    case S_IFREG:
+        return "-";
+    case S_IFLNK:
+        return "l";
+    case S_IFSOCK:
+        return "s";
+    default:
+        return "?";
+    }
 }
 
 static void add_last_bit_char(char **result, mode_t mode) {
@@ -29,10 +38,10 @@ static void add_last_bit_char(char **result, mode_t mode) {
         *result = mx_addstr(*result, "-");
 }
 
-char *mx_get_permissions(mode_t mode, char *path) {
+char *mx_get_permissions(mode_t mode) {
     char *result = NULL;
-    
-    add_ch_symb_link(&result, path, mode);
+
+    result = mx_addstr(result, add_ch_symb_link(mode));
     result = mx_addstr(result, (mode & S_IRUSR) ? "r" : "-");
     result = mx_addstr(result, (mode & S_IWUSR) ? "w" : "-");
     result = mx_addstr(result, (mode & S_IXUSR) ? "x" : "-");

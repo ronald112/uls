@@ -69,7 +69,7 @@ void mx_init_info(char **argv, t_main *info);
 void mx_print_lflag(t_catalog *catalog, t_flag flags);
 char *mx_get_full_path(char *name, char *path);
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
-char *mx_get_permissions(mode_t mode, char *path);
+char *mx_get_permissions(mode_t mode);
 
 void mx_print_totalsize(t_catalog *cat);
 

@@ -9,7 +9,7 @@ void mx_add_minor_major(char **result, dev_t dev, int max_digits) {
     *result = mx_addstr(*result, " ");
     *result = mx_addstr(*result, nmb);
     mx_strdel(&nmb);
-    if (MX_MINOR(dev) > 256) {
+    if (MX_MINOR(dev) > 255) {
         nmb = mx_get_hex_view(MX_MINOR(dev));
         *result = mx_addstr(*result, ", ");
     }

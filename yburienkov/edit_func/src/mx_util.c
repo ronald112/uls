@@ -9,17 +9,16 @@ int mx_get_nmb_digits(int nmb) {
 }
 
 char *mx_get_hex_view(int nmb) {
-    char *nmb_char = mx_nbr_to_hex(nmb);
+    char *nmb_char = mx_nbr_to_hex(nmb & 0xffffff);
     int nmb_digits = 0;
-    char *result = mx_strcat(result, "0x00000000");
+    char *result = mx_strnew(10);
 
-    for (; nmb_char[nmb_digits] != '\0'; nmb_digits++);
-    nmb_digits--;
-    printf("nmb digits %d\n", nmb_digits);
-    for (int i = 10; nmb_digits > 0; nmb_digits--, i--) {
+    mx_memset(result, 0, 10);
+    result[1] = 'x';
+    for (int i = 10 - mx_strlen(nmb_char); i < 10; ++nmb_digits, ++i) {
         result[i] = nmb_char[nmb_digits];
     }
-    
+
     mx_strdel(&nmb_char);
     return result;
 }

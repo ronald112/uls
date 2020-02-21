@@ -36,6 +36,7 @@ typedef struct s_catalog {
     long long max_size_ofdir;
     long long max_size_oflink;
     int lng_max_minor;
+    int lng_max_major;
     bool is_dir;
     char *c_name;           // имя каталога
     t_dir_data *dir;        // все файлы в дир (1)

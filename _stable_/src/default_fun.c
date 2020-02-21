@@ -170,8 +170,6 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 	t_dir_data *list = cat->dir;
 	struct dirent *temp = NULL;
 
-	// printf("%p\n", (void *)directoy);
-
 	if (directoy && (temp = readdir(directoy))) {
 		list->data = temp;
 		list->name = mx_strdup(list->data->d_name);
@@ -272,6 +270,8 @@ void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b) {
 	b->am_data = tmp;
 	a->is_dir = b->is_dir;
 	b->is_dir = tmp_is;
+	
+
 
 	if (flag.is_l == true) {
 		long long tmp = a->size_of_block;
@@ -290,6 +290,12 @@ void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b) {
 		tmp = a->max_lnght_grpdir;
 		a->max_lnght_grpdir = b->max_lnght_grpdir;
 		b->max_lnght_grpdir = tmp;
+		tmp = a->lng_max_minor;
+		a->lng_max_minor = b->lng_max_minor;
+		b->lng_max_minor = a->lng_max_minor;
+		tmp = a->lng_max_major;
+		a->lng_max_major = b->lng_max_major;
+		b->lng_max_major = tmp;
 	}
 }
 
@@ -399,10 +405,6 @@ void mx_print_1(t_catalog *cat, bool a) {
 	}
 }
 
-void mx_print_to_file() {
-
-}
-
 void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
 
@@ -412,6 +414,10 @@ void mx_print(t_main *info) {
 			mx_printstr(":\n");
 		}
 		if (info->flag.is_l == true) {
+			if (info->flag.is_a == false && head->am_files != 0)
+				mx_print_totalsize(head);
+			else if (info->flag.is_a == true && head->am_data != 0)
+				mx_print_totalsize(head);
 			mx_print_lflag(head, info->flag);
 		}
 		else if (!info->flag.is_tofile) {
@@ -432,8 +438,8 @@ void mx_get_dir_data_from_dir(t_catalog *head) {
 
 	for(; data && *(data->name) == '.'; i++, data = data->next);
 	if (mx_strcmp(head->c_name, "!!!") != 0 && head->dir->next->next) {
-				head->dir_data = data;
-				head->am_files = head->am_data - i;
+		head->dir_data = data;
+		head->am_files = head->am_data - i;
 	}
 }
 
@@ -468,7 +474,6 @@ int main(int argc, char *argv[]) {
 	mx_del_node(info);
 
 	// printf("/*%d %s*\\\n", info->cat->c_next->c_next->is_dir, info->cat->c_next->c_next->c_name);
-	
 	// printf("**********************\n");
 	// printf("%s %s %p %d\n", info->cat->c_name, info->cat->c_next->c_name, (void*)info->cat->c_next->c_next, info->cat->am_files);
 	mx_count_line_for_print(info);//*******************************************

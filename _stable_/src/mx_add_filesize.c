@@ -8,6 +8,8 @@ void mx_add_filesize(off_t size, t_catalog *cat, char **result) {
         cnt = 1;
     for (; size != 0; size /= 10, cnt++);
     cnt = cat->max_size_ofdir - cnt;
+    if (cnt < 0)
+        cnt = cat->lng_max_minor + cat->lng_max_major + 2;
     for (; cnt != 0; cnt--)
         *result = mx_addstr(*result, " ");
     *result = mx_addstr(*result, temp);

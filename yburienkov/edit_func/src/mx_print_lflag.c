@@ -8,7 +8,7 @@ static char *get_info(t_dir_data *dir, t_catalog *cat) {
     mx_add_pwd(dir, cat, &result);
     mx_add_grp(dir, cat, &result);
     if (result[0] == 'c' || result[0] == 'b')
-        mx_add_minor_major(&result, dir->buff_stat->st_rdev, cat->lng_max_minor);
+        mx_add_minor_major(&result, dir->buff_stat->st_rdev, cat);
     else
         mx_add_filesize(dir->buff_stat->st_size, cat, &result);
     mx_add_lastchange_time(dir->buff_stat->st_mtimespec.tv_sec, &result);
@@ -17,8 +17,7 @@ static char *get_info(t_dir_data *dir, t_catalog *cat) {
     return result;
 }
 
-void mx_print_lflag(t_catalog *cat, t_flag flags) {
-    char *temp = NULL;
+static void chc_max_indents_ll(t_catalog *cat) {
     long long tmp_ds = cat->max_size_ofdir;
     long long tmp_ls = cat->max_size_oflink;
 
@@ -26,6 +25,12 @@ void mx_print_lflag(t_catalog *cat, t_flag flags) {
     tmp_ds /= 10, cat->max_size_ofdir++);
     for (cat->max_size_oflink = 0; tmp_ls != 0;
     tmp_ls /= 10, cat->max_size_oflink++);
+}
+
+void mx_print_lflag(t_catalog *cat, t_flag flags) {
+    char *temp = NULL;
+
+    chc_max_indents_ll(cat);
     for (t_dir_data *dir = cat->dir; dir; dir = dir->next) {
         if (flags.is_a == false && dir->name[0] != '.') {
             temp = get_info(dir, cat);

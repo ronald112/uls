@@ -89,19 +89,27 @@ void mx_make_extra_catalog(t_main *info, char *link) {
 	}
 }
 
+void mx_free_dir_data(t_catalog **cat) {
+	mx_strdel(&(*cat)->c_name);
+}
+
 void mx_del_node(t_main *info) {
 	t_catalog *prev = info->cat;
 	t_catalog *list = info->cat->c_next ? info->cat->c_next : NULL;
 
 	if (!info->cat->is_dir) {
+		mx_free_dir_data(&info->cat);
 		info->cat = info->cat->c_next;
+		free(prev);
 		prev = info->cat;
 		list = prev->c_next;
 	}
 	for (; prev && prev->c_next; list = prev->c_next) {
 			// printf("÷÷ |- %s %d\n", list->c_name, list->is_dir);
 		if (!list->is_dir) {
+			mx_free_dir_data(&list);
 			prev->c_next = list->c_next;
+			free(list);
 		}
 		else
 			prev = prev->c_next;
@@ -169,8 +177,6 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 	DIR *directoy = mx_opendir_info(info, cat, link);
 	t_dir_data *list = cat->dir;
 	struct dirent *temp = NULL;
-
-	// printf("%p\n", (void *)directoy);
 
 	if (directoy && (temp = readdir(directoy))) {
 		list->data = temp;
@@ -252,26 +258,68 @@ void mx_print_default(t_catalog *cat) {
 //=============================================================================
 //================= Sort Part ======================
 
-void mx_swap_cat(t_catalog *a, t_catalog *b) {
-	t_catalog *temp = a;
+void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b) {
+	t_dir_data *tmp_data = a->dir;
+	char *tmp_name = a->c_name;
+	int tmp = a->am_files;
+	bool tmp_is = a->is_dir;
 
-	a = b;
-	b = temp;
+	a->dir = b->dir;
+	b->dir = tmp_data;
+	tmp_data = a->dir_data;
+	a->dir_data = b->dir_data;
+	b->dir_data = tmp_data;
+	a->c_name = b->c_name;
+	b->c_name = tmp_name;
+	a->am_files = b->am_files;
+	b->am_files = tmp;
+	tmp = a->am_data;
+	a->am_data = b->am_data;
+	b->am_data = tmp;
+	a->is_dir = b->is_dir;
+	b->is_dir = tmp_is;
+	
+
+
+	if (flag.is_l == true) {
+		long long tmp = a->size_of_block;
+		int temp = a->max_lnght_namedir;
+
+		a->size_of_block = b->size_of_block;
+		b->size_of_block = tmp;
+		tmp = a->max_size_ofdir;
+		a->max_size_ofdir = b->max_size_ofdir;
+		b->max_size_ofdir = tmp;
+		tmp = a->max_size_oflink;
+		a->max_size_oflink = b->max_size_oflink;
+		b->max_size_oflink = tmp;
+		a->max_lnght_namedir = b->max_lnght_namedir;
+		b->max_lnght_namedir = temp;
+		tmp = a->max_lnght_grpdir;
+		a->max_lnght_grpdir = b->max_lnght_grpdir;
+		b->max_lnght_grpdir = tmp;
+		tmp = a->lng_max_minor;
+		a->lng_max_minor = b->lng_max_minor;
+		b->lng_max_minor = a->lng_max_minor;
+		tmp = a->lng_max_major;
+		a->lng_max_major = b->lng_max_major;
+		b->lng_max_major = tmp;
+	}
 }
 
-void mx_sort_cat_list(t_catalog *start) { 
+void mx_sort_cat_list(t_catalog *start, t_flag flag) {
 	int swapped = 1;
 	t_catalog *ptr1;
 	t_catalog *lptr = NULL;
 
 	if (start == NULL)
 		return;
-	while (swapped) { 
+	while (swapped) {
 		swapped = 0;
 		ptr1 = start;
-		while (ptr1->c_next != lptr) { 
+		while (ptr1->c_next != lptr) {
 			if (mx_strcmp(ptr1->c_name, ptr1->c_next->c_name) > 0) {
-				mx_swap_cat(ptr1, ptr1->c_next);
+				mx_swap_cat(ptr1, flag, ptr1->c_next);
 				swapped = 1;
 			}
 			ptr1 = ptr1->c_next;
@@ -299,11 +347,13 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 	tmp_name = a->path;
 	a->path = b->path;
 	b->path = tmp_name;
-
 	a->buff_stat = b->buff_stat;
 	b->buff_stat = tmp_buff;
 	a->min_lnght_namedir = b->min_lnght_namedir;
 	b->min_lnght_namedir = tmp_size_pwd;
+	tmp_size_pwd = a->min_lnght_grpdir;
+	a->min_lnght_grpdir = b->min_lnght_grpdir;
+	b->min_lnght_grpdir = tmp_size_pwd;
 }
 
 void mx_sort_dir_list(t_dir_data *start) {
@@ -363,10 +413,6 @@ void mx_print_1(t_catalog *cat, bool a) {
 	}
 }
 
-void mx_print_to_file() {
-
-}
-
 void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
 
@@ -376,6 +422,10 @@ void mx_print(t_main *info) {
 			mx_printstr(":\n");
 		}
 		if (info->flag.is_l == true) {
+			if (info->flag.is_a == false && head->am_files != 0)
+				mx_print_totalsize(head);
+			else if (info->flag.is_a == true && head->am_data != 0)
+				mx_print_totalsize(head);
 			mx_print_lflag(head, info->flag);
 		}
 		else if (!info->flag.is_tofile) {
@@ -396,8 +446,8 @@ void mx_get_dir_data_from_dir(t_catalog *head) {
 
 	for(; data && *(data->name) == '.'; i++, data = data->next);
 	if (mx_strcmp(head->c_name, "!!!") != 0 && head->dir->next->next) {
-				head->dir_data = data;
-				head->am_files = head->am_data - i;
+		head->dir_data = data;
+		head->am_files = head->am_data - i;
 	}
 }
 
@@ -428,11 +478,10 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	// printf("**********************\n");
-	mx_sort_cat_list(info->cat);
+	mx_sort_cat_list(info->cat, info->flag);
 	mx_del_node(info);
 
 	// printf("/*%d %s*\\\n", info->cat->c_next->c_next->is_dir, info->cat->c_next->c_next->c_name);
-	
 	// printf("**********************\n");
 	// printf("%s %s %p %d\n", info->cat->c_name, info->cat->c_next->c_name, (void*)info->cat->c_next->c_next, info->cat->am_files);
 	mx_count_line_for_print(info);//*******************************************

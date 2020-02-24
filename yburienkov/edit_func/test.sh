@@ -1,7 +1,12 @@
 clear
-ls -l ~/../../dev > test
-./uls -l ~/../../dev  > test2
+ls -lh /Library > test
+./uls -lh /Library > test2
 diff test test2
+echo "/ "
+ls -lh libmx/ > test
+./uls -lh libmx/ > test2
+diff test test2
+echo "libmx/"
 # for i in {1..12}; do
 # 	touch ../test/file$i
 # done

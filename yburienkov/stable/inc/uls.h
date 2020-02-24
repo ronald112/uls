@@ -14,6 +14,10 @@
 #include "libmx.h"
 
 #define MX_FILE_WS 81
+#define MX_MINORBITS 24
+#define MX_MINORMASK ((1U << MX_MINORBITS) - 1)
+#define MX_MAJOR(dev) ((unsigned int) ((dev) >> MX_MINORBITS))
+#define MX_MINOR(dev) ((unsigned int) ((dev) & MX_MINORMASK))
 
 typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
@@ -31,6 +35,8 @@ typedef struct s_catalog {
     int max_lnght_grpdir;
     long long max_size_ofdir;
     long long max_size_oflink;
+    int lng_max_minor;
+    int lng_max_major;
     bool is_dir;
     char *c_name;           // имя каталога
     t_dir_data *dir;        // все файлы в дир (1)
@@ -58,13 +64,15 @@ typedef struct s_main {     //** структура, которая хранит
 } t_main;
 
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
-void mx_set_flags_false(t_flag flags);
+void mx_set_flags_false(t_main *info);
 t_catalog *mx_create_list_of_catalog(int amount);
 void mx_init_info(char **argv, t_main *info);
 void mx_print_lflag(t_catalog *catalog, t_flag flags);
 char *mx_get_full_path(char *name, char *path);
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
 char *mx_get_permissions(mode_t mode);
+
+void mx_print_totalsize(t_catalog *cat);
 
 void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
@@ -73,5 +81,9 @@ void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result);
 void mx_add_filesize(off_t size, t_catalog *cat, char **result);
 void mx_add_lastchange_time(time_t time, char **result);
 void mx_add_hardlink(char *path, char **result);
+void mx_add_minor_major(char **result, dev_t dev, t_catalog *cat);
+int mx_get_nmb_digits(int nmb);
+char *mx_get_hex_view(int nmb);
+void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
 
 #endif

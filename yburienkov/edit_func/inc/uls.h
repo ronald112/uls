@@ -49,6 +49,9 @@ typedef struct s_catalog {
 } t_catalog;
 
 typedef struct s_flag {
+    bool is_h;
+    bool is_R;
+    bool is_A;
 	bool is_a;
 	bool is_l;
 	bool is_C;
@@ -78,12 +81,15 @@ void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
 void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result);
 void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result);
-void mx_add_filesize(off_t size, t_catalog *cat, char **result);
+void mx_add_filesize(off_t size, t_catalog *cat, char **result, t_flag flag);
 void mx_add_lastchange_time(time_t time, char **result);
 void mx_add_hardlink(char *path, char **result);
 void mx_add_minor_major(char **result, dev_t dev, t_catalog *cat);
-int mx_get_nmb_digits(int nmb);
+int mx_get_nmb_digits_int(int nmb);
+long long mx_get_nmb_digits_ll(long long nmb);
 char *mx_get_hex_view(int nmb);
 void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
+
+char *mx_change_size_h(off_t size);
 
 #endif

@@ -12,7 +12,7 @@ static void chk_max_size_name(t_catalog *cat, t_dir_data *list) {
     if (grp != NULL)
         list->min_lnght_grpdir = mx_strlen(grp->gr_name);
     else {
-        char *temp = mx_itoa(cat->dir->buff_stat->st_gid);
+        char *temp = mx_itoa(list->buff_stat->st_gid);
 
         list->min_lnght_grpdir = mx_strlen(temp);
         mx_strdel(&temp);
@@ -27,15 +27,27 @@ static void chk_max_size_name(t_catalog *cat, t_dir_data *list) {
 }
 
 static void set_max_size(t_dir_data *list, t_catalog *cat, t_flag flag) {
+    if (flag.is_a == false && list->name[0] != '.') {
+        chk_max_size_name(cat, list);
+        mx_add_indens_minor_major(cat, list);
+    }
+    else if (flag.is_a == true) {
+        chk_max_size_name(cat, list);
+        mx_add_indens_minor_major(cat, list);
+    }
+}
+
+static void add_sizedir_to_sizeblock(t_dir_data *list, t_catalog *cat,
+                                     t_flag flag) {
     if (flag.is_a == false && list->name[0] != '.')
-        chk_max_size_name(cat, list);
+        cat->size_of_block += list->buff_stat->st_blocks;
     else if (flag.is_a == true)
-        chk_max_size_name(cat, list);
+        cat->size_of_block += list->buff_stat->st_blocks;
 }
 
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag) {
     list->buff_stat = (struct stat *)malloc(sizeof(struct stat));
     lstat(list->path, list->buff_stat);
-    cat->size_of_block += list->buff_stat->st_blocks;
+    add_sizedir_to_sizeblock(list, cat, flag);
     set_max_size(list, cat, flag);
 }

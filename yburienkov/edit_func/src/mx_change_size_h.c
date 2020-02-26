@@ -1,14 +1,18 @@
 #include "uls.h"
 
+//static char *get_
+
 static char *add_kilobytes(off_t size, long long nmb) {
     long long cpy_digits = 0;
     char *temp_res = NULL;
-
+    long long remainder = ((size % 1024) * 10) / 1024;
+//printf("debug %llu\n", remainder);
     nmb /= 1024;
     cpy_digits = mx_get_nmb_digits_ll(nmb);
     temp_res = mx_ltoa(nmb);
+
     if (cpy_digits == 1) {
-        char *temp_str = mx_ltoa((size % 1000) / 100);
+        char *temp_str = mx_ltoa(remainder);
 
         temp_res = mx_addstr(temp_res, ".");
         temp_res = mx_addstr(temp_res, temp_str);

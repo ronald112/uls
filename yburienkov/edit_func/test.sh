@@ -1,6 +1,6 @@
 clear
-ls -lh /Library > test
-./uls -lh /Library > test2
+ls -lh / > test
+./uls -lh / > test2
 diff test test2
 echo "/ "
 ls -lh libmx/ > test

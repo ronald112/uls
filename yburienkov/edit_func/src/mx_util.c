@@ -1,5 +1,24 @@
 #include "uls.h"
 
+long long mx_get_remainder(long long nmb, long long divider,
+                           long long accur) {
+    long long temp_nmb = 0;
+    long long i = 0;
+
+    for (; i < accur; ++i) {
+        if ((nmb % divider) == 0)
+            return 0;
+        if ((((nmb % divider) * 10) / divider) > 5) {
+            return (((nmb % divider) * 10) / divider);
+        }
+        else {
+            nmb = ((nmb % divider) * 10);
+            temp_nmb = nmb;
+        }
+    }
+    return nmb / divider;
+}
+
 int mx_get_nmb_digits_int(int nmb) {
     long long tmp_ls = nmb;
 

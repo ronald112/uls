@@ -29,8 +29,10 @@ static void chk_line_for_flags(char *argv, t_main *info) {
             info->flag.is_A = true;
         if (argv[i] == 'R')
             info->flag.is_R = true;
-        if (argv[i] == 'h')
+        if (argv[i] == 'h' && info->flag.is_l == true)
             info->flag.is_h = true;
+        if (argv[i] == '@' && info->flag.is_l == true)
+            info->flag.is_dog = true;
     }
 }
 

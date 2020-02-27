@@ -1,14 +1,47 @@
 #include "uls.h"
 
-static char *add_kilobytes(off_t size, long long nmb) {
-    long long cpy_digits = 0;
-    char *temp_res = NULL;
+static long long get_remainder(long long nmb, long long divider,
+                           long long accur) {
+    long long temp_nmb = 0;
+    long long i = 0;
 
-    nmb /= 1024;
-    cpy_digits = mx_get_nmb_digits_ll(nmb);
+    for (; i < accur; ++i) {
+        if ((nmb % divider) == 0)
+            return 0;
+        if ((((nmb % divider) * 10) / divider) > 5) {
+            return (((nmb % divider) * 10) / divider);
+        }
+        else {
+            nmb = ((nmb % divider) * 10);
+            temp_nmb = nmb;
+        }
+    }
+    return nmb / divider;
+}
+
+
+static long long change_remainder(off_t size, long long *nmb) {
+    long long remainder[2] = {0};
+
+    *nmb /= 1024;
+    for (int i = 0; i < 2; ++i)
+        remainder[i] = get_remainder(size, 1024, i + 1);
+    if (remainder[1] >= 5)
+        remainder[0] += 1;
+    if (remainder[0] == 10) {
+        *nmb += 1;
+        remainder[0] = 0;
+    }
+    return remainder[0];
+}
+
+static char *add_kilobytes(off_t size, long long nmb) {
+    char *temp_res = NULL;
+    long long remainder = change_remainder(size, &nmb);
+
     temp_res = mx_ltoa(nmb);
-    if (cpy_digits == 1) {
-        char *temp_str = mx_ltoa((size % 1000) / 100);
+    if (mx_get_nmb_digits_ll(nmb) == 1) {
+        char *temp_str = mx_ltoa(remainder);
 
         temp_res = mx_addstr(temp_res, ".");
         temp_res = mx_addstr(temp_res, temp_str);
@@ -36,11 +69,6 @@ char *mx_change_size_h(off_t size) {
 
     if (nmb > 1023 && nmb < 1048577) {
         temp_res = add_kilobytes(size, nmb);
-    }
-    else if (nmb > 1048576) {
-        nmb /= 1048576;
-        temp_res = mx_ltoa(nmb);
-        temp_res = mx_addstr(temp_res, "M");
     }
     else {
         temp_res = mx_ltoa(nmb);

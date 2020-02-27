@@ -49,6 +49,7 @@ typedef struct s_catalog {
 } t_catalog;
 
 typedef struct s_flag {
+    bool is_dog;
     bool is_h;
     bool is_R;
     bool is_A;
@@ -91,7 +92,5 @@ char *mx_get_hex_view(int nmb);
 void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
 
 char *mx_change_size_h(off_t size);
-long long mx_get_remainder(long long nmb, long long divider,
-                           long long accur);
 
 #endif

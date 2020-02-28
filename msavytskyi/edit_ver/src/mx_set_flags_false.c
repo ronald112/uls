@@ -6,4 +6,6 @@ void mx_set_flags_false(t_main *info) {
     info->flag.is_a = false;
     info->flag.is_C = false;
     info->flag.is_l = false;
+    info->flag.is_f = false;
+    info->flag.is_tofile = false;
 }

@@ -53,7 +53,6 @@
 
 void mx_init_local_info(t_dir_data *dir, t_main *info, char * link) {
     t_catalog *head = NULL;
-    static int count_lvl = 0;
 
 	head = mx_create_list_of_catalog(info->am_dir);
 	info->cat = head; // инициализация листа каталогов
@@ -80,14 +79,15 @@ void mx_init_local_info(t_dir_data *dir, t_main *info, char * link) {
 
 void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	DIR *directoy = opendir(cat->c_name);
+		printf("{}{}{}{} %s directory %p\n", cat->c_name, (void*)directoy);
 	// DIR *directoy = mx_opendir_info(info, cat, link);
 	t_dir_data *list = cat->dir;
 	struct dirent *temp = NULL;
 	int am_of_dir = 0;
-
 	// printf("%s:  %p\n", cat->c_name, (void *)directoy);
-	static int counter = 0;
-
+	cat->c_info = NULL;
+	if(directoy == NULL)
+		return;
 	if (directoy && (temp = readdir(directoy))) {
 		list->data = temp;
 		list->name = mx_strdup(list->data->d_name);

@@ -1,11 +1,10 @@
 #include "uls.h"
 
 static long long get_remainder(long long nmb, long long divider,
-                           long long accur) {
+                               long long accur) {
     long long temp_nmb = 0;
-    long long i = 0;
 
-    for (; i < accur; ++i) {
+    for (long long i = 0; i < accur; ++i) {
         if ((nmb % divider) == 0)
             return 0;
         if ((((nmb % divider) * 10) / divider) > 5) {
@@ -55,7 +54,7 @@ static char *add_digits(char **result) {
     int nmb_digits = 5 - mx_strlen(*result);
     char *temp_res = NULL;
 
-    for (; nmb_digits != 0; nmb_digits -= 1)
+    for (; nmb_digits != 0; --nmb_digits)
         temp_res = mx_addstr(temp_res, " ");
     temp_res = mx_addstr(temp_res, *result);
     mx_strdel(result);

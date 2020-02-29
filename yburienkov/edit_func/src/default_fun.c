@@ -214,8 +214,9 @@ void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b) {
 	b->am_data = tmp;
 	a->is_dir = b->is_dir;
 	b->is_dir = tmp_is;
-	
-
+	tmp_is = a->is_char_block;
+	a->is_char_block = b->is_char_block;
+	b->is_char_block = tmp_is;
 
 	if (flag.is_l == true) {
 		long long tmp = a->size_of_block;

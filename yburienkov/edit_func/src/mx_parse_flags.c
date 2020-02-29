@@ -38,9 +38,8 @@ static void chk_line_for_flags(char *argv, t_main *info) {
 
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info) {
     argv++;
-    if (*argc < 2)
-        mx_set_flags_false(info);
-    else {
+    mx_set_flags_false(info);
+    if (*argc > 1)        
         while (*argv) {
             if (*argv[0] != '-')
                 break;

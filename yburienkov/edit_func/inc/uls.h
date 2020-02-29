@@ -38,6 +38,7 @@ typedef struct s_catalog {
     int lng_max_minor;
     int lng_max_major;
     bool is_dir;
+    bool is_char_block;
     char *c_name;           // имя каталога
     t_dir_data *dir;        // все файлы в дир (1)
     t_dir_data *dir_data;   // файлы без . и .. (2)
@@ -82,7 +83,7 @@ void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
 void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result);
 void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result);
-void mx_add_filesize(off_t size, t_catalog *cat, char **result, t_flag flag);
+void mx_add_filesize(off_t size, t_catalog *cat, char **result, bool flag);
 void mx_add_lastchange_time(time_t time, char **result);
 void mx_add_hardlink(char *path, char **result);
 void mx_add_minor_major(char **result, dev_t dev, t_catalog *cat);

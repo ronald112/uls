@@ -2,11 +2,31 @@ clear
 ls -lh / > test
 ./uls -lh / > test2
 diff test test2
-echo "/ "
+echo "./uls -lh /"
+ls -lh /../ > test
+./uls -lh /../ > test2
+diff test test2
+echo "./uls -lh /../"
+ls -lh /../dev/ > test
+./uls -lh /../dev/ > test2
+diff test test2
+echo "./uls -lh /../dev/"
+ls -l / > test
+./uls -l / > test2
+diff test test2
+echo "./uls -l /"
 ls -lh libmx/ > test
 ./uls -lh libmx/ > test2
 diff test test2
-echo "libmx/"
+echo "./uls -lh libmx/"
+ls * > test
+./uls * > test2
+diff test test2
+echo "./uls *"
+ls /* > test
+./uls /* > test2
+diff test test2
+echo "./uls /*"
 # for i in {1..12}; do
 # 	touch ../test/file$i
 # done

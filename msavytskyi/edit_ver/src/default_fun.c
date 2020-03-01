@@ -450,25 +450,26 @@ void mx_print_R(t_main *info) {
 	// }
 
 	//**************** -C ******************
-	for (; head; head = head->c_next) {
-		mx_printstr(head->c_name);
-		mx_printstr(":\n");
-		mx_count_line_for_print(info);
-		mx_print_cat(head, info->flag.is_a);
-		mx_printchar('\n');
-		if (head->c_info)
-			mx_print_R(head->c_info);
-	}
-
-	//**************** -1 ******************
 	// for (; head; head = head->c_next) {
 	// 	mx_printstr(head->c_name);
 	// 	mx_printstr(":\n");
-	// 	mx_print_1(head, true);
+	// 	mx_count_line_for_print(info);
+	// 	mx_print_cat(head, info->flag.is_a);
 	// 	mx_printchar('\n');
 	// 	if (head->c_info)
 	// 		mx_print_R(head->c_info);
 	// }
+
+	//**************** -1 ******************
+	for (; head; head = head->c_next) {
+		mx_printstr(head->c_name);
+		mx_printstr(":\n");
+		mx_print_1(head, true);
+		if (head->dir_data)
+			mx_printchar('\n');
+		if (head->c_info)
+			mx_print_R(head->c_info);
+	}
 }
 
 int main(int argc, char *argv[]) {
@@ -507,7 +508,7 @@ int main(int argc, char *argv[]) {
 	mx_del_node(info);
 	
 	// mx_print(info);
-	// mx_print_R(info);
+	mx_print_R(info);
 	
 	// printf("%s\n", (void *)info->cat->c_info->cat);
 	// printf("========%s->dir: %p\n", info->cat->c_info->cat->c_name, (void*)info->cat->c_info->cat->dir->name);

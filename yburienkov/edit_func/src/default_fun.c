@@ -28,26 +28,6 @@ static void push_back(char *link, t_flag flag, t_catalog *cat) {
 	}
 }
 
-void mx_make_extra_catalog(t_main *info, char *link) {
-	for(t_catalog *head = info->cat; head; head = head->c_next) {
-		if(mx_strcmp("!!!", head->c_name) == 0) {
-			push_back(link, info->flag, head);
-			head->dir_data = head->dir;
-		}
-		else if(head->c_next == NULL) {
-			head->c_next = (t_catalog *)malloc(sizeof(t_catalog));
-			head->c_next->c_next = NULL;
-			head->c_next->is_dir = true;
-			head->c_next->size_of_block = 0;
-			head->c_next->max_size_oflink = 0;
-			head->c_next->max_size_ofdir = 0;
-			head->c_next->dir = NULL;
-			head->c_next->dir_data = NULL;
-			head->c_next->c_name = mx_strdup("!!!");
-		}
-	}
-}
-
 void mx_free_dir_data(t_catalog **cat) {
 	mx_strdel(&(*cat)->c_name);
 }
@@ -74,16 +54,35 @@ void mx_del_node(t_main *info) {
 	}
 }
 
+void mx_make_extra_catalog(t_main *info, char *link) {
+    for(t_catalog *head = info->cat; head; head = head->c_next) {
+        if(mx_strcmp("!!!", head->c_name) == 0) {
+            push_back(link, info->flag, head);
+            head->dir_data = head->dir;
+        }
+        else if(head->c_next == NULL) {
+            head->c_next = (t_catalog *)malloc(sizeof(t_catalog));
+            head->c_next->c_next = NULL;
+            head->c_next->is_dir = true;
+            head->c_next->size_of_block = 0;
+            head->c_next->max_size_oflink = 0;
+            head->c_next->max_size_ofdir = 0;
+            head->c_next->dir = NULL;
+            head->c_next->dir_data = NULL;
+            head->c_next->c_name = mx_strdup("!!!");
+        }
+    }
+}
+
 DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 	DIR *dir;
 
-	errno = 0;
 	if ((dir = opendir(link)) == NULL) {
-		char *temp = mx_strjoin(info->uls_name, link);
+		char *temp = mx_strjoin(info->uls_name, &link[1]);
 
-		if (errno != ENOTDIR)
+		if (errno != ENOTDIR) {
 			perror(temp);
-		mx_strdel(&temp);
+		}
 		free(cat->dir);
 		cat->dir = NULL;
 		cat->dir_data = NULL;

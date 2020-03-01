@@ -2,8 +2,9 @@
 
 static char *get_info(t_dir_data *dir, t_catalog *cat, t_flag flag) {
     char *result = mx_get_permissions(dir->buff_stat->st_mode);
+    int indents_dog = 0;
 
-    mx_add_xatr(dir->path, &result);
+    mx_add_xatr(dir->path, &result, &indents_dog);
     mx_add_links(dir->buff_stat->st_nlink, cat, &result);
     mx_add_pwd(dir, cat, &result);
     mx_add_grp(dir, cat, &result);
@@ -14,6 +15,8 @@ static char *get_info(t_dir_data *dir, t_catalog *cat, t_flag flag) {
     mx_add_lastchange_time(dir->buff_stat->st_mtimespec.tv_sec, &result);
     result = mx_addstr(result, dir->name);
     mx_add_hardlink(dir->path, &result);
+    if (flag.is_dog == true)
+        mx_print_ifdog(dir->path, &result);
     return result;
 }
 

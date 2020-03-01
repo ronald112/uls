@@ -1,10 +1,52 @@
+/installer.failurerequests
+
 /Applications:
+App Store.app
+Automator.app
+Books.app
+Calculator.app
+Calendar.app
+Chess.app
+Contacts.app
+Dashboard.app
+Dictionary.app
+FaceTime.app
+Font Book.app
 Google Chrome.app
+Home.app
+Image Capture.app
+Keynote.app
+Launchpad.app
+Mail.app
+Managed Software Center.app
+Maps.app
+Messages.app
+Mission Control.app
+News.app
+Notes.app
+Open Any File.app
+PDF Reader Pro Lite.app
+Photo Booth.app
+Photos.app
+Preview.app
+QuickTime Player.app
+Reminders.app
 Safari.app
+Siri.app
+Slack.app
+Stickies.app
+Stocks.app
+Sublime Text.app
+System Preferences.app
+TextEdit.app
+The Unarchiver.app
+Time Machine.app
 Utilities
+VoiceMemos.app
+iTerm.app
+iTunes.app
 
 /Library:
-Apple
 Application Support
 Audio
 Caches
@@ -15,10 +57,10 @@ Compositions
 Contextual Menu Items
 CoreAnalytics
 CoreMediaIO
+Desktop Pictures
 Developer
 DirectoryServices
 Documentation
-DriverExtensions
 Extensions
 Filesystems
 Fonts
@@ -27,7 +69,6 @@ GPUBundles
 Graphics
 Image Capture
 Input Methods
-InstallerSandboxes
 Internet Plug-Ins
 Java
 Keyboard Layouts
@@ -35,15 +76,19 @@ Keychains
 LaunchAgents
 LaunchDaemons
 Logs
+Managed Installs
+MessageTracer
+Messages
 Modem Scripts
-OSAnalytics
 OpenDirectory
+PDF Services
 Perl
 PreferencePanes
 Preferences
 Printers
 Python
 QuickLook
+QuickTime
 Receipts
 Ruby
 Sandbox
@@ -53,32 +98,69 @@ Scripts
 Security
 Speech
 Spotlight
-StagedDriverExtensions
 StagedExtensions
 StartupItems
-SystemExtensions
 SystemMigration
 SystemProfiler
 Updates
 User Pictures
-User Template
 Video
 WebServer
+Widgets
+
+/Network:
 
 /System:
-Applications
-DriverKit
 Library
-Volumes
 iOSSupport
 
 /Users:
 Shared
-ronald1121
+ademicheva
+aherzha
+aholyk
+ashemidko
+dmaximov
+dmushynska
+dpysarenko
+dtkachuk
+kshkinov
+latoyan
+lserebriak
+mhubina
+mlibovych
+mlitovchen
+mpokotylo
+msavytskyi
+neo
+ohusieva
+oivannikov
+okhomin
+opisha
+osmyrnov
+osoviak-kr
+oyartsev
+skropyvian
+tyerofieie
+vbabiak
+vdepeshko
+vfomenko
+vnazarenko
+vpoliakova
+vpyatkevic
+vromaniuk
+vslipchenk
+vtryzna
+vynchuk
+ybelyaev
+yburienkov
+ylebid
 
 /Volumes:
-VMware Shared Folders
-macOS Catalina by Geekrar
+Mac OS
+Preboot
+Storage
+Untitled
 
 /bin:
 [
@@ -87,7 +169,6 @@ cat
 chmod
 cp
 csh
-dash
 date
 dd
 df
@@ -142,8 +223,12 @@ disk1
 disk1s1
 disk1s2
 disk1s3
-disk1s4
-disk1s5
+disk2
+disk2s1
+disk2s2
+disk2s3
+disk2s4
+disk3
 dtrace
 dtracehelper
 fbt
@@ -152,6 +237,7 @@ fsevents
 klog
 lockstat
 machtrace
+nsmb0
 null
 oslog
 oslog_stream
@@ -295,8 +381,12 @@ rdisk1
 rdisk1s1
 rdisk1s2
 rdisk1s3
-rdisk1s4
-rdisk1s5
+rdisk2
+rdisk2s1
+rdisk2s2
+rdisk2s3
+rdisk2s4
+rdisk3
 sdt
 stderr
 stdin
@@ -434,10 +524,14 @@ ttywd
 ttywe
 ttywf
 urandom
+xcpm
 zero
+
+/dojo:
 
 /etc:
 afpovertcp.cfg
+afpovertcp.cfg~orig
 aliases
 aliases.db
 apache2
@@ -445,38 +539,60 @@ asl
 asl.conf
 auto_home
 auto_master
+auto_master~orig
 autofs.conf
 bashrc
 bashrc_Apple_Terminal
+bashrc~previous
 com.apple.screensharing.agent.launchd
 csh.cshrc
+csh.cshrc~orig
 csh.login
+csh.login~orig
 csh.logout
+csh.logout~orig
 cups
 defaults
+dnsextd.conf
 emond.d
 find.codes
+find.codes~orig
+fstab
 fstab.hd
+fstab.hd~previous
 ftpusers
+ftpusers~orig
 gettytab
+gettytab~orig
 group
+group~previous
 hosts
 hosts.equiv
+hosts~orig
 irbrc
 kern_loader.conf
+kern_loader.conf~previous
+krb5.conf
 krb5.keytab
 localtime
 locate.rc
+mach_init.d
+mach_init_per_login_session.d
+mach_init_per_user.d
 mail.rc
+mail.rc~orig
 man.conf
 manpaths
 manpaths.d
 master.passwd
+master.passwd~orig
 nanorc
 networks
+networks~orig
 newsyslog.conf
 newsyslog.d
 nfs.conf
+nfs.conf~orig
 notify.conf
 ntp.conf
 ntp_opendirectory.conf
@@ -485,6 +601,7 @@ pam.d
 passwd
 paths
 paths.d
+paths~orig
 periodic
 pf.anchors
 pf.conf
@@ -492,37 +609,47 @@ pf.os
 php-fpm.conf.default
 php-fpm.d
 php.ini.default
+php.ini.default-previous
 postfix
 ppp
 profile
+profile~orig
 protocols
+protocols~previous
 racoon
 rc.common
+rc.common~previous
 rc.netboot
 resolv.conf
 rmtab
 rpc
+rpc~previous
 rtadvd.conf
+rtadvd.conf~previous
 security
 services
+services~previous
 shells
+shells~orig
 snmp
 ssh
 ssl
 sudo_lecture
 sudoers
 sudoers.d
+sudoers~orig
 syslog.conf
+syslog.conf~previous
 ttys
+ttys~previous
 wfs
 xtab
 zprofile
 zshrc
-zshrc_Apple_Terminal
 
 /home:
 
-/opt:
+/net:
 
 /private:
 etc
@@ -532,6 +659,7 @@ var
 
 /sbin:
 apfs_hfs_convert
+autodiskmount
 disklabel
 dmesg
 dynamic_pager
@@ -568,7 +696,6 @@ mount_exfat
 mount_fdesc
 mount_ftp
 mount_hfs
-mount_lockerfs
 mount_msdos
 mount_nfs
 mount_ntfs
@@ -595,29 +722,19 @@ shutdown
 umount
 
 /tmp:
-PKInstallSandbox.KWMmWk
-com.apple.launchd.O17AWynHmw
-pipe_client_request_595_10
-pipe_client_request_595_11
-pipe_client_request_595_12
-pipe_client_request_595_9
-pipe_client_response_595_10
-pipe_client_response_595_11
-pipe_client_response_595_12
-pipe_client_response_595_9
-pipe_server_request_595_10
-pipe_server_request_595_11
-pipe_server_request_595_12
-pipe_server_request_595_9
-pipe_server_response_595_10
-pipe_server_response_595_11
-pipe_server_response_595_12
-pipe_server_response_595_9
-powerlog
+com.apple.launchd.TlIcSBFjk3
+com.apple.launchd.uWp6xOA37q
+pipe_client_request_2078_4
+pipe_client_request_2078_5
+pipe_client_response_2078_4
+pipe_client_response_2078_5
+pipe_server_request_2078_4
+pipe_server_request_2078_5
+pipe_server_response_2078_4
+pipe_server_response_2078_5
+yburienkov
 
 /usr:
-X11
-X11R6
 bin
 lib
 libexec
@@ -647,7 +764,6 @@ root
 rpc
 run
 rwho
-select
 spool
 tmp
 vm

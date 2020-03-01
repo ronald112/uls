@@ -78,8 +78,7 @@ void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
 char *mx_get_permissions(mode_t mode);
 
 void mx_print_totalsize(t_catalog *cat);
-
-void mx_add_xatr(char *path, char **result);
+void mx_add_xatr(char *path, char **result, int *indent);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
 void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result);
 void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result);
@@ -91,7 +90,7 @@ int mx_get_nmb_digits_int(int nmb);
 long long mx_get_nmb_digits_ll(long long nmb);
 char *mx_get_hex_view(int nmb);
 void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
-
 char *mx_change_size_h(off_t size);
+void mx_print_ifdog(char *path, char **result);
 
 #endif

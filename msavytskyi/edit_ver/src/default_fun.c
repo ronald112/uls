@@ -508,7 +508,7 @@ int main(int argc, char *argv[]) {
 	mx_del_node(info);
 	
 	// mx_print(info);
-	mx_print_R(info);
+	// mx_print_R(info);
 	
 	// printf("%s\n", (void *)info->cat->c_info->cat);
 	// printf("========%s->dir: %p\n", info->cat->c_info->cat->c_name, (void*)info->cat->c_info->cat->dir->name);

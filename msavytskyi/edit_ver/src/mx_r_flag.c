@@ -81,8 +81,8 @@ void mx_get_error_for_R(t_main *info, t_catalog* cat) {
 	char *error;
 
 	if(errno == 0) {
-		mx_get_dir_data_from_dir(cat);
-		mx_sort_dir_list(cat->dir, info->flag);
+		// mx_get_dir_data_from_dir(cat);
+		
 	}
 	else {
 		error = mx_strjoin(info->uls_name, cat->c_name);
@@ -100,6 +100,11 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	
 	cat->c_info = NULL;
 	if(directoy == NULL) {
+		if(errno != 0) {
+			mx_printstr(cat->c_name);
+			mx_printstr(":\n\n");
+		}
+		mx_get_error_for_R(info, cat);
 		return;
 	}
 	if (directoy && (temp = readdir(directoy))) {
@@ -124,6 +129,7 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 		cat->am_data++;
 		list->is_dir && cat->am_data > 2 ? am_of_dir++ : 0;
 	}
+	mx_get_dir_data_from_dir(cat);
 	if (am_of_dir != 0) {
 		cat->c_info = (t_main *)malloc(sizeof(t_main));
 		cat->c_info->am_dir = am_of_dir;
@@ -136,13 +142,37 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	else
 		cat->c_info = NULL;
 
+		mx_sort_dir_list(cat->dir, info->flag);
+		mx_printstr(cat->c_name);
+		mx_printstr(":\n");
+		mx_print_1(cat, true);
+		mx_printchar('\n');
+
+		
+
+	//*************************************
 	t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;
 	
 	for (; tmp && cat->c_info->am_dir != 0; tmp = tmp->c_next) {
+
+// mx_sort_dir_list(cat->dir, info->flag);
+		// mx_printstr(cat->c_name);
+		// mx_printstr(":\n");
+		// mx_print_1(cat, true);
+		// mx_printchar('\n');
+
 		errno = 0;
 		mx_r_flag(cat->c_info, tmp, tmp->c_name);
-		mx_get_error_for_R(info->flag, tmp);
+		// if (errno == 0)
+		// 	mx_sort_dir_list(cat->dir, info->flag);
+		// mx_printstr(tmp->c_name);
+		// mx_printstr(":\n");
+		// // printf("{}{}{}}{}  %s\n", tmp->dir->name);
+		// mx_print_1(tmp, true);
+		
 	}
+	//***************************************
+
 	// mx_closedir_info(info, directoy, link);
 	closedir(directoy);
 }

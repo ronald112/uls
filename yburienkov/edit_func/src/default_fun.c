@@ -78,7 +78,7 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 	DIR *dir;
 
 	if ((dir = opendir(link)) == NULL) {
-		char *temp = mx_strjoin(info->uls_name, &link[1]);
+		char *temp = mx_strjoin(info->uls_name, link);
 
 		if (errno != ENOTDIR) {
 			perror(temp);

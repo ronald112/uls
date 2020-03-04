@@ -11,7 +11,6 @@ void mx_add_filesize(off_t size, t_catalog *cat, char **result, bool flag) {
     cnt = cat->max_size_ofdir - cnt;
     if (cnt < 0)
         cnt = cat->lng_max_minor + cat->lng_max_major + 2;
-
     if (flag == true)
         *result = mx_addstr(*result, str_h);
     else {

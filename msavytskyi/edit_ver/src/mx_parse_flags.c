@@ -13,6 +13,8 @@ static void chk_l1C_flags(char c, t_main *info) {
         info->flag.is_l = false;
         info->flag.is_1 = false;
         info->flag.is_C = true;
+    } if (c == 'R') {
+        info->flag.is_R = true;
     }
 }
 

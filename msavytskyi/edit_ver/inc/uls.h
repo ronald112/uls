@@ -58,6 +58,7 @@ typedef struct s_flag {
 	bool is_C;
 	bool is_1;
     bool is_f;
+    bool is_R;
     bool is_tofile;
 } t_flag;
 

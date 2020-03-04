@@ -472,6 +472,18 @@ void mx_print_R(t_main *info) {
 	}
 }
 
+void mx_switch_read_data(t_main *info, t_catalog *head, int argc) {
+	if (argc > 1 && mx_strcmp(head->c_name, "!!!") != 0) {
+		if (!info->flag.is_R)
+			mx_get_data_list(info, head, head->c_name);
+		mx_r_flag(info, head, head->c_name);
+	}
+	else if (argc == 1 && mx_strcmp(head->c_name, "!!!") != 0) {
+		// mx_get_data_list(info, head, ".");
+		mx_r_flag(info, head, ".");
+	}
+}
+
 int main(int argc, char *argv[]) {
 	t_main *info = (t_main*)malloc(sizeof(t_main));
 	//*****************
@@ -491,9 +503,9 @@ int main(int argc, char *argv[]) {
 			// mx_get_data_list(info, head, ".");
 			mx_r_flag(info, head, ".");
 		}
-		if(head && head->dir) {
+		if(head && head->dir && ((!info->flag.is_R && !info->flag.is_a)
+					|| (info->flag.is_R && info->flag.is_a))) {
 			// system("leaks -q uls");
-
 		// printf("==========***=======\n");
 			mx_sort_dir_list(head->dir, info->flag);
 			if (mx_strcmp(head->c_name, "!!!") != 0 && head->dir->next->next) {

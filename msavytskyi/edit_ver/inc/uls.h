@@ -71,6 +71,7 @@ struct s_main {     //** структура, которая хранит мас�
 
 
 void mx_r_flag(t_main *info, t_catalog *cat, char *link);
+void mx_r_flag_a(t_main *info, t_catalog *cat, char *link);
 
 void mx_print_1(t_catalog *cat, bool a);
 

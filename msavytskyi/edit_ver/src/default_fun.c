@@ -476,7 +476,10 @@ void mx_switch_read_data(t_main *info, t_catalog *head, int argc) {
 	if (argc > 1 && mx_strcmp(head->c_name, "!!!") != 0) {
 		if (!info->flag.is_R)
 			mx_get_data_list(info, head, head->c_name);
-		mx_r_flag(info, head, head->c_name);
+		else if (info->flag.is_a)
+			mx_r_flag_a(info, head, head->c_name);
+		else
+			mx_r_flag(info, head, head->c_name);
 	}
 	else if (argc == 1 && mx_strcmp(head->c_name, "!!!") != 0) {
 		// mx_get_data_list(info, head, ".");
@@ -496,12 +499,14 @@ int main(int argc, char *argv[]) {
 
 	for (int i = 1; head; i++, head = head->c_next) {
 		if (argc > 1 && mx_strcmp(head->c_name, "!!!") != 0) {
+			mx_switch_read_data(info, head, argc);
 			// mx_get_data_list(info, head, head->c_name);
-			mx_r_flag(info, head, head->c_name);
+			// mx_r_flag(info, head, head->c_name);
 		}
 		else if (argc == 1 && mx_strcmp(head->c_name, "!!!") != 0) {
 			// mx_get_data_list(info, head, ".");
-			mx_r_flag(info, head, ".");
+			// mx_r_flag(info, head, ".");
+			head->c_name = ".";
 		}
 		if(head && head->dir && ((!info->flag.is_R && !info->flag.is_a)
 					|| (info->flag.is_R && info->flag.is_a))) {
@@ -519,7 +524,8 @@ int main(int argc, char *argv[]) {
 	mx_sort_cat_list(info->cat, info->flag);
 	mx_del_node(info);
 	
-	// mx_print(info);
+	if (!info->flag.is_R)
+		mx_print(info);
 	// mx_print_R(info);
 	
 	// printf("%s\n", (void *)info->cat->c_info->cat);

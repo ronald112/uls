@@ -91,6 +91,6 @@ long long mx_get_nmb_digits_ll(long long nmb);
 char *mx_get_hex_view(int nmb);
 void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
 char *mx_change_size_h(off_t size);
-void mx_print_ifdog(char *path, char **result, long long size);
+void mx_print_ifdog(char *path, char **result, long long size, bool flag);
 
 #endif

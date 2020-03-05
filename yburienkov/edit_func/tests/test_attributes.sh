@@ -16,12 +16,24 @@ xattr -w apple.com g attributes/test_attribute6
 #echo "./uls -l@ attributes/"
 #./uls -l@ attributes/
 
+echo "ls -l@h /Applications"
+ls -l@h /Applications > test
+echo "./uls -l@h /Applications"
+./uls -l@h /Applications > test2
+diff test test2
+
+echo "ls -l@h /"
+ls -l@h / > test
+echo "./uls -l@h /"
+./uls -l@h / > test2
+diff test test2
+
 echo "ls -l@ attributes/"
-ls -l@ / > test
+ls -l attributes/ > test
 echo "./uls -l@ attributes/"
-./uls -l@ / > test2
+./uls -l attributes/ > test2
+diff test test2
 
 #ls -l@ attributes/ > test
 #./uls -l@ attributes/ > test2
-diff test test2
 rm -rf attributes/

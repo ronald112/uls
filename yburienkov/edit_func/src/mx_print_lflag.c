@@ -16,7 +16,7 @@ static char *get_info(t_dir_data *dir, t_catalog *cat, t_flag flag) {
     result = mx_addstr(result, dir->name);
     mx_add_hardlink(dir->path, &result);
     if (flag.is_dog == true)
-        mx_print_ifdog(dir->path, &result, cat->max_size_ofdir);
+        mx_print_ifdog(dir->path, &result, cat->max_size_ofdir, flag.is_h);
     return result;
 }
 

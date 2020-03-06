@@ -41,10 +41,10 @@ static void add_sizedir_to_sizeblock(t_dir_data *list, t_catalog *cat,
                                      t_flag flag) {
     switch (list->buff_stat->st_mode & S_IFMT) {
     case S_IFIFO:
-        cat->is_char_block = false;
+        cat->is_char_block = true;
         break;
     case S_IFBLK:
-        cat->is_char_block = false;
+        cat->is_char_block = true;
         break;
     }
     if (flag.is_a == false && list->name[0] != '.')

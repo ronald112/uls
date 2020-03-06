@@ -76,13 +76,16 @@ void mx_make_extra_catalog(t_main *info, char *link) {
 
 DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 	DIR *dir;
+	char *temp = NULL;
 
 	if ((dir = opendir(link)) == NULL) {
-		char *temp = mx_strjoin(info->uls_name, link);
+		if (link[0] == '/')
+			temp = mx_strjoin(info->uls_name, &link[1]);
+		else
+			temp = mx_strjoin(info->uls_name, link);
 
-		if (errno != ENOTDIR) {
+		if (errno != ENOTDIR)
 			perror(temp);
-		}
 		free(cat->dir);
 		cat->dir = NULL;
 		cat->dir_data = NULL;
@@ -90,11 +93,16 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 		if (errno == ENOTDIR) {
 			mx_make_extra_catalog(info, cat->c_name);
 		}
+		mx_strdel(&temp);
 		return dir;
 	}
 	else {
+		if (temp)
+			mx_strdel(&temp);
 		return dir;
 	}
+	if (temp)
+		mx_strdel(&temp);
 }
 
 // check if valid close

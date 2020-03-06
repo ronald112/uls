@@ -12,7 +12,7 @@ static void set_start_val(t_catalog *head) {
     head->size_of_block = 0;
     head->am_data = 0;
     head->am_files = 0;
-    head->is_char_block = true;
+    head->is_char_block = false;
 }
 
 t_catalog *mx_create_list_of_catalog(int amount) {

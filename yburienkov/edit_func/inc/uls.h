@@ -86,11 +86,14 @@ void mx_add_filesize(off_t size, t_catalog *cat, char **result, bool flag);
 void mx_add_lastchange_time(time_t time, char **result);
 void mx_add_hardlink(char *path, char **result);
 void mx_add_minor_major(char **result, dev_t dev, t_catalog *cat);
-int mx_get_nmb_digits_int(int nmb);
-long long mx_get_nmb_digits_ll(long long nmb);
-char *mx_get_hex_view(int nmb);
 void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
 char *mx_change_size_h(off_t size);
 void mx_print_ifdog(char *path, char **result, long long size, bool flag);
+
+long long mx_get_remainder(long long nmb, long long divider,
+                           long long accur);
+int mx_get_nmb_digits_int(long long nmb);
+long long mx_get_nmb_digits_ll(long long nmb);
+char *mx_get_hex_view(int nmb);
 
 #endif

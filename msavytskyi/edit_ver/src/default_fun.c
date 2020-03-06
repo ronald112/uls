@@ -204,17 +204,34 @@ void mx_count_line_for_print(t_main *info) {
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	width = !info->flag.is_tofile ? w.ws_col : MX_FILE_WS;
 	for (t_catalog *head = info->cat; head; head = head->c_next) {				// проделываем для каждой дир, указан. в аргументах
-		
 		files = info->flag.is_a ? head->dir : head->dir_data;
 		amount = info->flag.is_a ? head->am_data : head->am_files;
-
-		head->lines_for_print = 0; 												// обнуляем количество линий для дир
+		head->lines_for_print = 0;										// обнуляем количество линий для дир
 		head->max_length = get_max_length(files);										// находим макимально возможную длину названия файла в дир
 		max_cols = (width/(8 - (head->max_length % 8) + head->max_length));				// высчитываем количество колонок
 		head->lines_for_print = amount / max_cols;		// высчитвыаем количество линий
 		if(head->lines_for_print == 0 || (amount % max_cols) != 0)							// доп проверка на линии
 			head->lines_for_print++;
 	}
+}
+
+void mx_count_line_for_print_R(t_main *info, t_catalog *head) {
+	struct winsize w;
+	int max_cols;
+	int amount;
+	t_dir_data *files;
+	size_t width;
+
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	width = !info->flag.is_tofile ? w.ws_col : MX_FILE_WS;
+	files = info->flag.is_a ? head->dir : head->dir_data;
+	amount = info->flag.is_a ? head->am_data : head->am_files;
+	head->lines_for_print = 0;										// обнуляем количество линий для дир
+	head->max_length = get_max_length(files);										// находим макимально возможную длину названия файла в дир
+	max_cols = (width/(8 - (head->max_length % 8) + head->max_length));				// высчитываем количество колонок
+	head->lines_for_print = max_cols != 0 ? amount / max_cols : 0;		// высчитвыаем количество линий
+	if(head->lines_for_print == 0 || (amount % max_cols) != 0)							// доп проверка на линии
+		head->lines_for_print++;
 }
 
 //=============================================================================
@@ -393,6 +410,32 @@ void mx_print_1(t_catalog *cat, bool a) {
 	}
 }
 
+void print_R(t_main *info, t_catalog *head) {
+	static int counter = 0; 
+
+	mx_count_line_for_print_R(info, head);
+	if (counter != 0) {
+			mx_printstr(head->c_name);
+			mx_printstr(":\n");
+	}
+	if (info->flag.is_l == true) {
+		if (info->flag.is_a == false && head->am_files != 0)
+			mx_print_totalsize(head);
+		else if (info->flag.is_a == true && head->am_data != 0)
+			mx_print_totalsize(head);
+		mx_print_lflag(head, info->flag);
+	}
+	else if (!info->flag.is_tofile) {
+		info->flag.is_1 ? mx_print_1(head, info->flag.is_a)
+		: mx_print_cat(head, info->flag.is_a);
+	}
+	else
+		info->flag.is_C ? mx_print_cat(head, info->flag.is_a)
+		: mx_print_1(head, info->flag.is_a);
+		mx_printchar('\n');
+		counter++;
+}
+
 void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
 
@@ -501,12 +544,13 @@ int main(int argc, char *argv[]) {
 		if (argc > 1 && mx_strcmp(head->c_name, "!!!") != 0) {
 			mx_switch_read_data(info, head, argc);
 			// mx_get_data_list(info, head, head->c_name);
-			// mx_r_flag(info, head, head->c_name);
+			// mx_r_flag_a(info, head, head->c_name);
 		}
 		else if (argc == 1 && mx_strcmp(head->c_name, "!!!") != 0) {
 			// mx_get_data_list(info, head, ".");
 			// mx_r_flag(info, head, ".");
 			head->c_name = ".";
+			mx_switch_read_data(info, head, argc);
 		}
 		if(head && head->dir && ((!info->flag.is_R && !info->flag.is_a)
 					|| (info->flag.is_R && info->flag.is_a))) {

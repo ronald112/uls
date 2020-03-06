@@ -35,6 +35,7 @@ typedef struct s_main t_main;
 typedef struct s_catalog {
     t_main *c_info;
     blkcnt_t size_of_block;   // size of file/dir
+    char *R_name;
     int max_lnght_namedir;
     int max_lnght_grpdir;
     long long max_size_ofdir;
@@ -74,6 +75,7 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link);
 void mx_r_flag_a(t_main *info, t_catalog *cat, char *link);
 
 void mx_print_1(t_catalog *cat, bool a);
+void print_R(t_main *info, t_catalog *head);
 
 DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link);
 void mx_closedir_info(t_main *info, DIR *dir, char *link);

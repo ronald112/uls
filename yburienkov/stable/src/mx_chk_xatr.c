@@ -13,3 +13,26 @@ void mx_add_xatr(char *path, char **result) {
     acl_free(acl);
     acl = NULL;
 }
+
+void mx_print_ifdog(char *path, char **result, long long size, bool flag) {
+    char xattr_name[1024] = "\0";
+    ssize_t xattr = listxattr(path, xattr_name, 1024, XATTR_NOFOLLOW);
+    int nmb = getxattr(path, xattr_name, NULL, 0, 1, XATTR_NOFOLLOW);
+
+    if (xattr > 0) {
+        char *temp = mx_itoa(nmb);
+
+        *result = mx_addstr(*result, "\n\t");
+        *result = mx_addstr(*result, xattr_name);
+        *result = mx_addstr(*result, "\t");
+        for (long long i = mx_get_nmb_digits_ll(size - 2)
+        + mx_get_nmb_digits_int(nmb) - 1; i < 4; ++i,
+        *result = mx_addstr(*result, " "));
+        *result = mx_addstr(*result, temp);
+        if (flag == true)
+            *result = mx_addstr(*result, "B");
+        *result = mx_addstr(*result, " ");
+        mx_strdel(&temp);
+    }
+}
+

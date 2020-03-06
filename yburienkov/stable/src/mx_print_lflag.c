@@ -1,6 +1,6 @@
 #include "uls.h"
 
-static char *get_info(t_dir_data *dir, t_catalog *cat) {
+static char *get_info(t_dir_data *dir, t_catalog *cat, t_flag flag) {
     char *result = mx_get_permissions(dir->buff_stat->st_mode);
 
     mx_add_xatr(dir->path, &result);
@@ -10,10 +10,12 @@ static char *get_info(t_dir_data *dir, t_catalog *cat) {
     if (result[0] == 'c' || result[0] == 'b')
         mx_add_minor_major(&result, dir->buff_stat->st_rdev, cat);
     else
-        mx_add_filesize(dir->buff_stat->st_size, cat, &result);
+        mx_add_filesize(dir->buff_stat->st_size, cat, &result, flag.is_h);
     mx_add_lastchange_time(dir->buff_stat->st_mtimespec.tv_sec, &result);
     result = mx_addstr(result, dir->name);
     mx_add_hardlink(dir->path, &result);
+    if (flag.is_dog == true)
+        mx_print_ifdog(dir->path, &result, cat->max_size_ofdir, flag.is_h);
     return result;
 }
 
@@ -33,13 +35,13 @@ void mx_print_lflag(t_catalog *cat, t_flag flags) {
     chc_max_indents_ll(cat);
     for (t_dir_data *dir = cat->dir; dir; dir = dir->next) {
         if (flags.is_a == false && dir->name[0] != '.') {
-            temp = get_info(dir, cat);
+            temp = get_info(dir, cat, flags);
             mx_printstr(temp);
             mx_strdel(&temp);
             mx_printstr("\n");
         }
         else if (flags.is_a == true) {
-            temp = get_info(dir, cat);
+            temp = get_info(dir, cat, flags);
             mx_printstr(temp);
             mx_strdel(&temp);
             mx_printstr("\n");

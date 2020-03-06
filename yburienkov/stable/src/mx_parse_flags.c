@@ -5,11 +5,13 @@ static void chk_l1C_flags(char c, t_main *info) {
         info->flag.is_l = true;
         info->flag.is_1 = false;
         info->flag.is_C = false;
-    } if (c == '1') {
+    }
+    if (c == '1') {
         info->flag.is_l = false;
         info->flag.is_1 = true;
         info->flag.is_C = false;
-    } if (c == 'C') {
+    }
+    if (c == 'C') {
         info->flag.is_l = false;
         info->flag.is_1 = false;
         info->flag.is_C = true;
@@ -19,16 +21,25 @@ static void chk_l1C_flags(char c, t_main *info) {
 static void chk_line_for_flags(char *argv, t_main *info) {
     for (int i = 0; argv[i] != '\0'; ++i) {
         chk_l1C_flags(argv[i], info);
-        if (argv[i] == 'a')
+        if (argv[i] == 'a') {
             info->flag.is_a = true;
+            info->flag.is_A = false;
+        }
+        else if (argv[i] == 'A')
+            info->flag.is_A = true;
+        if (argv[i] == 'R')
+            info->flag.is_R = true;
+        if (argv[i] == 'h' && info->flag.is_l == true)
+            info->flag.is_h = true;
+        if (argv[i] == '@' && info->flag.is_l == true)
+            info->flag.is_dog = true;
     }
 }
 
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info) {
     argv++;
-    if (*argc < 2)
-        mx_set_flags_false(info);
-    else {
+    mx_set_flags_false(info);
+    if (*argc > 1) {
         while (*argv) {
             if (*argv[0] != '-')
                 break;

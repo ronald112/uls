@@ -1,7 +1,16 @@
 #include "uls.h"
 
-int mx_get_nmb_digits(int nmb) {
+int mx_get_nmb_digits_int(int nmb) {
     long long tmp_ls = nmb;
+
+    if (nmb == 0)
+        return 1;
+    for (nmb = 0; tmp_ls != 0; tmp_ls /= 10, nmb++);
+    return nmb;
+}
+
+long long mx_get_nmb_digits_ll(long long nmb) {
+    unsigned long long tmp_ls = nmb;
 
     if (nmb == 0)
         return 1;
@@ -25,14 +34,14 @@ char *mx_get_hex_view(int nmb) {
 
 void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list) {
     if (cat->lng_max_minor
-    < mx_get_nmb_digits(MX_MINOR(list->buff_stat->st_rdev))
+    < mx_get_nmb_digits_int(MX_MINOR(list->buff_stat->st_rdev))
     && MX_MINOR(list->buff_stat->st_rdev) < 255) {
         cat->lng_max_minor =
-        mx_get_nmb_digits(MX_MINOR(list->buff_stat->st_rdev));
+        mx_get_nmb_digits_int(MX_MINOR(list->buff_stat->st_rdev));
     }
     if (cat->lng_max_major
-    < mx_get_nmb_digits(MX_MAJOR(list->buff_stat->st_dev))) {
+    < mx_get_nmb_digits_int(MX_MAJOR(list->buff_stat->st_dev))) {
         cat->lng_max_major =
-        mx_get_nmb_digits(MX_MAJOR(list->buff_stat->st_rdev));
+        mx_get_nmb_digits_int(MX_MAJOR(list->buff_stat->st_rdev));
     }
 }

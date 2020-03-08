@@ -23,14 +23,19 @@ typedef struct s_dir_data {
     struct dirent *data;    // информация про файл/папку дирента
     int min_lnght_namedir;
     int min_lnght_grpdir;
+    bool is_dir;
     char *name;             // имя файла или папки
     char *path;             // path to the file/dir
     struct stat *buff_stat; // stat buff
     struct s_dir_data *next;// следующий файл/папка
 } t_dir_data;
 
+typedef struct s_main t_main;
+
 typedef struct s_catalog {
+    t_main *c_info;
     blkcnt_t size_of_block;   // size of file/dir
+    char *R_name;
     int max_lnght_namedir;
     int max_lnght_grpdir;
     long long max_size_ofdir;
@@ -67,6 +72,12 @@ typedef struct s_main {     //** структура, которая хранит
     t_catalog *cat;         // массив каталогов (директорик из аргумента)
     t_flag flag;
 } t_main;
+
+void mx_r_flag(t_main *info, t_catalog *cat, char *link);
+void mx_r_flag_a(t_main *info, t_catalog *cat, char *link);
+
+void mx_print_1(t_catalog *cat, bool a);
+void print_R(t_main *info, t_catalog *head);
 
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
 void mx_set_flags_false(t_main *info);

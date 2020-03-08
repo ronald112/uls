@@ -6,15 +6,19 @@ static void chk_l1C_flags(char c, t_main *info) {
         info->flag.is_1 = false;
         info->flag.is_C = false;
     }
-    if (c == '1') {
+    else if (c == '1') {
         info->flag.is_l = false;
         info->flag.is_1 = true;
         info->flag.is_C = false;
     }
-    if (c == 'C') {
+    else if (c == 'C') {
         info->flag.is_l = false;
         info->flag.is_1 = false;
         info->flag.is_C = true;
+    }
+    else if (c == 'f') {
+        info->flag.is_dog = true;
+        info->flag.is_1 = false;
     }
 }
 

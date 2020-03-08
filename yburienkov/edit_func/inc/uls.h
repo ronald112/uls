@@ -80,6 +80,10 @@ void mx_r_flag_a(t_main *info, t_catalog *cat, char *link);
 void mx_print_1(t_catalog *cat, bool a);
 void print_R(t_main *info, t_catalog *head);
 
+void mx_get_dir_data_from_dir(t_catalog *head);
+void mx_sort_cat_list(t_catalog *start, t_flag flag);
+void mx_sort_dir_list(t_dir_data *dir, t_flag flag);
+
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
 void mx_set_flags_false(t_main *info);
 t_catalog *mx_create_list_of_catalog(int amount);

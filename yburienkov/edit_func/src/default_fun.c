@@ -391,7 +391,6 @@ void print_R(t_main *info, t_catalog *head) {
 		counter++;
 }
 
-
 void mx_print(t_main *info) {
 	t_catalog *head = info->cat;
 
@@ -470,19 +469,14 @@ void mx_print_R(t_main *info) {
 	}
 }
 
-void mx_switch_read_data(t_main *info, t_catalog *head, int argc) {
-	if (argc > 1 && mx_strcmp(head->c_name, "!!!") != 0) {
-		if (!info->flag.is_R)
-			mx_get_data_list(info, head, head->c_name);
-		else if (info->flag.is_a)
+void mx_switch_read_data(t_main *info, t_catalog *head) {
+	if (info->flag.is_R) {
+		if (info->flag.is_a)
 			mx_r_flag_a(info, head, head->c_name);
 		else
 			mx_r_flag(info, head, head->c_name);
 	}
-	else if (argc == 1 && mx_strcmp(head->c_name, "!!!") != 0) {
-		// mx_get_data_list(info, head, ".");
-		mx_r_flag(info, head, ".");
-	}
+	mx_get_data_list(info, head, head->c_name);
 }
 
 
@@ -492,21 +486,13 @@ int main(int argc, char *argv[]) {
 
 	info->flag.is_tofile = !isatty(1);
 	for (int i = 1; head; i++, head = head->c_next) {
-		if (argc > 1 && mx_strcmp(head->c_name, "!!!") != 0) {
-			mx_switch_read_data(info, head, argc);
-			// mx_get_data_list(info, head, head->c_name);
-			// mx_r_flag_a(info, head, head->c_name);
-		}
-		else if (argc == 1 && mx_strcmp(head->c_name, "!!!") != 0) {
-			// mx_get_data_list(info, head, ".");
-			// mx_r_flag(info, head, ".");
-			head->c_name = ".";
-			mx_switch_read_data(info, head, argc);
+		if (argc >= 1 && mx_strcmp(head->c_name, "!!!") != 0) {
+			if (argc == 1)
+				head->c_name = ".";
+			mx_switch_read_data(info, head);
 		}
 		if(head && head->dir && ((!info->flag.is_R && !info->flag.is_a)
 					|| (info->flag.is_R && info->flag.is_a))) {
-			// system("leaks -q uls");
-		// printf("==========***=======\n");
 			mx_sort_dir_list(head->dir, info->flag);
 			if (mx_strcmp(head->c_name, "!!!") != 0 && head->dir->next->next) {
 				head->dir_data = head->dir->next->next;
@@ -515,20 +501,12 @@ int main(int argc, char *argv[]) {
 				mx_get_dir_data_from_dir(head);
 		}
 	}
+	
 	mx_sort_cat_list(info->cat, info->flag);
 	mx_del_node(info);
-	if (!info->flag.is_R)
-		mx_print(info);
-	else
+	if (info->flag.is_R)
 		mx_print_R(info);
-	
-	// printf("%s\n", (void *)info->cat->c_info->cat);
-	// printf("========%s->dir: %p\n", info->cat->c_info->cat->c_name, (void*)info->cat->c_info->cat->dir->name);
-	// mx_print_1(info->cat->c_info->cat->c_info->cat->c_next, true);
-
-	// mx_print_cat(info->cat);//-----------info----------------
-	// mx_print_default(info->cat);
-	// system("leaks -q uls");
+	mx_print(info);
 	return 0;
 }
 

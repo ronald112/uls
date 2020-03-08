@@ -57,6 +57,7 @@ typedef struct s_catalog {
 typedef struct s_flag {
     bool is_dog;
     bool is_h;
+    bool is_f;
     bool is_R;
     bool is_A;
 	bool is_a;

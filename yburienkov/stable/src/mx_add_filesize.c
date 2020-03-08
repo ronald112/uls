@@ -6,7 +6,8 @@ void mx_add_filesize(off_t size, t_catalog *cat, char **result, bool flag) {
     char *str_h = mx_change_size_h(size);
 
     if (cat->is_char_block == true) {
-        cnt = cat->lng_max_minor + cat->lng_max_major + 2;
+        cnt = cat->lng_max_minor + cat->lng_max_major + 3
+        - mx_get_nmb_digits_ll(size);
     }
     if (flag == true && cat->is_char_block == false)
         *result = mx_addstr(*result, str_h);

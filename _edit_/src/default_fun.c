@@ -22,19 +22,18 @@ static void push_back(char *link, t_flag flag, t_catalog *cat) {
 	}
 	else {
 		cur = *list;
-
 		for (; cur->next != NULL; cur = cur->next);
 		cur->next = create_node(link, flag, cat);
 	}
 }
 
 void mx_make_extra_catalog(t_main *info, char *link) {
-    for(t_catalog *head = info->cat; head; head = head->c_next) {
-        if(mx_strcmp("!!!", head->c_name) == 0) {
+    for (t_catalog *head = info->cat; head; head = head->c_next) {
+        if (mx_strcmp("!!!", head->c_name) == 0) {
             push_back(link, info->flag, head);
             head->dir_data = head->dir;
         }
-        else if(head->c_next == NULL) {
+        else if (head->c_next == NULL) {
             head->c_next = (t_catalog *)malloc(sizeof(t_catalog));
             head->c_next->c_next = NULL;
             head->c_next->is_dir = true;
@@ -84,7 +83,6 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 			temp = mx_strjoin(info->uls_name, &link[1]);
 		else
 			temp = mx_strjoin(info->uls_name, link);
-
 		if (errno != ENOTDIR)
 			perror(temp);
 		free(cat->dir);
@@ -93,13 +91,11 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
 		cat->is_dir = false;
 		if (errno == ENOTDIR) {
 			mx_make_extra_catalog(info, cat->c_name);
-		}
 		mx_strdel(&temp);
 		return dir;
 	}
-	else {
+	else
 		return dir;
-	}
 }
 
 // check if valid close
@@ -113,7 +109,7 @@ void mx_closedir_info(t_main *info, DIR *dir, char *link) {
 	}
 }
 
-void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
+void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {
 	DIR *directoy = mx_opendir_info(info, cat, link);
 	t_dir_data *list = cat->dir;
 	struct dirent *temp = NULL;
@@ -140,8 +136,6 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {//-----------
 	}
 	mx_closedir_info(info, directoy, link);
 }
-
-//=============================================================================
 
 static int get_max_length(t_dir_data *dir) {
 	int max = 0;
@@ -196,15 +190,13 @@ void mx_count_line_for_print_R(t_main *info, t_catalog *head) {
 		head->lines_for_print++;
 }
 
-//=============================================================================
-
 void mx_print_default(t_catalog *cat) {
 	t_catalog *head = cat;
 	t_dir_data *list = head->dir_data;
 
 	for (; head; head = head->c_next) {
 		list = head->dir_data;
-		printf("%s:\n", head->c_name);
+		// printf("%s:\n", head->c_name);
 		while (list) {
 			mx_printstr(list->name);
 			mx_printstr("\t");
@@ -213,9 +205,6 @@ void mx_print_default(t_catalog *cat) {
 	}
 	mx_printchar('\n');
 }
-
-//=============================================================================
-//================= Sort Part ======================
 
 void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b) {
 	t_dir_data *tmp_data = a->dir;
@@ -331,7 +320,6 @@ void mx_sort_dir_list(t_dir_data *start, t_flag flag) {
 		lptr = ptr1;
 	}
 }
-//=============================================================================
 
 static void print_tab(t_catalog *cat, t_dir_data *data) {
 	int tab = cat->max_length / 8 + 1;
@@ -368,7 +356,7 @@ void mx_print_1(t_catalog *cat, bool a) {
 }
 
 void mx_print_R(t_main *info, t_catalog *head) {
-	static int counter = 0; 
+	static int counter = 0;
 
 	mx_count_line_for_print_R(info, head);
 	if (counter != 0) {
@@ -433,56 +421,6 @@ void mx_get_dir_data_from_dir(t_catalog *head) {
 	}
 }
 
-// void mx_print_R(t_main *info) {
-// 	t_catalog *head = info->cat;
-
-	
-// 	//**************** -l ******************
-// 	// for (; head; head = head->c_next) {
-// 	// 	mx_printstr(head->c_name);
-// 	// 	mx_printstr(":\n");
-// 	// 	mx_print_totalsize(head);
-// 	// 	mx_print_lflag(head, info->flag);
-// 	// 	mx_printchar('\n');
-// 	// 	if (head->c_info)
-// 	// 		mx_print_R(head->c_info);
-// 	// }
-
-// 	//**************** -C ******************
-// 	// for (; head; head = head->c_next) {
-// 	// 	mx_printstr(head->c_name);
-// 	// 	mx_printstr(":\n");
-// 	// 	mx_count_line_for_print(info);
-// 	// 	mx_print_cat(head, info->flag.is_a);
-// 	// 	mx_printchar('\n');
-// 	// 	if (head->c_info)
-// 	// 		mx_print_R(head->c_info);
-// 	// }
-
-// 	//**************** -1 ******************
-// 	for (; head; head = head->c_next) {
-// 		mx_printstr(head->c_name);
-// 		mx_printstr(":\n");
-// 		if (info->flag.is_l == true) {
-// 			mx_print_totalsize(head);
-// 			mx_print_lflag(head, info->flag);
-// 			mx_printchar('\n');
-// 		}
-// 		else if (info->flag.is_C == true) {
-// 			mx_count_line_for_print(info);
-// 			mx_print_cat(head, info->flag.is_a);
-// 			mx_printchar('\n');
-// 		}
-// 		else if (info->flag.is_1 == true) {
-// 			mx_print_1(head, true);
-// 			if (head->dir_data)
-// 				mx_printchar('\n');
-// 		}
-// 		if (head->c_info)
-// 			mx_print_R(head->c_info);
-// 	}
-// }
-
 void mx_switch_read_data(t_main *info, t_catalog *head) {
 	if (info->flag.is_R) {
 		if (info->flag.is_a)
@@ -493,21 +431,6 @@ void mx_switch_read_data(t_main *info, t_catalog *head) {
 	else
 		mx_get_data_list(info, head, head->c_name);
 }
-
-// void mx_switch_read_data(t_main *info, t_catalog *head, int argc) {
-// 	if (argc > 1 && mx_strcmp(head->c_name, "!!!") != 0) {
-// 		if (!info->flag.is_R)
-// 			mx_get_data_list(info, head, head->c_name);
-// 		else if (info->flag.is_a)
-// 			mx_r_flag_a(info, head, head->c_name);
-// 		else
-// 			mx_r_flag(info, head, head->c_name);
-// 	}
-// 	else if (argc == 1 && mx_strcmp(head->c_name, "!!!") != 0) {
-// 		// mx_get_data_list(info, head, ".");
-// 		mx_r_flag(info, head, ".");
-// 	}
-// }
 
 int main(int argc, char *argv[]) {
 	t_main *info = (t_main*)malloc(sizeof(t_main));
@@ -539,113 +462,3 @@ int main(int argc, char *argv[]) {
 	// system("leaks -q uls");
 	return 0;
 }
-
-///////////////////////////////////////////////////////////////////////////////
-
-// #include <stdio.h>
-// #include <time.h>
-// #include <sys/stat.h>
-// #include <string.h>
-// #include <stdlib.h>
-// int main() {
-//     char *date;
-//     int ret;
-//     struct stat buf;
-//     if ((ret = stat("Makefile", &buf))!=0) {
-//         fprintf(stderr, "stat failure error .%d", ret);
-//         abort();
-//     }
-//     date = asctime(localtime(&buf.st_ctime));
-//     printf("\n %s\n", date);
-//     printf("\n %d mode\n", buf.st_mode);
-//     printf("\n %lld size\n", buf.st_size);
-// }
-
-///////////////////////////////////////////////////////////////////////////////
-
-// #include <errno.h>
-// #include <stdio.h>
-// #include <string.h>
-// #include <sys/stat.h>
-// #include <sys/types.h>
-// #include <time.h>
-// #include <unistd.h>
-
-// #define TIME_STRING_BUF 50
-
-// /* Пользователь передает buf (минимальной длины TIME_STRING_BUF) вместо
-
-//    использования статического для функции буфера, чтобы избежать применения
-
-//    локальных статических переменных и динамической памяти. Никаких ошибок
-
-//    происходить не должно, поэтому никакой проверки ошибок не делаем. */
-// char *timeString (time_t t, char *buf) {
-//     struct tm *local;
-//     local = localtime(&t);
-//     strftime(buf, TIME_STRING_BUF, "%c", local);
-//     return buf;
-// }
-
-
-//  /* Отобразить всю информацию, полученную от lstat() по имени
-//     файла как единственному параметру. */
-
-// int statFile(const char *file) {
-//     struct stat statbuf;
-//     char timeBuf[TIME_STRING_BUF];
-
-//     if (lstat(file, &statbuf)) {
-//         fprintf(stderr, "не удалось lstat %s: %s ", file,
-//         strerror(errno));
-//         return 1;
-//     }
-
-//     printf("Имя файла : %s\n", file);
-//     printf("На устройстве: старший %d младший %d Inode номер: %llu\n" , major(statbuf.st_dev), minor(statbuf.st_dev), statbuf.st_ino);
-//     printf("Размер : %-101lld\nTип: %07o\nПрава доступа : %05o\n", statbuf.st_size, statbuf.st_mode & S_IFMT, statbuf.st_mode &~(S_IFMT));
-//     printf("Владелец : %d Группа : %d\nКоличество ссылок : %d\n", statbuf.st_uid, statbuf.st_gid, statbuf.st_nlink);
-//     printf("Время создания : %s\n", timeString(statbuf.st_ctime, timeBuf));
-//     printf("Время модификации : %s\n", timeString(statbuf.st_mtime, timeBuf));
-//     printf("Время доступа : %s\n", timeString (statbuf.st_atime, timeBuf));
-//     return 0;
-// }
-
-// int main(int argc, const char **argv) {
-//     int i;
-//     int rc = 0 ;
-// /* Вызвать statFile() для каждого имени файла,
-// переданного в командной строке. */
-//     for (i = 1; i < argc; i++) {
-// /* Если statFile() сбоит, rc будет содержать не ноль.*/
-//         rc |= statFile(argv[i]);
-// /* это печатает пробел между позициями,
-//    но не за последней */
-//         if ((argc - i) > 1)
-//             printf (" ");
-//     }
-//  return rc;
-// }
-
-///////////////////////////////////////////////////////////////////////////////
-
-// int main(int argc, char *argv[])
-// {
-//     int a = 2;
-
-//     // a <<= 2;
-
-//     printf("%d\n", a|8);
-//     return 0;
-// }
-
-
-//============Макросы типа===============
-/*
-* #define MX_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
-* #define MX_ISCHR(mode) (((mode) & S_IFMT) == S_IFCHR)
-* #define MX_ISBLK(mode) (((mode) & S_IFMT) == S_IFBLK)
-* #define MX_ISFIFO(mode) (((mode) & S_IFMT) == S_IFFIFO)
-* #define MX_ISLNK(mode) (((mode) & S_IFMT) == S_IFLNK)
-* #define MX_ISSOCK(mode) (((mode) & S_IFMT) == S_IFSOCK)
-**/

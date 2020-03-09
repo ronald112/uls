@@ -40,6 +40,12 @@ void mx_make_extra_catalog(t_main *info, char *link) {
             head->c_next->size_of_block = 0;
             head->c_next->max_size_oflink = 0;
             head->c_next->max_size_ofdir = 0;
+			head->c_next->lng_max_minor = 0;
+			head->c_next->lng_max_major = 0;
+			head->c_next->max_length = 0;
+			head->c_next->max_lnght_namedir = 0;
+			head->c_next->max_lnght_grpdir = 0;
+			head->c_next->is_char_block = false;
             head->c_next->dir = NULL;
             head->c_next->dir_data = NULL;
             head->c_next->c_name = mx_strdup("!!!");
@@ -73,29 +79,33 @@ void mx_del_node(t_main *info) {
 	}
 }
 
-DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {//-----------
+DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {
 	DIR *dir;
 	char *temp = NULL;
 	errno = 0;
+	if (link[0] == '/')
+		temp = mx_strjoin(info->uls_name, &link[1]);
+	else
+		temp = mx_strjoin(info->uls_name, link);
 
 	if ((dir = opendir(link)) == NULL) {
-		if (link[0] == '/')
-			temp = mx_strjoin(info->uls_name, &link[1]);
-		else
-			temp = mx_strjoin(info->uls_name, link);
 		if (errno != ENOTDIR)
 			perror(temp);
 		free(cat->dir);
 		cat->dir = NULL;
 		cat->dir_data = NULL;
 		cat->is_dir = false;
-		if (errno == ENOTDIR) {
+		if (errno == ENOTDIR)
 			mx_make_extra_catalog(info, cat->c_name);
 		mx_strdel(&temp);
 		return dir;
 	}
-	else
+	else {
+		if (errno != 0)
+			perror(temp);
+		mx_strdel(&temp);
 		return dir;
+	}
 }
 
 // check if valid close

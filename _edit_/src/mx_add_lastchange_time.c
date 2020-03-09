@@ -3,7 +3,7 @@
 static void add_time(char **chr_time, char *tmp_chr_time, time_t mtime) {
     long long diff_time = time(0) - mtime;
 
-    if (diff_time >= 0 && diff_time < 15768000) {
+    if (diff_time >= 0 && diff_time <= 15768000) {
         for (int i = 3; i < 16; i++)
             *chr_time = mx_addchr(*chr_time, tmp_chr_time[i]);
     }

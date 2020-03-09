@@ -16,6 +16,10 @@ void mx_init_local_info_a(t_dir_data *dir, t_main *info, char * link) {
 		head->max_size_ofdir = 0;
 		head->max_lnght_namedir = 0;
 		head->max_lnght_grpdir = 0;
+		head->lng_max_minor = 0;
+		head->lng_max_major = 0;
+		head->max_length = 0;
+		head->is_char_block = false;
 		head->c_name = mx_strdup(link);
 		head->R_name = mx_strdup(dir->name);
 		if (mx_strcmp(head->c_name, "/") != 0)
@@ -44,6 +48,10 @@ void mx_init_local_info(t_dir_data *dir, t_main *info, char * link) {
 		head->max_size_ofdir = 0;
 		head->max_lnght_namedir = 0;
 		head->max_lnght_grpdir = 0;
+		head->lng_max_minor = 0;
+		head->lng_max_major = 0;
+		head->max_length = 0;
+		head->is_char_block = false;
 		head->c_name = mx_strdup(link);
 		head->R_name = mx_strdup(dir->name);
 		if (mx_strcmp(head->c_name, "/") != 0)

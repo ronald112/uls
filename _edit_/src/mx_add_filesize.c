@@ -12,7 +12,6 @@ void mx_add_filesize(off_t size, t_catalog *cat, char **result, bool flag) {
     if (flag == true && cat->is_char_block == false)
         *result = mx_addstr(*result, str_h);
     else {
-        printf("debug size of ident is %lld\n", cnt);
         for (; cnt > 0; cnt--)
             *result = mx_addstr(*result, " ");
         *result = mx_addstr(*result, temp);

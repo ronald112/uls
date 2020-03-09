@@ -1,26 +1,20 @@
 clear
-ls -lh / > test
-./uls -lh / > test2
+echo "./uls -lh /dev"
+ls -lh /dev/ > test & ./uls -lh /dev/ > test2
+diff test test2
+ls -lh / > test & ./uls -lh / > test2
 diff test test2
 echo "./uls -lh /"
-ls -lh /../ > test
-./uls -lh /../ > test2
+ls -lh /../ > test & ./uls -lh /../ > test2
 diff test test2
 echo "./uls -lh /../"
-ls -lh /../dev/ > test
-./uls -lh /../dev/ > test2
-diff test test2
-echo "./uls -lh /../dev/"
-ls -l / > test
-./uls -l / > test2
+ls -l / > test & ./uls -l / > test2
 diff test test2
 echo "./uls -l /"
-ls -lh libmx/ > test
-./uls -lh libmx/ > test2
+ls -lh libmx/ > test & ./uls -lh libmx/ > test2
 diff test test2
 echo "./uls -lh libmx/"
-ls * > test
-./uls * > test2
+ls * > test & ./uls * > test2
 diff test test2
 echo "./uls *"
 ls /* > test

@@ -461,9 +461,21 @@ void mx_print_R(t_main *info) {
 	for (; head; head = head->c_next) {
 		mx_printstr(head->c_name);
 		mx_printstr(":\n");
-		mx_print_1(head, true);
-		if (head->dir_data)
+		if (info->flag.is_l == true) {
+			mx_print_totalsize(head);
+			mx_print_lflag(head, info->flag);
 			mx_printchar('\n');
+		}
+		else if (info->flag.is_C == true) {
+			mx_count_line_for_print(info);
+			mx_print_cat(head, info->flag.is_a);
+			mx_printchar('\n');
+		}
+		else if (info->flag.is_1 == true) {
+			mx_print_1(head, true);
+			if (head->dir_data)
+				mx_printchar('\n');
+		}
 		if (head->c_info)
 			mx_print_R(head->c_info);
 	}
@@ -506,7 +518,8 @@ int main(int argc, char *argv[]) {
 	mx_del_node(info);
 	if (info->flag.is_R)
 		mx_print_R(info);
-	mx_print(info);
+	else
+		mx_print(info);
 	return 0;
 }
 

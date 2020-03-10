@@ -1,5 +1,16 @@
 #include "uls.h"
 
+char *mx_check_name_valid(char *name) {
+	char *symb = name;
+
+	for (; *name; name++) {
+		if (*name == '\a' || *name == '\b' || *name == '\t' || *name == '\n'
+			|| *name == '\v' || *name == '\f' || *name == '\r')
+			*name = '?';
+	}
+	return symb;
+}
+
 static t_dir_data *create_node(char *data, t_flag flag, t_catalog *cat) {
 	t_dir_data *new_node = NULL;
 
@@ -360,7 +371,7 @@ void mx_print_cat(t_catalog *cat, bool flag_a) {
 
 void mx_print_1(t_catalog *cat, bool a) {
 	for (t_dir_data *dir = a ? cat->dir : cat->dir_data; dir; dir = dir->next){
-		mx_printstr(dir->name);
+		mx_printstr(mx_check_name_valid(dir->name));
 		mx_printchar('\n');
 	}
 }

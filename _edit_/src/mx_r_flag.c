@@ -91,7 +91,7 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	cat->c_info = NULL;
 	if(directoy == NULL) {
 		if(errno != 0) {
-			mx_printstr(cat->c_name);
+			mx_printstr(mx_check_name_valid(cat->c_name));
 			mx_printstr(":\n\n");
 		}
 		mx_get_error_for_R(info, cat);
@@ -196,7 +196,7 @@ void mx_r_flag_a(t_main *info, t_catalog *cat, char *link) {
 	cat->c_info = NULL;
 	if(directoy == NULL) {
 		if(errno != 0) {
-			mx_printstr(cat->c_name);
+			mx_printstr(mx_check_name_valid(cat->c_name));
 			mx_printstr(":\n\n");
 		}
 		mx_get_error_for_R(info, cat);

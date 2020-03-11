@@ -1,12 +1,12 @@
 #include "uls.h"
 
-char *mx_check_name_valid(char *name) {
+char *mx_check_name_valid(char *name, int index) {/* 1 - '\0'; 2 - '?'*/
 	char *symb = name;
 
 	for (; *name; name++) {
 		if (*name == '\a' || *name == '\b' || *name == '\t' || *name == '\n'
 			|| *name == '\v' || *name == '\f' || *name == '\r')
-			*name = '?';
+			*name = index == 1 ? '\0' : '?';
 	}
 	return symb;
 }
@@ -72,6 +72,14 @@ void mx_del_node(t_main *info) {
 	t_catalog *prev = info->cat;
 	t_catalog *list = info->cat->c_next ? info->cat->c_next : NULL;
 
+	if (!list) {
+		if (!prev->is_dir) {
+			mx_free_dir_data(&prev);
+			free(prev);
+			info->cat = NULL;
+		}
+		return;
+	}
 	if (!info->cat->is_dir) {
 		mx_free_dir_data(&info->cat);
 		info->cat = info->cat->c_next;
@@ -94,18 +102,19 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {
 	DIR *dir;
 	char *temp = NULL;
 	errno = 0;
-	if (link[0] == '/')
-		temp = mx_strjoin(info->uls_name, &link[1]);
-	else
-		temp = mx_strjoin(info->uls_name, link);
+
+	int i = mx_strlen(link) - 1;
+	for (; link[i] != '/' && i > 1; --i);
+	temp = mx_strjoin(info->uls_name, &link[i + 1]);
 
 	if ((dir = opendir(link)) == NULL) {
-		if (errno != ENOTDIR)
+		if (errno != ENOTDIR) {
 			perror(temp);
+		}
 		free(cat->dir);
 		cat->dir = NULL;
 		cat->dir_data = NULL;
-		cat->is_dir = false;
+		cat->is_dir = errno == EACCES ? true : false;
 		if (errno == ENOTDIR)
 			mx_make_extra_catalog(info, cat->c_name);
 		mx_strdel(&temp);
@@ -135,6 +144,8 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {
 	t_dir_data *list = cat->dir;
 	struct dirent *temp = NULL;
 
+	
+
 	if (directoy && (temp = readdir(directoy))) {
 		list->data = temp;
 		list->name = mx_strdup(list->data->d_name);
@@ -155,7 +166,9 @@ void mx_get_data_list(t_main *info, t_catalog *cat, char *link) {
 		list->next = NULL;
 		cat->am_data++;
 	}
+	// printf("{}{}{ %p }{}{}{}\n", (void *)directoy);
 	mx_closedir_info(info, directoy, link);
+	// printf("{}{}{ %p }{}{}{}\n", (void *)directoy);
 }
 
 static int get_max_length(t_dir_data *dir) {
@@ -350,15 +363,16 @@ static void print_tab(t_catalog *cat, t_dir_data *data) {
 		mx_printchar('\t');
 }
 
-void mx_print_cat(t_catalog *cat, bool flag_a) {
-	t_dir_data *dir = flag_a ? cat->dir : cat->dir_data;
+void mx_print_cat(t_catalog *cat, t_main *info) {
+	t_dir_data *dir = info->flag.is_a ? cat->dir : cat->dir_data;
 	t_dir_data *tmp = dir;
 	t_dir_data *temp = NULL;
 
 	for (int i = 0; i < cat->lines_for_print && dir; i++, dir = dir->next) {
 		tmp = dir;
 		while(tmp) {
-			mx_printstr(tmp->name);
+			info->flag.is_tofile ? mx_printstr(tmp->name)
+				: mx_printstr(mx_check_name_valid(tmp->name, 2));
 			temp = tmp;
 			for (int j = 0; j < cat->lines_for_print && tmp; j++)
 				tmp = tmp->next;
@@ -369,9 +383,11 @@ void mx_print_cat(t_catalog *cat, bool flag_a) {
 	}
 }
 
-void mx_print_1(t_catalog *cat, bool a) {
-	for (t_dir_data *dir = a ? cat->dir : cat->dir_data; dir; dir = dir->next){
-		mx_printstr(mx_check_name_valid(dir->name));
+void mx_print_1(t_catalog *cat, t_main *info) {
+	t_dir_data *dir = dir = info->flag.is_a ? cat->dir : cat->dir_data;
+
+	for (; dir; dir = dir->next){
+		mx_printstr(mx_check_name_valid(dir->name, info->flag.is_tofile));
 		mx_printchar('\n');
 	}
 }
@@ -393,12 +409,12 @@ void mx_print_R(t_main *info, t_catalog *head) {
 		mx_print_lflag(head, info->flag);
 	}
 	else if (!info->flag.is_tofile) {
-		info->flag.is_1 ? mx_print_1(head, info->flag.is_a)
-		: mx_print_cat(head, info->flag.is_a);
+		info->flag.is_1 ? mx_print_1(head, info)
+		: mx_print_cat(head, info);
 	}
 	else
-		info->flag.is_C ? mx_print_cat(head, info->flag.is_a)
-		: mx_print_1(head, info->flag.is_a);
+		info->flag.is_C ? mx_print_cat(head, info)
+		: mx_print_1(head, info);
 	counter++;
 }
 
@@ -407,26 +423,28 @@ void mx_print(t_main *info) {
 
 	mx_count_line_for_print(info);
 	for (; head; head = head->c_next) {
-		if (info->am_dir != 1 && mx_strcmp(head->c_name, "!!!") != 0) {
-			mx_printstr(head->c_name);
-			mx_printstr(":\n");
+		if (head->is_dir) {
+			if (info->am_dir != 1 && mx_strcmp(head->c_name, "!!!") != 0) {
+				mx_printstr(head->c_name);
+				mx_printstr(":\n");
+			}
+			if (info->flag.is_l == true) {
+				if (info->flag.is_a == false && head->am_files != 0)
+					mx_print_totalsize(head);
+				else if (info->flag.is_a == true && head->am_data != 0)
+					mx_print_totalsize(head);
+				mx_print_lflag(head, info->flag);
+			}
+			else if (!info->flag.is_tofile) {
+				info->flag.is_1 ? mx_print_1(head, info)
+				: mx_print_cat(head, info);
+			}
+			else
+				info->flag.is_C ? mx_print_cat(head, info)
+				: mx_print_1(head, info);
+			if (info->am_dir != 1 && head->c_next)
+				mx_printchar('\n');
 		}
-		if (info->flag.is_l == true) {
-			if (info->flag.is_a == false && head->am_files != 0)
-				mx_print_totalsize(head);
-			else if (info->flag.is_a == true && head->am_data != 0)
-				mx_print_totalsize(head);
-			mx_print_lflag(head, info->flag);
-		}
-		else if (!info->flag.is_tofile) {
-			info->flag.is_1 ? mx_print_1(head, info->flag.is_a)
-			: mx_print_cat(head, info->flag.is_a);
-		}
-		else
-			info->flag.is_C ? mx_print_cat(head, info->flag.is_a)
-			: mx_print_1(head, info->flag.is_a);
-		if (info->am_dir != 1 && head->c_next)
-			mx_printchar('\n');
 	}
 }
 
@@ -476,10 +494,13 @@ int main(int argc, char *argv[]) {
 			mx_get_dir_data_from_dir(head);
 		}
 	}
+	// printf("{}{}{}{}{}{}\n");
 	mx_sort_cat_list(info->cat, info->flag);
+	// printf("{}{}{ %p }{}{}{}\n", (void *)info->cat->c_next);
 	mx_del_node(info);
+	// printf("{}{}{}{}{}{}\n");
 	if (!info->flag.is_R)
 		mx_print(info);
 	// system("leaks -q uls");
-	return 0;
+	return errno == 0 ? 0 : 1;
 }

@@ -91,8 +91,9 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	cat->c_info = NULL;
 	if(directoy == NULL) {
 		if(errno != 0) {
-			mx_printstr(mx_check_name_valid(cat->c_name));
-			mx_printstr(":\n\n");
+			mx_printchar('\n');
+			mx_printstr(cat->c_name);
+			mx_printstr(":\n");
 		}
 		mx_get_error_for_R(info, cat);
 		return;
@@ -188,23 +189,27 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 
 
 void mx_r_flag_a(t_main *info, t_catalog *cat, char *link) {
+	errno = 0;
+
 	DIR *directoy = opendir(link);
 	t_dir_data *list = cat->dir;
 	struct dirent *temp = NULL;
 	int am_of_dir = 0;
 	
+
 	cat->c_info = NULL;
 	if(directoy == NULL) {
 		if(errno != 0) {
-			mx_printstr(mx_check_name_valid(cat->c_name));
-			mx_printstr(":\n\n");
+			mx_printchar('\n');
+			mx_printstr(cat->c_name);
+			mx_printstr(":\n");
 		}
 		mx_get_error_for_R(info, cat);
 		return;
 	}
 	if (directoy && (temp = readdir(directoy))) {
 		list->data = temp;
-		list->name = mx_strdup(list->data->d_name);
+		list->name = /*mx_check_name_valid(*/mx_strdup(list->data->d_name)/*, info->flag.is_tofile)*/;
 		list->path = mx_get_full_path(cat->c_name, list->name);
 		if (info->flag.is_l == true)
 			mx_ladd_to_tdir(list, cat, info->flag);
@@ -251,22 +256,8 @@ void mx_r_flag_a(t_main *info, t_catalog *cat, char *link) {
 	t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;
 	
 	for (; tmp && cat->c_info->am_dir != 0; tmp = tmp->c_next) {
-
-// mx_sort_dir_list(cat->dir, info->flag);
-		// mx_printstr(cat->c_name);
-		// mx_printstr(":\n");
-		// mx_print_1(cat, true);
-		// mx_printchar('\n');
-
 		errno = 0;
 		mx_r_flag_a(cat->c_info, tmp, tmp->c_name);
-		// if (errno == 0)
-		// 	mx_sort_dir_list(cat->dir, info->flag);
-		// mx_printstr(tmp->c_name);
-		// mx_printstr(":\n");
-		// // printf("{}{}{}}{}  %s\n", tmp->dir->name);
-		// mx_print_1(tmp, true);
-		
 	}
 	//***************************************
 

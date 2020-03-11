@@ -1,0 +1,133 @@
+396542d396541
+< ヒラギノ明朝 ProN.ttc
+396543a396543
+> ヒラギノ明朝 ProN.ttc
+406278,406289d406277
+< 儷黑 Pro.ttf.4F74_0.ATSD
+< 儷黑 Pro.ttf.4F74_0.fontinfo
+< 儷宋 Pro.ttf.845C_0.ATSD
+< 儷宋 Pro.ttf.845C_0.fontinfo
+< 华文细黑.ttf.678C_0.ATSD
+< 华文细黑.ttf.678C_0.fontinfo
+< 华文黑体.ttf.7C8C_0.ATSD
+< 华文黑体.ttf.7C8C_0.fontinfo
+< 华文仿宋.ttf.92D4_0.ATSD
+< 华文仿宋.ttf.92D4_0.fontinfo
+< ヒラギノ明朝 ProN.ttc.12D4878_0.ATSD
+< ヒラギノ明朝 ProN.ttc.12D4878_0.fontinfo
+406291a406280,406281
+> ヒラギノ明朝 ProN.ttc.12D4878_0.ATSD
+> ヒラギノ明朝 ProN.ttc.12D4878_0.fontinfo
+406311a406302,406311
+> 儷宋 Pro.ttf.845C_0.ATSD
+> 儷宋 Pro.ttf.845C_0.fontinfo
+> 儷黑 Pro.ttf.4F74_0.ATSD
+> 儷黑 Pro.ttf.4F74_0.fontinfo
+> 华文仿宋.ttf.92D4_0.ATSD
+> 华文仿宋.ttf.92D4_0.fontinfo
+> 华文细黑.ttf.678C_0.ATSD
+> 华文细黑.ttf.678C_0.fontinfo
+> 华文黑体.ttf.7C8C_0.ATSD
+> 华文黑体.ttf.7C8C_0.fontinfo
+729153a729154
+> test2_recursive
+731940a731942
+> 0056f7d307b642ee_0
+732039a732042
+> 1bf2ff23a861ce9f_0
+732051a732055
+> 21f34c83514ee22d_0
+732067a732072
+> 258e83d61331d5c1_0
+732257a732263
+> 605fecfb7d932b9f_0
+732272a732279
+> 671cb2d539f5b122_0
+732346a732354
+> 7a0e0f869d9fb2a7_0
+732352a732361
+> 7dfc6371b3cc3e81_0
+732383a732393
+> 8703978ae84f3375_0
+732401a732412
+> 8ec25b66dd8e5ffc_0
+732409a732421
+> 9089b6d80dd654aa_0
+732441a732454
+> 99ee648750a68a4e_0
+732461a732475
+> a05453c367b1c444_0
+732477a732492
+> a897fbb14604ec39_0
+732487a732503
+> ac37350afb3f012a_0
+732570a732587
+> c4b0780e9cf105d1_0
+732645a732663
+> dc06408a684f9676_0
+732683a732702
+> e41fde0d2a36f9d6_0
+732727a732747
+> f76fe05deb74b646_0
+732758a732779
+> ff621bd79b35f098_0
+746341,746345d746361
+< cloudd_2020-03-11-172933_e2r9p10.crash
+< cloudd_2020-03-11-172943_e2r9p10.crash
+< cloudd_2020-03-11-172953_e2r9p10.crash
+< cloudd_2020-03-11-173003_e2r9p10.crash
+< cloudd_2020-03-11-173013_e2r9p10.crash
+746361,746378c746377,746381
+< suggestd_2020-03-11-173146_e2r9p10.crash
+< suggestd_2020-03-11-173149_e2r9p10.crash
+< suggestd_2020-03-11-173152_e2r9p10.crash
+< suggestd_2020-03-11-173155_e2r9p10.crash
+< suggestd_2020-03-11-173158_e2r9p10.crash
+< suggestd_2020-03-11-173201_e2r9p10.crash
+< suggestd_2020-03-11-173204_e2r9p10.crash
+< suggestd_2020-03-11-173207_e2r9p10.crash
+< suggestd_2020-03-11-173210_e2r9p10.crash
+< suggestd_2020-03-11-173213_e2r9p10.crash
+< suggestd_2020-03-11-173216_e2r9p10.crash
+< suggestd_2020-03-11-173219_e2r9p10.crash
+< suggestd_2020-03-11-173222_e2r9p10.crash
+< suggestd_2020-03-11-173226_e2r9p10.crash
+< suggestd_2020-03-11-173229_e2r9p10.crash
+< suggestd_2020-03-11-173232_e2r9p10.crash
+< suggestd_2020-03-11-173235_e2r9p10.crash
+< suggestd_2020-03-11-173238_e2r9p10.crash
+---
+> cloudd_2020-03-11-173254_e2r9p10.crash
+> cloudd_2020-03-11-173305_e2r9p10.crash
+> cloudd_2020-03-11-173315_e2r9p10.crash
+> cloudd_2020-03-11-173325_e2r9p10.crash
+> cloudd_2020-03-11-173335_e2r9p10.crash
+746380a746384,746401
+> suggestd_2020-03-11-173247_e2r9p10.crash
+> suggestd_2020-03-11-173250_e2r9p10.crash
+> suggestd_2020-03-11-173253_e2r9p10.crash
+> suggestd_2020-03-11-173256_e2r9p10.crash
+> suggestd_2020-03-11-173259_e2r9p10.crash
+> suggestd_2020-03-11-173302_e2r9p10.crash
+> suggestd_2020-03-11-173305_e2r9p10.crash
+> suggestd_2020-03-11-173308_e2r9p10.crash
+> suggestd_2020-03-11-173311_e2r9p10.crash
+> suggestd_2020-03-11-173314_e2r9p10.crash
+> suggestd_2020-03-11-173317_e2r9p10.crash
+> suggestd_2020-03-11-173320_e2r9p10.crash
+> suggestd_2020-03-11-173323_e2r9p10.crash
+> suggestd_2020-03-11-173327_e2r9p10.crash
+> suggestd_2020-03-11-173330_e2r9p10.crash
+> suggestd_2020-03-11-173333_e2r9p10.crash
+> suggestd_2020-03-11-173336_e2r9p10.crash
+> suggestd_2020-03-11-173339_e2r9p10.crash
+746971,746979d746991
+< /dev/fd:
+< 0
+< 1
+< 2
+< 3
+< 4
+< 
+< /dev/fd/3:
+< 

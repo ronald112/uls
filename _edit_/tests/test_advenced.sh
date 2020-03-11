@@ -17,8 +17,8 @@ echo "./uls -lh libmx/"
 ls * > test & ./uls * > test2
 diff test test2
 echo "./uls *"
-ls /* > test
-./uls /* > test2
+ls ///////* > test
+./uls ///////* > test2
 diff test test2
 echo "./uls /*"
 # for i in {1..12}; do

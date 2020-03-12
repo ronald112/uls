@@ -14,7 +14,8 @@ FILES = mx_parse_flags default_fun testLS mx_set_flags_false \
 		mx_get_full_path mx_ifl_true mx_get_permissions \
 		mx_chk_xatr mx_add_links mx_add_usr mx_add_filesize \
 		mx_add_lastchange_time mx_add_hardlink mx_print_totalsize \
-		mx_add_minor_major mx_util mx_change_size_h mx_r_flag
+		mx_add_minor_major mx_util mx_change_size_h mx_r_flag \
+		mx_swap_cat mx_list_edit mx_util_swaps
 
 SRC = $(addsuffix .c, $(FILES))
 

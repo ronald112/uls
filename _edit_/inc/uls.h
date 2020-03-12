@@ -74,17 +74,28 @@ typedef struct s_main {     //** структура, которая хранит
     t_flag flag;
 } t_main;
 
+// List part
+t_dir_data *mx_create_node(char *data, t_flag flag, t_catalog *cat);
+void mx_del_node(t_main *info);
+
+// Sort part
+void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b);
+void mx_swap_ll(long long *a, long long *b);
+void mx_swap_bool(bool *a, bool *b);
+
+// -R flag part
 void mx_r_flag(t_main *info, t_catalog *cat, char *link);
 void mx_r_flag_a(t_main *info, t_catalog *cat, char *link);
-
 void mx_print_1(t_catalog *cat, t_main *info);
 void mx_print_R(t_main *info, t_catalog *head);
 
+// Check part
 char *mx_check_name_valid(char *name, int index);
 void mx_get_dir_data_from_dir(t_catalog *head);
 void mx_sort_cat_list(t_catalog *start, t_flag flag);
 void mx_sort_dir_list(t_dir_data *dir, t_flag flag);
 
+// Parse part
 t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
 void mx_set_flags_false(t_main *info);
 t_catalog *mx_create_list_of_catalog(int amount);
@@ -94,6 +105,7 @@ char *mx_get_full_path(char *name, char *path);
 void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
 char *mx_get_permissions(mode_t mode);
 
+// -L 
 void mx_print_totalsize(t_catalog *cat);
 void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);

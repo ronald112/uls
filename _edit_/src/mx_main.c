@@ -46,9 +46,9 @@ int main(int argc, char *argv[]) {
                 mx_strdel(&head->c_name);
                 head->c_name = ".";
             }
-            sort_dir_if_true(info, head);
             switch_read_data(info, head);
         }
+        sort_dir_if_true(info, head);
     }
     mx_sort_cat_list(info->cat, info->flag);
     mx_del_node(info);

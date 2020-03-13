@@ -1,6 +1,6 @@
 #include "uls.h"
 
-static void chk_l1C_flags(char c, t_main *info) {
+static void chk_l1Cf_flags(char c, t_main *info) {
     if (c == 'l') {
         info->flag.is_l = true;
         info->flag.is_1 = false;
@@ -26,7 +26,7 @@ static void chk_l1C_flags(char c, t_main *info) {
 
 static void chk_line_for_flags(char *argv, t_main *info) {
     for (int i = 0; argv[i] != '\0'; ++i) {
-        chk_l1C_flags(argv[i], info);
+        chk_l1Cf_flags(argv[i], info);
         if (argv[i] == 'a') {
             info->flag.is_a = true;
             info->flag.is_A = false;

@@ -11,7 +11,7 @@ void mx_init_info(char **argv, t_main *info) {
 		head->is_dir = true;
 		head->c_name = mx_strdup(*argv);
 		head->dir = (t_dir_data*)malloc(sizeof(t_dir_data));
-		if(info->flag.is_R && !info->flag.is_a)
+		if (info->flag.is_R && !info->flag.is_a)
 			head->dir_data = (t_dir_data *)malloc(sizeof(t_dir_data));
 	}
 }

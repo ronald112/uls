@@ -83,6 +83,8 @@ void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b);
 void mx_swap_ll(long long *a, long long *b);
 void mx_swap_bool(bool *a, bool *b);
 void mx_swap_dir(t_dir_data *a, t_dir_data *b);
+void mx_swap_int(int *a, int *b);
+void mx_swap_str(char **a, char **b);
 void mx_sort_dir_list(t_dir_data *start, t_flag flag);
 
 // Print part default

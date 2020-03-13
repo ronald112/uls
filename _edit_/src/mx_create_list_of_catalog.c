@@ -25,7 +25,7 @@ t_catalog *mx_create_list_of_catalog(int amount) {
     head->c_next = NULL;
     for(int i = 1; i < amount; i++) {
         node->c_next = (t_catalog *)malloc(sizeof(t_catalog));
-        mx_set_start_val_cat(head);
+        //mx_set_start_val_cat(node->c_next);
         node = node->c_next;
         node->c_next = NULL;
     }

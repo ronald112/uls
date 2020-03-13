@@ -13,3 +13,17 @@ void mx_swap_bool(bool *a, bool *b) {
     *a = *b;
     *b = temp;
 }
+
+void mx_swap_int(int *a, int *b) {
+    int temp = *a;
+
+    *a = *b;
+    *b = temp;
+}
+
+void mx_swap_str(char **a, char **b) {
+    char *temp = *a;
+
+    *a = *b;
+    *b = temp;
+}

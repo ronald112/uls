@@ -8,10 +8,10 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
     b->data = tmp_data;
     a->buff_stat = b->buff_stat;
     b->buff_stat = tmp_buff;
-    mx_swap_char(a->name, b->name);
-    mx_swap_char(a->path, b->path);
-    mx_swap_ll((long long *)&a->min_lnght_namedir, (long long *)&b->min_lnght_namedir);
-    mx_swap_ll((long long *)&a->min_lnght_grpdir, (long long *)&b->min_lnght_grpdir);
+    mx_swap_str(&a->name, &b->name);
+    mx_swap_str(&a->path, &b->path);
+    mx_swap_int(&a->min_lnght_namedir, &b->min_lnght_namedir);
+    mx_swap_int(&a->min_lnght_grpdir, &b->min_lnght_grpdir);
 }
 
 void mx_sort_dir_list(t_dir_data *start, t_flag flag) {

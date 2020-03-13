@@ -55,6 +55,7 @@ t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info) {
         }
     }
     info->am_dir = *argc == 1 ? 1 : *argc - 1;
+    info->uls_name = mx_strdup("uls: ");
     mx_init_info(argv, info);
     return info->cat;
 }

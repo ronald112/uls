@@ -82,30 +82,17 @@ void mx_del_node(t_main *info);
 void mx_swap_cat(t_catalog *a, t_flag flag, t_catalog *b);
 void mx_swap_ll(long long *a, long long *b);
 void mx_swap_bool(bool *a, bool *b);
+void mx_swap_dir(t_dir_data *a, t_dir_data *b);
+void mx_sort_dir_list(t_dir_data *start, t_flag flag);
 
-// -R flag part
-void mx_r_flag(t_main *info, t_catalog *cat, char *link);
-void mx_r_flag_a(t_main *info, t_catalog *cat, char *link);
-void mx_print_1(t_catalog *cat, t_main *info);
-void mx_print_R(t_main *info, t_catalog *head);
+// Print part default
+void mx_print(t_main *info);
+void mx_print_cat(t_catalog *cat, t_main *info);
+void mx_print_tab(t_catalog *cat, t_dir_data *data);
+void mx_print_default(t_catalog *cat);
 
-// Check part
-char *mx_check_name_valid(char *name, int index);
-void mx_get_dir_data_from_dir(t_catalog *head);
-void mx_sort_cat_list(t_catalog *start, t_flag flag);
-void mx_sort_dir_list(t_dir_data *dir, t_flag flag);
-
-// Parse part
-t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
-void mx_set_flags_false(t_main *info);
-t_catalog *mx_create_list_of_catalog(int amount);
-void mx_init_info(char **argv, t_main *info);
-void mx_print_lflag(t_catalog *catalog, t_flag flags);
-char *mx_get_full_path(char *name, char *path);
-void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
-char *mx_get_permissions(mode_t mode);
-
-// -L 
+// -L part
+void mx_start_lprint(t_catalog *head, t_main *info);
 void mx_print_totalsize(t_catalog *cat);
 void mx_add_xatr(char *path, char **result);
 void mx_add_links(nlink_t link, t_catalog *cat, char **result);
@@ -119,10 +106,51 @@ void mx_add_indens_minor_major(t_catalog *cat, t_dir_data *list);
 char *mx_change_size_h(off_t size);
 void mx_print_ifdog(char *path, char **result, long long size, bool flag);
 
+// -R flag part
+void mx_r_flag(t_main *info, t_catalog *cat, char *link);
+void mx_r_flag_a(t_main *info, t_catalog *cat, char *link);
+void mx_print_1(t_catalog *cat, t_main *info);
+void mx_print_R(t_main *info, t_catalog *head);
+
+// -h@ part
 long long mx_get_remainder(long long nmb, long long divider,
                            long long accur);
 int mx_get_nmb_digits_int(long long nmb);
 long long mx_get_nmb_digits_ll(long long nmb);
 char *mx_get_hex_view(int nmb);
+
+// Check part
+char *mx_check_name_valid(char *name, int index);
+void mx_get_dir_data_from_dir(t_catalog *head);
+void mx_sort_cat_list(t_catalog *start, t_flag flag);
+void mx_sort_dir_list(t_dir_data *dir, t_flag flag);
+
+// Counter part
+void mx_count_line_for_print(t_main *info);
+void mx_count_line_for_print_R(t_main *info, t_catalog *head);
+
+// Parse part
+t_catalog *mx_main_parse_fnc(int *argc, char **argv, t_main *info);
+void mx_set_flags_false(t_main *info);
+t_catalog *mx_create_list_of_catalog(int amount);
+void mx_init_info(char **argv, t_main *info);
+void mx_print_lflag(t_catalog *catalog, t_flag flags);
+char *mx_get_full_path(char *name, char *path);
+void mx_ladd_to_tdir(t_dir_data *list, t_catalog *cat, t_flag flag);
+char *mx_get_permissions(mode_t mode);
+
+// Catalog part
+void mx_make_extra_catalog(t_main *info, char *link);
+void mx_free_dir_data(t_catalog **cat);
+char *mx_get_name_dir(t_main *info, char *link);
+void mx_closedir_info(t_main *info, DIR *dir, char *link);
+DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link);
+void mx_get_data_list(t_main *info, t_catalog *cat, char *link);
+void mx_set_start_dir_data(t_dir_data *list, t_catalog *cat, t_main *info);
+
+// Dir part
+
+// Util part
+void mx_set_start_val_cat(t_catalog *head);
 
 #endif

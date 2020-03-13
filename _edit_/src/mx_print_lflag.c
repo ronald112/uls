@@ -41,3 +41,11 @@ void mx_print_lflag(t_catalog *cat, t_flag flags) {
         mx_printstr("\n");
     }
 }
+
+void mx_start_lprint(t_catalog *head, t_main *info) {
+    if (info->flag.is_a == false && head->am_files != 0)
+        mx_print_totalsize(head);
+    else if (info->flag.is_a == true && head->am_data != 0)
+        mx_print_totalsize(head);
+    mx_print_lflag(head, info->flag);
+}

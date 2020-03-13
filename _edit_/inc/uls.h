@@ -158,4 +158,12 @@ void mx_push_back_dir(char *link, t_flag flag, t_catalog *cat);
 int mx_get_max_length(t_dir_data *dir);
 void mx_get_dir_data_from_dir(t_catalog *head);
 
+// Extrafunc for R
+void mx_init_local_info(t_dir_data *dir, t_main *info, char *link);
+void mx_init_local_info_a(t_dir_data *dir, t_main *info, char *link);
+void mx_get_error_for_R(t_main *info, t_catalog* cat);
+bool mx_print_error_R(t_main *info, t_catalog *cat, DIR *directoy);
+void mx_setting_param_R(t_main *info, t_dir_data *list, t_catalog *cat, char *link, struct dirent *temp);
+void mx_setting_cinfo_R(t_main *info, t_catalog *cat, t_dir_data *for_init, int am_of_dir, char *link);
+
 #endif

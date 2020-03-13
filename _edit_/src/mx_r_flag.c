@@ -67,19 +67,13 @@ void mx_init_local_info(t_dir_data *dir, t_main *info, char * link) {
 void mx_get_error_for_R(t_main *info, t_catalog* cat) {
 	char *error;
 
-	if(errno == 0) {
-		// mx_get_dir_data_from_dir(cat);
-		
-	}
-	else {
+	if(errno != 0) {
 		error = mx_strjoin(info->uls_name, cat->R_name);
 		perror(error);
 		mx_strdel(&error);
 		errno = 0;
 	}
 }
-
-
 
 void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	DIR *directoy = opendir(link);
@@ -88,99 +82,44 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	int am_of_dir = 0;
 	
 	list = cat->dir_data;
-	cat->c_info = NULL;
-	if(directoy == NULL) {
-		if(errno != 0) {
-			mx_printchar('\n');
-			mx_printstr(cat->c_name);
-			mx_printstr(":\n");
-		}
-		mx_get_error_for_R(info, cat);
+	if (mx_print_error_R(info, cat, directoy))
 		return;
-	}
 	if (directoy) {
 		temp = readdir(directoy);
 		temp = readdir(directoy);
 		cat->am_files += 2;
 	}
-	while (directoy && *temp->d_name == '.' && (temp = readdir(directoy)))
-		continue;
+	while (directoy && *temp->d_name == '.' && (temp = readdir(directoy)));
 	if (directoy && temp) {
 		list->is_dir = temp->d_type == 4;
-		list->data = temp;
-		list->name = mx_strdup(temp->d_name);
-		list->path = mx_get_full_path(link, list->name);
-		if (info->flag.is_l == true)
-			mx_ladd_to_tdir(list, cat, info->flag);
-		list->next = NULL;
-		cat->am_files++;
+		mx_setting_param_R(info, list, cat, link, temp);
 		list->is_dir && cat->am_files > 2 ? am_of_dir++ : 0;
 	}
 	else {
 		free(cat->dir_data);
 		cat->dir_data = NULL;
 	}
-
-
 	while (directoy && (temp = readdir(directoy))) {
 		if (*temp->d_name == '.')
 			continue;
 		list->next = (t_dir_data *)malloc(sizeof(t_dir_data));
 		list = list->next;
 		list->is_dir = temp->d_type == 4;
-		list->data = temp;
-		list->name = mx_strdup(temp->d_name);
-		list->path = mx_get_full_path(link, list->name);
-		if (info->flag.is_l == true)
-			mx_ladd_to_tdir(list, cat, info->flag);
-		list->next = NULL;
-		cat->am_files++;
+		mx_setting_param_R(info, list, cat, link, temp);
 		list->is_dir && cat->am_files > 2 ? am_of_dir++ : 0;
 	}
-	// mx_get_dir_data_from_dir(cat);
-	if (am_of_dir != 0) {
-		cat->c_info = (t_main *)malloc(sizeof(t_main));
-		cat->c_info->am_dir = am_of_dir;
-		cat->c_info->flag = info->flag;
-		cat->c_info->uls_name = info->uls_name;
-		cat->c_info->cat = NULL;
-		cat->c_info->am_dir > 0 ? mx_init_local_info(cat->dir_data, cat->c_info, link) : (void)0;
-		mx_sort_cat_list(cat->c_info->cat, info->flag);
-	}
+	if (am_of_dir != 0)
+		mx_setting_cinfo_R(info, cat, cat->dir_data, am_of_dir, link);
 	else
 		cat->c_info = NULL;
-
+	cat->am_files-=2;
 	mx_sort_dir_list(cat->dir_data, info->flag);
 	mx_print_R(info, cat);
-	// mx_printstr(cat->c_name);
-	// mx_printstr(":\n");
-	// mx_print_1(cat, info->flag.is_a);
-	// mx_printchar('\n');
-
-	//*************************************
-	t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;
-
-	
-	for (; tmp && cat->c_info->am_dir != 0; tmp = tmp->c_next) {
-
-// mx_sort_dir_list(cat->dir, info->flag);
-		// mx_printstr(cat->c_name);
-		// mx_printstr(":\n");
-		// mx_print_1(cat, true);
-		// mx_printchar('\n');
-
+	for (t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;
+		tmp && cat->c_info->am_dir != 0; tmp = tmp->c_next) {
 		errno = 0;
 		mx_r_flag(cat->c_info, tmp, tmp->c_name);
-		// if (errno == 0)
-		// 	mx_sort_dir_list(cat->dir, info->flag);
-		// mx_printstr(tmp->c_name);
-		// mx_printstr(":\n");
-		// // printf("{}{}{}}{}  %s\n", tmp->dir->name);
-		// mx_print_1(tmp, true);
-		
 	}
-	//***************************************
-
 	// mx_closedir_info(info, directoy, link);
 	closedir(directoy);
 }
@@ -189,79 +128,35 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 
 
 void mx_r_flag_a(t_main *info, t_catalog *cat, char *link) {
-	errno = 0;
-
 	DIR *directoy = opendir(link);
 	t_dir_data *list = cat->dir;
 	struct dirent *temp = NULL;
 	int am_of_dir = 0;
 	
-
-	cat->c_info = NULL;
-	if(directoy == NULL) {
-		if(errno != 0) {
-			mx_printchar('\n');
-			mx_printstr(cat->c_name);
-			mx_printstr(":\n");
-		}
-		mx_get_error_for_R(info, cat);
+	if (mx_print_error_R(info, cat, directoy))
 		return;
-	}
-	if (directoy && (temp = readdir(directoy))) {
-		list->data = temp;
-		list->name = /*mx_check_name_valid(*/mx_strdup(list->data->d_name)/*, info->flag.is_tofile)*/;
-		list->path = mx_get_full_path(cat->c_name, list->name);
-		if (info->flag.is_l == true)
-			mx_ladd_to_tdir(list, cat, info->flag);
-		list->next = NULL;
-		cat->am_data++;
-	}
+	if (directoy && (temp = readdir(directoy)))
+		mx_setting_param_R(info, list, cat, cat->c_name, temp);
 	while (directoy && (temp = readdir(directoy))) {
 		list->next = (t_dir_data *)malloc(sizeof(t_dir_data));
 		list = list->next;
 		list->is_dir = temp->d_type == 4;
-		list->data = temp;
-		list->name = mx_strdup(temp->d_name);
-		list->path = mx_get_full_path(link, list->name);
-		if (info->flag.is_l == true)
-			mx_ladd_to_tdir(list, cat, info->flag);
-		list->next = NULL;
-		cat->am_data++;
+		mx_setting_param_R(info, list, cat, link, temp);
 		list->is_dir && cat->am_data > 2 ? am_of_dir++ : 0;
 	}
 	mx_get_dir_data_from_dir(cat);
-	if (am_of_dir != 0) {
-		cat->c_info = (t_main *)malloc(sizeof(t_main));
-		cat->c_info->am_dir = am_of_dir;
-		cat->c_info->flag = info->flag;
-		cat->c_info->uls_name = info->uls_name;
-		cat->c_info->cat = NULL;
-		cat->c_info->am_dir > 0 ? mx_init_local_info_a(cat->dir->next->next, cat->c_info, link) : (void)0;
-		mx_sort_cat_list(cat->c_info->cat, info->flag);
-	}
-	else
+	if (am_of_dir != 0)
+		mx_setting_cinfo_R(info, cat, cat->dir->next->next, am_of_dir, link);
+	else 
 		cat->c_info = NULL;
-
 	mx_sort_dir_list(cat->dir, info->flag);
 	if(info && cat)
 		mx_print_R(info, cat);
-		// mx_printstr(cat->c_name);
-		// mx_printstr(":\n");
-		// mx_print_1(cat, info->flag.is_a);
-		// mx_printchar('\n');
-
-		
-
-	//*************************************
-	t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;
-	
-	for (; tmp && cat->c_info->am_dir != 0; tmp = tmp->c_next) {
+	for (t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;
+		tmp && cat->c_info->am_dir != 0; tmp = tmp->c_next) {
 		errno = 0;
 		mx_r_flag_a(cat->c_info, tmp, tmp->c_name);
 	}
-	//***************************************
-
-	// mx_closedir_info(info, directoy, link);
 	closedir(directoy);
 }
 

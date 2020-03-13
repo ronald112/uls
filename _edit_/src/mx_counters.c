@@ -41,4 +41,3 @@ void mx_count_line_for_print_R(t_main *info, t_catalog *head) {
     if(head->lines_for_print == 0 || (amount % max_cols) != 0)							// доп проверка на линии
         head->lines_for_print++;
 }
-

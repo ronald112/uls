@@ -18,8 +18,10 @@ void mx_make_extra_catalog(t_main *info, char *link) {
     }
 }
 
-void mx_free_dir_data(t_catalog **cat) {
-    mx_strdel(&(*cat)->c_name);
+void mx_nulling_dir(t_catalog *cat) {
+    cat->dir = NULL;
+    cat->dir_data = NULL;
+    cat->is_dir = errno == EACCES ? true : false;
 }
 
 DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {
@@ -31,7 +33,7 @@ DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link) {
         if (errno != ENOTDIR)
             perror(temp);
         free(cat->dir);
-        cat->is_dir = errno == EACCES ? true : false;
+        mx_nulling_dir(cat);
         if (errno == ENOTDIR)
             mx_make_extra_catalog(info, cat->c_name);
         mx_strdel(&temp);

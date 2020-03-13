@@ -14,6 +14,10 @@ void mx_push_back_dir(char *link, t_flag flag, t_catalog *cat) {
 	}
 }
 
+void mx_free_dir_data(t_catalog **cat) {
+    mx_strdel(&(*cat)->c_name);
+}
+
 void mx_del_node(t_main *info) {
 	t_catalog *prev = info->cat;
 	t_catalog *list = info->cat->c_next ? info->cat->c_next : NULL;

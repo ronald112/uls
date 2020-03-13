@@ -75,7 +75,7 @@ typedef struct s_main {     //** структура, которая хранит
 } t_main;
 
 // List part
-t_dir_data *mx_create_node(char *data, t_flag flag, t_catalog *cat);
+t_dir_data *mx_create_node_dir(char *data, t_flag flag, t_catalog *cat);
 void mx_del_node(t_main *info);
 
 // Sort part

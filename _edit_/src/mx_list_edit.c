@@ -5,12 +5,12 @@ static void mx_push_back(char *link, t_flag flag, t_catalog *cat) {
 	t_dir_data **list = &cat->dir;
 
 	if (*list == NULL) {
-		*list = mx_create_node(link, flag, cat);
+		*list = mx_create_node_dir(link, flag, cat);
 	}
 	else {
 		cur = *list;
 		for (; cur->next != NULL; cur = cur->next);
-		cur->next = mx_create_node(link, flag, cat);
+		cur->next = mx_create_node_dir(link, flag, cat);
 	}
 }
 
@@ -44,7 +44,7 @@ void mx_del_node(t_main *info) {
 	}
 }
 
-t_dir_data *mx_create_node(char *data, t_flag flag, t_catalog *cat) {
+t_dir_data *mx_create_node_dir(char *data, t_flag flag, t_catalog *cat) {
 	t_dir_data *new_node = NULL;
 
 	if (data && (new_node = (t_dir_data *)malloc(sizeof(t_dir_data)))) {

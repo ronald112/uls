@@ -1,7 +1,7 @@
 #include "uls.h"
 
 // доделать переход с dir на dir_data
-static void get_dir_data_from_dir(t_catalog *head) {
+void mx_get_dir_data_from_dir(t_catalog *head) {
     t_dir_data *data = head->dir;
     int i = 0;
 
@@ -31,7 +31,7 @@ static void sort_dir_if_true(t_main *info, t_catalog *head) {
             head->dir_data = head->dir->next->next;
             head->am_files = head->am_data - 2;
         }
-        get_dir_data_from_dir(head);
+        mx_get_dir_data_from_dir(head);
     }
 }
 

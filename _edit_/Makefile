@@ -17,7 +17,8 @@ FILES = mx_parse_flags mx_main testLS mx_set_flags_false \
 		mx_add_minor_major mx_util mx_change_size_h mx_r_flag \
 		mx_swap_cat mx_list_edit mx_util_swaps mx_swap_dirs \
 		mx_print_R_start_point mx_print_default mx_counters \
-		mx_get_name_dir mx_set_start_dir 
+		mx_get_name_dir mx_set_start_dir mx_get_valid mx_get_dirs \
+		
 
 SRC = $(addsuffix .c, $(FILES))
 

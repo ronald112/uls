@@ -3,7 +3,7 @@
 void mx_make_extra_catalog(t_main *info, char *link) {
     for (t_catalog *head = info->cat; head; head = head->c_next) {
         if (mx_strcmp("!!!", head->c_name) == 0) {
-            mx_push_back(link, info->flag, head);
+            mx_push_back_dir(link, info->flag, head);
             head->dir_data = head->dir;
         }
         else if (head->c_next == NULL) {

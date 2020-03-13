@@ -152,5 +152,7 @@ void mx_set_start_dir_data(t_dir_data *list, t_catalog *cat, t_main *info);
 
 // Util part
 void mx_set_start_val_cat(t_catalog *head);
+void mx_push_back_dir(char *link, t_flag flag, t_catalog *cat);
+int mx_get_max_length(t_dir_data *dir);
 
 #endif

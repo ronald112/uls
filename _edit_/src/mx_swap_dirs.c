@@ -6,13 +6,12 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
 
     a->data = b->data;
     b->data = tmp_data;
-    a->name = b->name;
-    b->name = tmp_name;
     a->buff_stat = b->buff_stat;
     b->buff_stat = tmp_buff;
+    mx_swap_char(a->name, b->name);
     mx_swap_char(a->path, b->path);
-    mx_swap_ll(a->min_lnght_namedir, b->min_lnght_namedir);
-    mx_swap_ll(a->min_lnght_grpdir, b->min_lnght_grpdir);
+    mx_swap_ll(&a->min_lnght_namedir, &b->min_lnght_namedir);
+    mx_swap_ll(&a->min_lnght_grpdir, &b->min_lnght_grpdir);
 }
 
 void mx_sort_dir_list(t_dir_data *start, t_flag flag) {

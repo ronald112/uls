@@ -46,7 +46,7 @@ uninstall:
 clean:
 	@make -C libmx -f Makefile uninstall
 	@make -C libmx -f Makefile clean
-	@rm -rf $(OBJO) $(SRC) $(HEADTMP)
+	@rm -rf $(OBJ) $(OBJO) $(SRC) $(HEADTMP)
 	@rm -rf ./obj
 	@rm -rf ./libmx/libmx.h.gch
 

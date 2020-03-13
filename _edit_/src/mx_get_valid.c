@@ -12,13 +12,13 @@ char *mx_check_name_valid(char *name, int index) {
     return symb;
 }
 
-// int get_max_length(t_dir_data *dir) {
-//     int max = 0;
-//     t_dir_data *list = dir;
+int mx_get_max_length(t_dir_data *dir) {
+    int max = 0;
+    t_dir_data *list = dir;
 
-//     while (list) {
-//         max = mx_strlen(list->name) >= max ? mx_strlen(list->name) : max;
-//         list = list->next;
-//     }
-//     return max;
-// }
+    while (list) {
+        max = mx_strlen(list->name) >= max ? mx_strlen(list->name) : max;
+        list = list->next;
+    }
+    return max;
+}

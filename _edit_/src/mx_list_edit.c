@@ -1,6 +1,6 @@
 #include "uls.h"
 
-static void mx_push_back(char *link, t_flag flag, t_catalog *cat) {
+void mx_push_back_dir(char *link, t_flag flag, t_catalog *cat) {
 	t_dir_data *cur = NULL;
 	t_dir_data **list = &cat->dir;
 

@@ -11,6 +11,5 @@ void mx_add_links(nlink_t link, t_catalog *cat, char **result) {
         *result = mx_addstr(*result, " ");
     *result = mx_addstr(*result, temp);
     *result = mx_addstr(*result, " ");
-
     mx_strdel(&temp);
 }

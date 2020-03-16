@@ -60,12 +60,10 @@ char *mx_change_size_h(off_t size) {
     char *temp_res = NULL;
     long long nmb = size;
 
-    if (nmb > 1048577) {
+    if (nmb > 1048577)
         temp_res = add_megabytes(nmb);
-    }
-    else if (nmb > 1023) {
+    else if (nmb > 1023)
         temp_res = add_kilobytes(size, nmb);
-    }
     else {
         temp_res = mx_ltoa(nmb);
         temp_res = mx_addstr(temp_res, "B");

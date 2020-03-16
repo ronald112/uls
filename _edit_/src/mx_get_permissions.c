@@ -2,22 +2,22 @@
 
 static char *add_ch_symb_link(mode_t mode) {
     switch (mode & S_IFMT) {
-    case S_IFIFO:
-        return "p";
-    case S_IFCHR:
-        return "c";
-    case S_IFDIR:
-        return "d";
-    case S_IFBLK:
-        return "b";
-    case S_IFREG:
-        return "-";
-    case S_IFLNK:
-        return "l";
-    case S_IFSOCK:
-        return "s";
-    default:
-        return "?";
+        case S_IFIFO:
+            return "p";
+        case S_IFCHR:
+            return "c";
+        case S_IFDIR:
+            return "d";
+        case S_IFBLK:
+            return "b";
+        case S_IFREG:
+            return "-";
+        case S_IFLNK:
+            return "l";
+        case S_IFSOCK:
+            return "s";
+        default:
+            return "?";
     }
 }
 

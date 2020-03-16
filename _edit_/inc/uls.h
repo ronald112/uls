@@ -28,7 +28,7 @@ typedef struct s_dir_data {
     char *path;             // path to the file/dir
     struct stat *buff_stat; // stat buff
     struct s_dir_data *next;// следующий файл/папка
-} t_dir_data;
+}              t_dir_data;
 
 typedef struct s_main t_main;
 
@@ -52,7 +52,7 @@ typedef struct s_catalog {
     int lines_for_print;    // линии для принтинга
     int max_length;
     struct s_catalog *c_next;
-} t_catalog;
+}              t_catalog;
 
 typedef struct s_flag {
     bool is_dog;
@@ -65,14 +65,14 @@ typedef struct s_flag {
 	bool is_C;
 	bool is_1;
     bool is_tofile;
-} t_flag;
+}              t_flag;
 
 typedef struct s_main {     //** структура, которая хранит массивом все каталоги, взятые из аргумента
     int am_dir;             // количество каталогов из аргумента
     char *uls_name;         // add char that keeps "uls: "
     t_catalog *cat;         // массив каталогов (директорик из аргумента)
     t_flag flag;
-} t_main;
+}              t_main;
 
 // List part
 t_dir_data *mx_create_node_dir(char *data, t_flag flag, t_catalog *cat);

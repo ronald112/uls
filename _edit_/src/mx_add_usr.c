@@ -7,7 +7,8 @@ void mx_add_pwd(t_dir_data *dir, t_catalog *cat, char **result) {
     if ((pwd = getpwuid(dir->buff_stat->st_uid)) != NULL)
         *result = mx_addstr(*result, pwd->pw_name);
     *result = mx_addstr(*result, "  ");
-    for (; nmb_delim > 0; *result = mx_addstr(*result, " "), nmb_delim--);
+    for (; nmb_delim > 0; nmb_delim--)
+        *result = mx_addstr(*result, " ");
 }
 
 void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result) {
@@ -22,7 +23,7 @@ void mx_add_grp(t_dir_data *dir, t_catalog *cat, char **result) {
         *result = mx_addstr(*result, temp);
         mx_strdel(&temp);
     }
-
     *result = mx_addstr(*result, "  ");
-    for (; nmb_delim > 0; *result = mx_addstr(*result, " "), nmb_delim--);
+    for (; nmb_delim > 0; nmb_delim--)
+        *result = mx_addstr(*result, " ");
 }

@@ -1,8 +1,8 @@
 #include "uls.h"
 
 static void set_minor(char *nmb, char **result, dev_t dev, t_catalog *cat) {
-    int nmb_delims_todo =
-    cat->lng_max_minor - mx_get_nmb_digits_int(MX_MINOR(dev));
+    int nmb_delims_todo = cat->lng_max_minor
+                          - mx_get_nmb_digits_int(MX_MINOR(dev));
 
     if (MX_MINOR(dev) > 255) {
         nmb = mx_get_hex_view(MX_MINOR(dev));

@@ -117,7 +117,6 @@ void mx_print_R(t_main *info, t_catalog *head);
 long long mx_get_remainder(long long nmb, long long divider,
                            long long accur);
 int mx_get_nmb_digits_int(long long nmb);
-long long mx_get_nmb_digits_ll(long long nmb);
 char *mx_get_hex_view(int nmb);
 
 // Check part

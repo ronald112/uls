@@ -27,15 +27,6 @@ int mx_get_nmb_digits_int(long long nmb) {
     return nmb;
 }
 
-long long mx_get_nmb_digits_ll(long long nmb) {
-    unsigned long long tmp_ls = nmb;
-
-    if (nmb == 0)
-        return 1;
-    for (nmb = 0; tmp_ls != 0; tmp_ls /= 10, nmb++);
-    return nmb;
-}
-
 char *mx_get_hex_view(int nmb) {
     char *nmb_char = mx_nbr_to_hex(nmb & 0xffffff);
     int nmb_digits = 0;

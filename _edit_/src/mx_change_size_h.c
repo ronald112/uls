@@ -33,7 +33,7 @@ static char *add_kilobytes(off_t size, long long nmb) {
     long long remainder = change_remainder(size, &nmb, 1024);
 
     temp_res = mx_ltoa(nmb);
-    if (mx_get_nmb_digits_ll(nmb) == 1) {
+    if (mx_get_nmb_digits_int(nmb) == 1) {
         char *temp_str = mx_ltoa(remainder);
 
         temp_res = mx_addstr(temp_res, ".");

@@ -23,16 +23,17 @@ void mx_print_tab(t_catalog *cat, t_dir_data *data) {
         mx_printchar('\t');
 }
 
+// TODO CHECK ?
 void mx_print_cat(t_catalog *cat, t_main *info) {
     t_dir_data *dir = info->flag.is_a ? cat->dir : cat->dir_data;
     t_dir_data *tmp = dir;
     t_dir_data *temp = NULL;
 
-    for (int i = 0; i < cat->lines_for_print && dir; i++, dir = dir->next) {
+    for (int i = 0; i < cat->lines_for_print && dir; i++) {
         tmp = dir;
         while(tmp) {
             info->flag.is_tofile ? mx_printstr(tmp->name)
-                : mx_printstr(mx_check_name_valid(tmp->name, 2));
+            : mx_printstr(mx_check_name_valid(tmp->name, 2));
             temp = tmp;
             for (int j = 0; j < cat->lines_for_print && tmp; j++)
                 tmp = tmp->next;
@@ -40,13 +41,13 @@ void mx_print_cat(t_catalog *cat, t_main *info) {
                 mx_print_tab(cat, temp);
         }
         mx_printchar('\n');
+        dir = dir->next;
     }
 }
 
 void mx_print_1(t_catalog *cat, t_main *info) {
-    t_dir_data *dir = dir = info->flag.is_a ? cat->dir : cat->dir_data;
-
-    for (; dir; dir = dir->next){
+    for (t_dir_data *dir = info->flag.is_a ? cat->dir : cat->dir_data;
+         dir; dir = dir->next) {
         mx_printstr(mx_check_name_valid(dir->name, info->flag.is_tofile));
         mx_printchar('\n');
     }

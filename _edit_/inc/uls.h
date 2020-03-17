@@ -57,7 +57,6 @@ typedef struct s_catalog {
 typedef struct s_flag {
     bool is_dog;
     bool is_h;
-    bool is_f;
     bool is_R;
     bool is_A;
 	bool is_a;
@@ -143,7 +142,7 @@ char *mx_get_permissions(mode_t mode);
 
 // Catalog part
 void mx_make_extra_catalog(t_main *info, char *link);
-void mx_free_dir_data(t_catalog **cat);
+void mx_free_dir_data(t_main *info, t_catalog **prev);
 char *mx_get_name_dir(t_main *info, char *link);
 void mx_closedir_info(t_main *info, DIR *dir, char *link);
 DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link);

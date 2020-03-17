@@ -16,12 +16,6 @@ static void chk_l1Cf_flags(char c, t_main *info) {
         info->flag.is_1 = false;
         info->flag.is_C = true;
     }
-    else if (c == 'f') {
-        info->flag.is_f = true;
-        info->flag.is_a = true;
-        info->flag.is_dog = true;
-        info->flag.is_1 = false;
-    }
 }
 
 static void chk_line_for_flags(char *argv, t_main *info) {

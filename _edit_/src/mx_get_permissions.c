@@ -1,24 +1,24 @@
 #include "uls.h"
 
 static char *add_ch_symb_link(mode_t mode) {
-    switch (mode & S_IFMT) {
-        case S_IFIFO:
-            return "p";
-        case S_IFCHR:
-            return "c";
-        case S_IFDIR:
-            return "d";
-        case S_IFBLK:
-            return "b";
-        case S_IFREG:
-            return "-";
-        case S_IFLNK:
-            return "l";
-        case S_IFSOCK:
-            return "s";
-        default:
-            return "?";
-    }
+    mode_t mode_cur = mode & S_IFMT;
+
+    if (mode_cur == S_IFIFO)
+        return "p";
+    else if (mode_cur == S_IFCHR)
+        return "c";
+    else if (mode_cur == S_IFDIR)
+        return "d";
+    else if (mode_cur == S_IFBLK)
+        return "b";
+    else if (mode_cur == S_IFREG)
+        return "-";
+    else if (mode_cur == S_IFLNK)
+        return "l";
+    else if (mode_cur == S_IFSOCK)
+        return "s";
+    else
+        return "?";
 }
 
 static void add_last_bit_char(char **result, mode_t mode) {

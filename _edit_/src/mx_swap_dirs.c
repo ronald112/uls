@@ -19,7 +19,7 @@ void mx_sort_dir_list(t_dir_data *start, t_flag flag) {
     t_dir_data *ptr1;
     t_dir_data *lptr = NULL;
 
-    if (start == NULL || flag.is_f)
+    if (start == NULL)
         return;
     while (swapped) {
         swapped = 0;

@@ -14,12 +14,12 @@ void mx_push_back_dir(char *link, t_flag flag, t_catalog *cat) {
     }
 }
 
-void mx_free_dir_data(t_main *info, t_catalog **prev) {
+t_catalog *mx_free_dir_data(t_main *info, t_catalog **prev) {
     mx_strdel(&info->cat->c_name);
     info->cat = info->cat->c_next;
     free(prev);
     *prev = info->cat;
-    list = *prev->c_next;
+    return info->cat->c_next;
 }
 
 void mx_del_node(t_main *info) {
@@ -27,7 +27,7 @@ void mx_del_node(t_main *info) {
     t_catalog *list = info->cat->c_next ? info->cat->c_next : NULL;
 
     if (list && !info->cat->is_dir) {
-        mx_free_dir_data(info, &prev);
+        list = mx_free_dir_data(info, &prev);
         for (; prev && prev->c_next; list = prev->c_next)
             if (!list->is_dir) {
                 mx_strdel(&list->c_name);

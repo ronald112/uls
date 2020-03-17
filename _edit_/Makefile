@@ -9,7 +9,7 @@ HEADTMP = ./uls.h \
 			./libmx.h \
 			./libmx/libmx.h
 
-FILES = mx_parse_flags mx_main testLS mx_set_flags_false \
+FILES = mx_parse_flags mx_main mx_set_flags_false \
 		mx_create_list_of_catalog mx_init_info mx_print_lflag \
 		mx_get_full_path mx_ifl_true mx_get_permissions \
 		mx_chk_xatr mx_add_links mx_add_usr mx_add_filesize \

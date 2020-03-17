@@ -32,7 +32,7 @@ void mx_sort_cat_list(t_catalog *start, t_flag flag) {
     t_catalog *ptr1;
     t_catalog *lptr = NULL;
 
-    if (start == NULL || flag.is_f)
+    if (start == NULL)
         return;
     while (swapped) {
         swapped = 0;

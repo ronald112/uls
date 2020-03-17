@@ -141,7 +141,7 @@ char *mx_get_permissions(mode_t mode);
 
 // Catalog part
 void mx_make_extra_catalog(t_main *info, char *link);
-void mx_free_dir_data(t_main *info, t_catalog **prev);
+t_catalog *mx_free_dir_data(t_main *info, t_catalog **prev);
 char *mx_get_name_dir(t_main *info, char *link);
 void mx_closedir_info(t_main *info, DIR *dir, char *link);
 DIR *mx_opendir_info(t_main *info, t_catalog *cat, char *link);

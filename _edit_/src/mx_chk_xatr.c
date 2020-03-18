@@ -26,7 +26,7 @@ void mx_print_ifdog(char *path, char **result, long long size, bool flag) {
         *result = mx_addstr(*result, xattr_name);
         *result = mx_addstr(*result, "\t");
         for (int i = mx_get_nmb_digits_int(size - 2)
-                           + mx_get_nmb_digits_int(nmb) - 1; i < 4; ++i)
+                     + mx_get_nmb_digits_int(nmb) - 1; i < 4; ++i)
             *result = mx_addstr(*result, " ");
         *result = mx_addstr(*result, temp);
         if (flag == true)

@@ -34,7 +34,7 @@ CFLGS = -std=c11 -Wall -Wpedantic -Wextra #-Werror# -g -fsanitize=address
 all: install clean
 
 install:
-	#@make -C libmx -f Makefile install
+	@make -C libmx -f Makefile install
 	@cp $(INC) $(SRCS) .
 	@cp $(INCL) ./libmx/
 	@clang $(CFLGS) -c  $(SRC) libmx/inc/libmx.h -Iinc
@@ -46,8 +46,8 @@ uninstall:
 	@rm $(NAME)
 
 clean:
-	#@make -C libmx -f Makefile uninstall
-	#@make -C libmx -f Makefile clean
+	@make -C libmx -f Makefile uninstall
+	@make -C libmx -f Makefile clean
 	@rm -rf $(OBJ) $(OBJO) $(SRC) $(HEADTMP)
 	@rm -rf ./obj
 	@rm -rf ./libmx/libmx.h.gch

@@ -14,25 +14,33 @@ void mx_add_xatr(char *path, char **result) {
     acl = NULL;
 }
 
-void mx_print_ifdog(char *path, char **result, long long size, bool flag) {
-    char xattr_name[1024] = "\0";
-    ssize_t xattr = listxattr(path, xattr_name, 1024, XATTR_NOFOLLOW);
-    int nmb = getxattr(path, xattr_name, NULL, 0, 1, XATTR_NOFOLLOW);
-
-    if (xattr > 0) {
-        char *temp = mx_itoa(nmb);
-
-        *result = mx_addstr(*result, "\n\t");
-        *result = mx_addstr(*result, xattr_name);
-        *result = mx_addstr(*result, "\t");
-        for (int i = mx_get_nmb_digits_int(size - 2)
-                     + mx_get_nmb_digits_int(nmb) - 1; i < 4; ++i)
-            *result = mx_addstr(*result, " ");
-        *result = mx_addstr(*result, temp);
-        if (flag == true)
-            *result = mx_addstr(*result, "B");
-        *result = mx_addstr(*result, " ");
-        mx_strdel(&temp);
-    }
+static void get_xattr_vallen(char **res, char *tmp, long long size, bool flag) {
+    for (int i = mx_strlen(tmp); i < size; ++i)
+        *res = mx_addstr(*res, " ");
+    *res = mx_addstr(*res, tmp);
+    if (flag == true)
+        *res = mx_addstr(*res, "B");
+    *res = mx_addstr(*res, " ");
 }
 
+void mx_print_ifdog(char *path, char **result, long long size, bool flag) {
+    ssize_t xattr_len = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+    char *xattr_name = mx_strnew(xattr_len);
+    xattr_len = listxattr(path, xattr_name, xattr_len, XATTR_NOFOLLOW);
+    int vallen = 0;
+    char *temp = NULL;
+    char *key = xattr_name;
+
+    while (xattr_len > 0) {
+        *result = mx_addstr(*result, "\n\t");
+        *result = mx_addstr(*result, key);
+        *result = mx_addstr(*result, "\t");
+        vallen = getxattr(path, key, NULL, 0, 1, XATTR_NOFOLLOW);
+        temp = mx_itoa(vallen);
+        get_xattr_vallen(result, temp, size, flag);
+        mx_strdel(&temp);
+        xattr_len -= mx_strlen(key) + 1;
+        key += mx_strlen(key) + 1;
+    }
+    mx_strdel(&xattr_name);
+}

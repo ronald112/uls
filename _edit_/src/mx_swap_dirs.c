@@ -14,7 +14,7 @@ void mx_swap_dir(t_dir_data *a, t_dir_data *b) {
     mx_swap_int(&a->min_lnght_grpdir, &b->min_lnght_grpdir);
 }
 
-void mx_sort_dir_list(t_dir_data *start, t_flag flag) {
+void mx_sort_dir_list(t_dir_data *start) {
     int swapped = 1;
     t_dir_data *ptr1;
     t_dir_data *lptr = NULL;

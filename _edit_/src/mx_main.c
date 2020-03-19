@@ -26,7 +26,7 @@ static void switch_read_data(t_main *info, t_catalog *head) {
 static void sort_dir_if_true(t_main *info, t_catalog *head) {
     if (head && head->dir && ((!info->flag.is_R && !info->flag.is_a)
     || (info->flag.is_R && info->flag.is_a))) {
-        mx_sort_dir_list(head->dir, info->flag);
+        mx_sort_dir_list(head->dir);
         if (mx_strcmp(head->c_name, "!!!") != 0 && head->dir->next->next) {
             head->dir_data = head->dir->next->next;
             head->am_files = head->am_data - 2;

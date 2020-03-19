@@ -113,7 +113,7 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	else
 		cat->c_info = NULL;
 	cat->am_files-=2;
-	mx_sort_dir_list(cat->dir_data, info->flag);
+	mx_sort_dir_list(cat->dir_data);
 	mx_print_R(info, cat);
 	for (t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;
 		tmp && cat->c_info->am_dir != 0; tmp = tmp->c_next) {
@@ -149,7 +149,7 @@ void mx_r_flag_a(t_main *info, t_catalog *cat, char *link) {
 		mx_setting_cinfo_R(info, cat, cat->dir->next->next, am_of_dir, link);
 	else 
 		cat->c_info = NULL;
-	mx_sort_dir_list(cat->dir, info->flag);
+	mx_sort_dir_list(cat->dir);
 	if(info && cat)
 		mx_print_R(info, cat);
 	for (t_catalog *tmp = cat->c_info ? cat->c_info->cat : NULL;

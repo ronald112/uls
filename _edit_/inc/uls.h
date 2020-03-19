@@ -84,7 +84,7 @@ void mx_swap_bool(bool *a, bool *b);
 void mx_swap_dir(t_dir_data *a, t_dir_data *b);
 void mx_swap_int(int *a, int *b);
 void mx_swap_str(char **a, char **b);
-void mx_sort_dir_list(t_dir_data *start, t_flag flag);
+void mx_sort_dir_list(t_dir_data *start);
 
 // Print part default
 void mx_print(t_main *info);
@@ -123,7 +123,6 @@ char *mx_get_hex_view(int nmb);
 char *mx_check_name_valid(char *name, int index);
 void mx_get_dir_data_from_dir(t_catalog *head);
 void mx_sort_cat_list(t_catalog *start, t_flag flag);
-void mx_sort_dir_list(t_dir_data *dir, t_flag flag);
 
 // Counter part
 void mx_count_line_for_print(t_main *info);

@@ -19,8 +19,7 @@ static void chk_l1Cf_flags(char c, t_main *info) {
     else if (c == 'f') {
         info->flag.is_f = true;
         info->flag.is_a = true;
-        info->flag.is_dog = false;
-        info->flag.is_1 = false;
+        info->flag.is_C = false;
     }
 }
 

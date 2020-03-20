@@ -57,6 +57,7 @@ typedef struct s_catalog {
 typedef struct s_flag {
     bool is_dog;
     bool is_h;
+    bool is_f;
     bool is_R;
     bool is_A;
 	bool is_a;
@@ -84,7 +85,7 @@ void mx_swap_bool(bool *a, bool *b);
 void mx_swap_dir(t_dir_data *a, t_dir_data *b);
 void mx_swap_int(int *a, int *b);
 void mx_swap_str(char **a, char **b);
-void mx_sort_dir_list(t_dir_data *start);
+void mx_sort_dir_list(t_dir_data *start, t_flag flag);
 
 // Print part default
 void mx_print(t_main *info);

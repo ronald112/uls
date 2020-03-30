@@ -34,7 +34,7 @@ OBJ = $(addprefix mx_, $(addsuffix .o, $(RAW)))
 
 CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
-all: install clean
+all: install
 
 install:
 	@cp $(addprefix src/, $(SRC)) .

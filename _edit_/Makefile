@@ -33,7 +33,7 @@ OBJO = $(addprefix obj/, $(OBJ))
 
 CFLGS = -std=c11 -Wall -Wpedantic -Wextra -Werror# -g -fsanitize=address
 
-all: install clean
+all: install
 
 install:
 	@make -C libmx -f Makefile install

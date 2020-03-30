@@ -1,5 +1,7 @@
 NAME = uls
 
+CC = gcc
+
 INC = ./inc/uls.h \
 		./libmx/inc/libmx.h \
 
@@ -37,18 +39,18 @@ install:
 	@make -C libmx -f Makefile install
 	@cp $(INC) $(SRCS) .
 	@cp $(INCL) ./libmx/
-	@clang $(CFLGS) -c $(SRC) libmx/inc/libmx.h -Iinc
+	@$(CC) $(CFLGS) -c $(SRC) libmx/inc/libmx.h -Iinc
 	@mkdir -p obj
 	@mv $(OBJ) ./obj
-	@clang $(CFLGS) $(OBJO) libmx/libmx.a -o $(NAME)
+	@$(CC) $(CFLGS) $(OBJO) libmx/libmx.a -o $(NAME)
 
 uninstall:
 	@rm $(NAME)
+	@make -C libmx -f Makefile uninstall
 
 clean:
-	@make -C libmx -f Makefile uninstall
 	@make -C libmx -f Makefile clean
-	@rm -rf $(OBJ) $(OBJO) $(SRC) $(HEADTMP)
+	@rm -rf $(OBJ) $(SRC) $(HEADTMP)
 	@rm -rf ./obj
 	@rm -rf ./libmx/libmx.h.gch
 

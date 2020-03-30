@@ -29,7 +29,7 @@ OBJ = $(addsuffix .o, $(FILES))
 
 OBJO = $(addprefix obj/, $(OBJ))
 
-CFLGS = -std=c11 -Wall -Wpedantic -Wextra #-Werror# -g -fsanitize=address
+CFLGS = -std=c11 -Wall -Wpedantic -Wextra -Werror# -g -fsanitize=address
 
 all: install clean
 
@@ -37,7 +37,7 @@ install:
 	@make -C libmx -f Makefile install
 	@cp $(INC) $(SRCS) .
 	@cp $(INCL) ./libmx/
-	@clang $(CFLGS) -c  $(SRC) libmx/inc/libmx.h -Iinc
+	@clang $(CFLGS) -c $(SRC) libmx/inc/libmx.h -Iinc
 	@mkdir -p obj
 	@mv $(OBJ) ./obj
 	@clang $(CFLGS) $(OBJO) libmx/libmx.a -o $(NAME)

@@ -1,15 +1,11 @@
 NAME = uls
 
-CC = gcc
+CC = clang
 
-INC = ./inc/uls.h \
-		./libmx/inc/libmx.h \
+INC = inc/uls.h \
+		libmx/inc/libmx.h \
 
-INCL = ./libmx/inc/libmx.h \
-
-HEADTMP = ./uls.h \
-			./libmx.h \
-			./libmx/libmx.h
+INCL = libmx/inc inc \
 
 FILES = mx_parse_flags mx_main mx_set_flags_false \
 		mx_create_list_of_catalog mx_init_info mx_print_lflag \
@@ -21,37 +17,32 @@ FILES = mx_parse_flags mx_main mx_set_flags_false \
 		mx_print_R_start_point mx_print_default mx_counters \
 		mx_get_name_dir mx_set_start_dir mx_get_valid mx_get_dirs \
 		mx_func_for_R
-		
 
-SRC = $(addsuffix .c, $(FILES))
+LFLGS = -std=c11 -Wall -Wpedantic -Wextra -Werror# -g -fsanitize=address
 
-SRCS = $(addprefix src/, $(SRC))
+CFLAGS = $(addprefix -I, $(INCL))
 
-OBJ = $(addsuffix .o, $(FILES))
+DEPS = $(INC)
 
-OBJO = $(addprefix obj/, $(OBJ))
+OBJD = obj
 
-CFLGS = -std=c11 -Wall -Wpedantic -Wextra -Werror# -g -fsanitize=address
+OBJO = $(addprefix obj/, $(addsuffix .o, $(FILES)))
 
-all: install
+all: $(OBJD) install
 
-install:
-	@make -C libmx -f Makefile install
-	@cp $(INC) $(SRCS) .
-	@cp $(INCL) ./libmx/
-	@$(CC) $(CFLGS) -c $(SRC) libmx/inc/libmx.h -Iinc
-	@mkdir -p obj
-	@mv $(OBJ) ./obj
-	@$(CC) $(CFLGS) $(OBJO) libmx/libmx.a -o $(NAME)
-
-uninstall:
-	@rm $(NAME)
-	@make -C libmx -f Makefile uninstall
-
-clean:
-	@make -C libmx -f Makefile clean
-	@rm -rf $(OBJ) $(SRC) $(HEADTMP)
-	@rm -rf ./obj
-	@rm -rf ./libmx/libmx.h.gch
+install: $(OBJO)
+	$(CC) $(LFLGS) -o $(NAME) $^ $(CFLAGS) libmx/libmx.a
 
 reinstall: uninstall all
+
+uninstall: clean
+	rm -rf $(NAME)
+
+clean:
+	rm -rf $(OBJD)
+
+$(OBJD)/%.o: src/%.c $(DEPS)
+	$(CC) $(LFLGS) -c -o $@ $< $(CFLAGS)
+
+$(OBJD):
+	mkdir -p $@

@@ -27,27 +27,29 @@ RAW = printchar print_unicode printstr print_strarr printint pow sqrt \
 	clear_list print_list swap_node printull add_del_str ltoa addchr \
 	strjoin_to_dst_malloc
 
-
-
-SRC = $(addprefix mx_, $(addsuffix .c, $(RAW)))
-OBJ = $(addprefix mx_, $(addsuffix .o, $(RAW)))
-
+SRCD = src
+OBJD = obj
+COMPILE = $(CC) $(CFLAGS) -c -o $@ $< -Iinc
+OBJ = $(addprefix obj/,$(addprefix mx_, $(addsuffix .o, $(RAW))))
 CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
 all: install
 
-install:
-	@cp $(addprefix src/, $(SRC)) .
-	@cp $(addprefix inc/, $(INC)) .
-	@$(CC) $(CFLAGS) -c $(SRC)
-	@ar rcs $(NAME) $(OBJ)
-	@mkdir -p obj
-	@mv $(OBJ) ./obj
+install: $(OBJD) compile_lib
+
+compile_lib: $(OBJ)
+	@ar rcs $(NAME) $^ inc/$(INC)
+
+$(OBJD):
+	@mkdir -p $@
+
+$(OBJD)/%.o: $(SRCD)/%.c $(addprefix inc/, $(INC))
+	@$(COMPILE)
 
 uninstall: clean
 	@rm -rf $(NAME)
 
 clean:
-	@rm -rf $(INC) $(SRC) $(OBJ) ./obj
+	@rm -rf $(OBJD)
 
 reinstall: uninstall install

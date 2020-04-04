@@ -24,25 +24,38 @@ CFLAGS = $(addprefix -I, $(INCL))
 
 DEPS = $(INC)
 
+LIBFILE = libmx/libmx.a
+
 OBJD = obj
+
+SRCD = src
 
 OBJO = $(addprefix obj/, $(addsuffix .o, $(FILES)))
 
-all: $(OBJD) install
+COMPILE = $(CC) $(LFLGS) -o $(NAME) $^ $(CFLAGS) $(LIBFILE)
 
-install: $(OBJO)
-	$(CC) $(LFLGS) -o $(NAME) $^ $(CFLAGS) libmx/libmx.a
+all: install
+
+install: $(LIBFILE) $(OBJD) compile
+
+$(LIBFILE):
+	@make -C libmx -f Makefile all
+
+compile: $(OBJO)
+	@$(COMPILE)
 
 reinstall: uninstall all
 
 uninstall: clean
-	rm -rf $(NAME)
+	@make -C libmx -f Makefile uninstall
+	@rm -rf $(NAME)
 
 clean:
-	rm -rf $(OBJD)
+	@make -C libmx -f Makefile clean
+	@rm -rf $(OBJD)
 
-$(OBJD)/%.o: src/%.c $(DEPS)
-	$(CC) $(LFLGS) -c -o $@ $< $(CFLAGS)
+$(OBJD)/%.o: $(SRCD)/%.c $(DEPS)
+	@$(CC) $(LFLGS) -c -o $@ $< $(CFLAGS)
 
 $(OBJD):
-	mkdir -p $@
+	@mkdir -p $@

@@ -124,9 +124,6 @@ void mx_r_flag(t_main *info, t_catalog *cat, char *link) {
 	closedir(directoy);
 }
 
-
-
-
 void mx_r_flag_a(t_main *info, t_catalog *cat, char *link) {
 	DIR *directoy = opendir(link);
 	t_dir_data *list = cat->dir;

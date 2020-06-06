@@ -19,13 +19,16 @@ static void parse_file(t_info *info, char *av) {
     }
 }
 
-static bool parse_flag(t_vector *flags, char *av) {
+static bool parse_flag(t_vector *flags, char *av, int *i) {
     if (av[0] == '-' && av[1] == '-') {
         if (av[2] != '\0')
             mx_wrong_flag(av[1]);
         return false;
     }
-
+    if (av[0] == '-' && av[1] == '\0') {
+        --*i;
+        return false;
+    }
     for (int i = 1; av[i]; ++i) {
         if (MX_EXIST(av[i]))
             mx_push_backward(flags, av + i);
@@ -54,7 +57,7 @@ void mx_parse(t_info *info, int ac, char **av) {
     int i = 1;
 
     for (bool flag = true; flag && i < ac && av[i][0] == '-'; ++i)
-        flag = parse_flag(&flags, av[i]);
+        flag = parse_flag(&flags, av[i], &i);
     info->dirs.arr = malloc(sizeof(t_file) * MX_VECTOR_DEFAULT_SIZE);
     info->files.arr = malloc(sizeof(char *) * MX_VECTOR_DEFAULT_SIZE);
     mx_check_flags(info, &flags);
